@@ -2,6 +2,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'application'
 
+mainClassName = 'com.salazart.social.SocialNetwork'
+
 repositories {
 	mavenCentral()
 }
@@ -18,5 +20,7 @@ sourceSets {
 }
 dependencies {
 	compile 'org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:0.31'
+	compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
+	compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
 }
 

@@ -1,4 +1,4 @@
-package com.salazart.social;
+package com.social.oauth;
 
 public class OAuth {
     public static final String OAUTH_RESPONSE_TYPE = "response_type";

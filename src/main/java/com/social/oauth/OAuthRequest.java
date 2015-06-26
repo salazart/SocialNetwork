@@ -1,4 +1,4 @@
-package com.salazart.social;
+package com.social.oauth;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,8 +33,8 @@ public class OAuthRequest {
     }
 
     public String buildQueryMessage() {
-	ParameterApplier parameterApplier = new ParameterApplier();
-	return parameterApplier.applyParameters(url, headers);
+	RequestBuilder parameterApplier = new RequestBuilder();
+	return parameterApplier.buildRequest(url, headers);
     }
 
 }
