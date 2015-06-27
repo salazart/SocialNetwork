@@ -28,6 +28,7 @@ public class ConnectionService {
 		
 		String content = "";
 		if(conn != null){
+			System.out.println("Reading from connection...");
 			try {
 				content = readInputStream(conn.getInputStream());
 			} catch (IOException e) {
@@ -56,6 +57,7 @@ public class ConnectionService {
 		if(is != null){
 			try {
 				is.close();
+				System.out.println("Connection is closed.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

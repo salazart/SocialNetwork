@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonIgnoreType;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.social.models.Post;
@@ -21,5 +22,4 @@ public class WallGet extends JsonResponse{
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
-
 }

@@ -6,7 +6,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Post {
 	
-	@JsonProperty("uid")
+	@JsonProperty("id")
 	private int id;
 	
 	/*@JsonProperty("owner_id")
