@@ -7,15 +7,16 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import response.models.Response;
+import com.social.models.responses.JsonResponse;
+import com.social.models.responses.UsersGet;
 
 public class JsonText {
 
 	public static void main(String[] args) {
 		ObjectMapper mapper = new ObjectMapper();
-    	Response response = new Response();
+    	UsersGet usersGet = new UsersGet();
     	try {
-    		response = mapper.readValue(new File("src/main/resources/UsersJsonResponse.txt"), Response.class);
+    		usersGet = mapper.readValue(new File("src/main/resources/UsersJsonResponse.txt"), UsersGet.class);
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -27,10 +28,10 @@ public class JsonText {
 			e.printStackTrace();
 		}
     	
-    	if(response.isErrorStatusResponse()){
-    		System.out.println(response.getError().getErrorCode());
+    	if(usersGet.isErrorStatusResponse()){
+    		System.out.println(usersGet.getError().getErrorCode());
     	} else {
-    		System.out.println(response.getElements().size());
+    		System.out.println(usersGet.getUsers().size());
     	}
 	}
 

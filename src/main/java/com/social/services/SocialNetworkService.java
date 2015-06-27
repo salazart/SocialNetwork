@@ -3,46 +3,53 @@ package com.social.services;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import response.models.Response;
-import response.models.User;
-
 import com.social.interfaces.ISocialNetwork;
+import com.social.models.User;
+import com.social.models.responses.FriendsGet;
+import com.social.models.responses.UsersGet;
+import com.social.models.responses.WallGet;
 import com.social.oauth.RequestBuilder;
 
 public class SocialNetworkService implements ISocialNetwork{
 	public List<User> usersById(List<String> uids) {
+		final int COUNT_UIDS = 200;
 		
 		String url = "https://api.vk.com/method/users.get";
 		
-		RequestBuilder requestBuilder = new RequestBuilder(url);
-		requestBuilder.addParam("access_token", getAccessToken());
-		requestBuilder.addParam("fields", "bdate");
-		requestBuilder.addParam("fields", "city");
-		requestBuilder.addParam("fields", "country");
-		requestBuilder.addParam("fields", "contacts");
-		
-		for(int i = 0; i < uids.size(); i++){
-			requestBuilder.addParam("uids", String.valueOf(uids.get(i)));
+		List<User> users = new ArrayList<User>();
+		RequestBuilder requestBuilder = null;
+		for(int i = 0; i < uids.size(); i += COUNT_UIDS){
+			requestBuilder = new RequestBuilder(url);
+			//requestBuilder.addParam("access_token", getAccessToken());
+			requestBuilder.addParam("fields", "bdate,city,country,contacts");
+			
+			int j = i;
+			while(j < uids.size() && j < i + COUNT_UIDS){
+				requestBuilder.addParam("uids", String.valueOf(uids.get(j)));
+				j++;
+				System.out.println(j);
+			}
+			
+			ConnectionService connectionService = new ConnectionService();
+			String content = connectionService.createConnection(requestBuilder.buildRequest());
+
+			UsersGet usersGet = new UsersGet();
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				usersGet = mapper.readValue(content, UsersGet.class);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			users.addAll(usersGet.getUsers());
 		}
-		
-		ConnectionService connectionService = new ConnectionService();
-		System.out.println(requestBuilder.buildRequest());
-		String content = connectionService.createConnection(requestBuilder.buildRequest());
-		System.out.println(content);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		Response response = new Response();
-		try {
-			response = mapper.readValue(content, Response.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return (List<User>) response.getElements();
+		return users;
 	}
 	
 	@Override
@@ -62,24 +69,49 @@ public class SocialNetworkService implements ISocialNetwork{
 		}
 	}
 
-	public void friendsById(String userId) {
+	public List<String> friendsById(String userId) {
 		String url = "https://api.vk.com/method/friends.get";
+		
 		RequestBuilder requestBuilder = new RequestBuilder(url);
-		requestBuilder.addParam("access_token", getAccessToken());
+		//requestBuilder.addParam("access_token", getAccessToken());
 		requestBuilder.addParam("user_id", userId);
 		
 		ConnectionService connectionService = new ConnectionService();
 		String content = connectionService.createConnection(requestBuilder.buildRequest());
 		
 		ObjectMapper mapper = new ObjectMapper();
-		Response response = new Response();
+		FriendsGet friendsGet = new FriendsGet();
 		try {
-			response = mapper.readValue(content, Response.class);
+			friendsGet = mapper.readValue(content, FriendsGet.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return friendsGet.getUids();
 	}
 	
-	
-	
+	public void getWall(String userId){
+		String url = "https://api.vk.com/method/wall.get";
+		
+		RequestBuilder requestBuilder = new RequestBuilder(url);
+		//requestBuilder.addParam("access_token", getAccessToken());
+		requestBuilder.addParam("owner_id", userId);
+		requestBuilder.addParam("offset", "0");
+		requestBuilder.addParam("count", "2");
+		
+		System.out.println(requestBuilder.buildRequest());
+		ConnectionService connectionService = new ConnectionService();
+		String content = connectionService.createConnection(requestBuilder.buildRequest());
+		System.out.println(content);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		WallGet wallGet = new WallGet();
+		try {
+			wallGet = mapper.readValue(content, WallGet.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(wallGet.getPosts().size());
+		//return wallGet.getPosts().size();
+		
+	}
 }

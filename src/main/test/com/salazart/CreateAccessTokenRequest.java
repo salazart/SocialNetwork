@@ -9,7 +9,7 @@ public class CreateAccessTokenRequest {
 		OAuthRequest oAuthRequest = new OAuthRequest(
 				"https://oauth.vk.com/authorize");
 			oAuthRequest.setClientId("4517745");
-			oAuthRequest.setScope("audio");
+			oAuthRequest.setScope("friends");
 			oAuthRequest.setRedirectURI("https://oauth.vk.com/blank.html");
 			oAuthRequest.setDisplay("popup");
 			oAuthRequest.setResponseType("token");

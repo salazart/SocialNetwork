@@ -1,24 +1,20 @@
 package com.salazart;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.social.interfaces.ISocialNetwork;
 import com.social.models.User;
 import com.social.services.SocialNetworkService;
 
-public class SelectUsersByUids {
+public class SelectFriendsById {
 
 	public static void main(String[] args) {
-    	ISocialNetwork socialNetwork = new SocialNetworkService();
+		SocialNetworkService socialNetworkService = new SocialNetworkService();
+    	List<String> uids = socialNetworkService.friendsById("124458332");
+    	System.out.println("Count users uids: " + uids.size());
     	
-    	List<String> uids = new ArrayList<String>();
-    	uids.add("135717579");
-    	uids.add("37837462");
-    	uids.add("78938531");
-    	List<User> users = socialNetwork.usersById(uids);
+    	List<User> users = socialNetworkService.usersById(uids);
     	
-    	System.out.println(users.size());
+    	System.out.println("Count users: " + users.size());
     	System.out.println("uid\tfirst_name\tlast_name\tbdate\tcity\tcountry\tmobile_phone\thome_phone");
     	for(int i = 0; i < users.size(); i++){
     		System.out.println(users.get(i).getId() + "\t"
