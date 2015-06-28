@@ -4,7 +4,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Post {
+public class Post extends Object{
 	
 	@JsonProperty("id")
 	private int id;
@@ -32,6 +32,14 @@ public class Post {
 	
 	@JsonProperty("post_type")
 	private String postType;*/
+	
+	public boolean isEmpty(){
+		if(id == 0){
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	public int getId() {
 		return id;

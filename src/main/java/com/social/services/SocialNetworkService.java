@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.social.interfaces.ISocialNetwork;
@@ -91,13 +88,13 @@ public class SocialNetworkService implements ISocialNetwork{
 	}
 	
 	public void getWall(String userId){
-		String url = "https://api.vk.com/method/wall.get.xml";
+		String url = "https://api.vk.com/method/wall.get";
 		
 		RequestBuilder requestBuilder = new RequestBuilder(url);
 		//requestBuilder.addParam("access_token", getAccessToken());
 		requestBuilder.addParam("owner_id", userId);
 		requestBuilder.addParam("offset", "0");
-		requestBuilder.addParam("count", "2");
+		requestBuilder.addParam("count", "5");
 		//requestBuilder.addParam("filter", "owner");
 		//requestBuilder.addParam("version", "5.34");
 		//requestBuilder.addParam("extended", "1");
@@ -107,37 +104,8 @@ public class SocialNetworkService implements ISocialNetwork{
 		String content = connectionService.createConnection(requestBuilder.buildRequest());
 		System.out.println(content);
 		
-		
-		try {
-			JsonFactory jfactory = new JsonFactory();
-			JsonParser jParser = jfactory.createJsonParser(content);
-			ObjectMapper mapper = new ObjectMapper();
-			JsonNode input = mapper.readTree(jParser);
-			
-			System.out.println(input.size());
-			JsonNode results = input.get("response");
-			
-			System.out.println(results.size());
-			
-		    //JsonNode results2 = results.get("id");
-		    //System.out.println(fieldname.toString());
-		    
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		/*ObjectMapper mapper = new ObjectMapper();
-		WallGet wallGet = new WallGet();
-		try {
-			wallGet = mapper.readValue(content, WallGet.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println(wallGet.getPosts().size());
-		Post post = (Post) wallGet.getPosts().get(2);
-		System.out.println(post.getId());*/
-		//return wallGet.getPosts().size();
+		JsonNodeParser jsonNodeParser = new JsonNodeParser();
+		jsonNodeParser.parseJson(content);
 		
 	}
 }
