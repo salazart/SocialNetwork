@@ -27,7 +27,7 @@ public class SocialNetworkService implements ISocialNetwork{
 		RequestBuilder requestBuilder = null;
 		for(int i = 0; i < uids.size(); i += COUNT_UIDS){
 			requestBuilder = new RequestBuilder(url);
-			//requestBuilder.addParam("access_token", getAccessToken());
+			requestBuilder.addParam("access_token", getAccessToken());
 			requestBuilder.addParam("fields", "bdate,city,country,contacts");
 			
 			int j = i;
@@ -87,6 +87,7 @@ public class SocialNetworkService implements ISocialNetwork{
 		//requestBuilder.addParam("access_token", getAccessToken());
 		requestBuilder.addParam("owner_id", userId);
 		requestBuilder.addParam("offset", "0");
+		requestBuilder.addParam("count", "20");
 		
 		System.out.println(requestBuilder.buildRequest());
 		ConnectionService connectionService = new ConnectionService();

@@ -21,10 +21,10 @@ public class SelectFriendsById {
     				+ users.get(i).getFirstName() + "\t"
     				+ users.get(i).getLastName() + "\t"
     				+ users.get(i).getBirstDay() + "\t"
-    				+ users.get(i).getCity() + "\t"
     				+ users.get(i).getCountry() + "\t"
-    				+ users.get(i).getMobilePhone() + "\t"
+    				+ users.get(i).getCity() + "\t"
     				+ users.get(i).getHomeTown() + "\t"
+    				+ users.get(i).getMobilePhone() + "\t"
     				+ users.get(i).getHomePhone() + "\t");
     	}
 	}

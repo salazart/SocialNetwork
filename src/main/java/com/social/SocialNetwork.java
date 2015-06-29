@@ -10,8 +10,8 @@ public class SocialNetwork {
     	System.out.println("Hello Social Network world");
     	
     	Post post = new Post();
-    	post.setText("Hello_Inna!!!");
-    	post.setId(39046828);
+    	post.setText("Hello");
+    	post.setId(10262314);
     	
     	SocialNetworkService socialNetworkService = new SocialNetworkService();
     	socialNetworkService.postWall(post);
