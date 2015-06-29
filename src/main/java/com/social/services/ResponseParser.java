@@ -10,10 +10,42 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.social.models.Post;
+import com.social.models.responses.FriendsGet;
+import com.social.models.responses.UsersGet;
+import com.social.models.responses.WallGet;
 
-public class JsonNodeParser{
+public class ResponseParser{
 	private static final String RESPONSE = "response";
-	public List<Post> parseJson(String content){
+	
+	public WallGet parseJson(String content, WallGet wallGet){
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.readValue(content, WallGet.class);
+		} catch (IOException e) {
+			wallGet.setPosts(parseJsonNode(content));
+			return wallGet;
+		}
+	}
+	
+	public FriendsGet parseJson(String content, FriendsGet friendsGet){
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.readValue(content, friendsGet.getClass());
+		} catch (IOException e) {
+			return new FriendsGet();
+		}
+	}
+	
+	public UsersGet parseJson(String content, UsersGet usersGet){
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.readValue(content, usersGet.getClass());
+		} catch (IOException e) {
+			return new UsersGet();
+		}
+	}
+	
+	private List<Post> parseJsonNode(String content){
 		List<Post> posts = new ArrayList<Post>();
 		try {
 			JsonFactory jfactory = new JsonFactory();
@@ -32,7 +64,6 @@ public class JsonNodeParser{
 		List<Post> posts = new ArrayList<Post>();
 		for (int i = 0; i < jsonNode.size(); i++) {
 			JsonNode node = jsonNode.get(i);
-			System.out.println(node);
 			Post post = readPost(node);
 			if(!post.isEmpty()){
 				posts.add(post);

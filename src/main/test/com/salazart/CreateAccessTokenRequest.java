@@ -9,17 +9,17 @@ public class CreateAccessTokenRequest {
 		OAuthRequest oAuthRequest = new OAuthRequest(
 				"https://oauth.vk.com/authorize");
 			oAuthRequest.setClientId("4517745");
-			oAuthRequest.setScope("friends");
+			oAuthRequest.setScope("wall,offline");
 			oAuthRequest.setRedirectURI("https://oauth.vk.com/blank.html");
 			oAuthRequest.setDisplay("popup");
 			oAuthRequest.setResponseType("token");
 
 			System.out.println(oAuthRequest.buildQueryMessage());
 			
-			ConnectionService connectionService = new ConnectionService();
-			String content = connectionService.createConnection(oAuthRequest.buildQueryMessage());
+			//ConnectionService connectionService = new ConnectionService();
+			//String content = connectionService.createConnection(oAuthRequest.buildQueryMessage());
 			
-			System.out.println(content);
+			//System.out.println(content);
 	}
 
 }

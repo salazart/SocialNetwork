@@ -9,7 +9,7 @@ public class Post extends Object{
 	@JsonProperty("id")
 	private int id;
 	
-	/*@JsonProperty("owner_id")
+	@JsonProperty("owner_id")
 	private int ownerId;
 	
 	@JsonProperty("from_id")
@@ -31,8 +31,72 @@ public class Post extends Object{
 	private int friendsOnly;
 	
 	@JsonProperty("post_type")
-	private String postType;*/
+	private String postType;
 	
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
+
+	public int getFromId() {
+		return fromId;
+	}
+
+	public void setFromId(int fromId) {
+		this.fromId = fromId;
+	}
+
+	public long getDate() {
+		return date;
+	}
+
+	public void setDate(long date) {
+		this.date = date;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public int getReplyOwnerId() {
+		return replyOwnerId;
+	}
+
+	public void setReplyOwnerId(int replyOwnerId) {
+		this.replyOwnerId = replyOwnerId;
+	}
+
+	public int getReplyPostId() {
+		return replyPostId;
+	}
+
+	public void setReplyPostId(int replyPostId) {
+		this.replyPostId = replyPostId;
+	}
+
+	public int getFriendsOnly() {
+		return friendsOnly;
+	}
+
+	public void setFriendsOnly(int friendsOnly) {
+		this.friendsOnly = friendsOnly;
+	}
+
+	public String getPostType() {
+		return postType;
+	}
+
+	public void setPostType(String postType) {
+		this.postType = postType;
+	}
+
 	public boolean isEmpty(){
 		if(id == 0){
 			return true;

@@ -9,7 +9,7 @@ public class SelectFriendsById {
 
 	public static void main(String[] args) {
 		SocialNetworkService socialNetworkService = new SocialNetworkService();
-    	List<String> uids = socialNetworkService.friendsById("124458332");
+    	List<String> uids = socialNetworkService.friendsById("107275348");
     	System.out.println("Count users uids: " + uids.size());
     	
     	List<User> users = socialNetworkService.usersById(uids);

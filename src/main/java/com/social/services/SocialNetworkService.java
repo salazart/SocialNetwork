@@ -10,9 +10,11 @@ import java.util.Scanner;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.social.interfaces.ISocialNetwork;
+import com.social.models.Post;
 import com.social.models.User;
 import com.social.models.responses.FriendsGet;
 import com.social.models.responses.UsersGet;
+import com.social.models.responses.WallGet;
 import com.social.oauth.RequestBuilder;
 
 public class SocialNetworkService implements ISocialNetwork{
@@ -37,13 +39,8 @@ public class SocialNetworkService implements ISocialNetwork{
 			ConnectionService connectionService = new ConnectionService();
 			String content = connectionService.createConnection(requestBuilder.buildRequest());
 
-			UsersGet usersGet = new UsersGet();
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				usersGet = mapper.readValue(content, UsersGet.class);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			ResponseParser jsonNodeParser = new ResponseParser();
+			UsersGet usersGet = jsonNodeParser.parseJson(content, new UsersGet());
 
 			users.addAll(usersGet.getUsers());
 		}
@@ -77,35 +74,49 @@ public class SocialNetworkService implements ISocialNetwork{
 		ConnectionService connectionService = new ConnectionService();
 		String content = connectionService.createConnection(requestBuilder.buildRequest());
 		
-		ObjectMapper mapper = new ObjectMapper();
-		FriendsGet friendsGet = new FriendsGet();
-		try {
-			friendsGet = mapper.readValue(content, FriendsGet.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ResponseParser jsonNodeParser = new ResponseParser();
+		FriendsGet friendsGet = jsonNodeParser.parseJson(content, new FriendsGet()); 
+		
 		return friendsGet.getUids();
 	}
 	
-	public void getWall(String userId){
+	public List<Post> getWall(String userId){
 		String url = "https://api.vk.com/method/wall.get";
 		
 		RequestBuilder requestBuilder = new RequestBuilder(url);
 		//requestBuilder.addParam("access_token", getAccessToken());
 		requestBuilder.addParam("owner_id", userId);
 		requestBuilder.addParam("offset", "0");
-		requestBuilder.addParam("count", "5");
-		//requestBuilder.addParam("filter", "owner");
-		//requestBuilder.addParam("version", "5.34");
-		//requestBuilder.addParam("extended", "1");
 		
 		System.out.println(requestBuilder.buildRequest());
 		ConnectionService connectionService = new ConnectionService();
 		String content = connectionService.createConnection(requestBuilder.buildRequest());
 		System.out.println(content);
 		
-		JsonNodeParser jsonNodeParser = new JsonNodeParser();
-		jsonNodeParser.parseJson(content);
+		ResponseParser jsonNodeParser = new ResponseParser();
+		WallGet wallGet = jsonNodeParser.parseJson(content, new WallGet()); 
+
+		if(wallGet.isErrorResponse()){
+			System.out.println(wallGet.getError().getErrorMsg());
+			return new ArrayList<Post>();
+		} else {
+			return wallGet.getPosts();
+		}
+	}
+	
+	public void postWall(Post post){
+		String url = "https://api.vk.com/method/wall.post";
+		
+		RequestBuilder requestBuilder = new RequestBuilder(url);
+		requestBuilder.addParam("access_token", getAccessToken());
+		requestBuilder.addParam("owner_id", post.getId());
+		requestBuilder.addParam("message", post.getText());
+		
+		System.out.println(requestBuilder.buildRequest());
+		ConnectionService connectionService = new ConnectionService();
+		String content = connectionService.createConnection(requestBuilder.buildRequest());
+		System.out.println(content);
+		
 		
 	}
 }

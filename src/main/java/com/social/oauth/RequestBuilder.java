@@ -30,6 +30,10 @@ public class RequestBuilder {
     	}
     }
     
+    public void addParam(String nameParam, int valueParam){
+    	addParam(nameParam, String.valueOf(valueParam));
+    }
+    
     public String buildRequest(String url, Map<String, String> params) {
     	if (url == null) {
     	    return "";

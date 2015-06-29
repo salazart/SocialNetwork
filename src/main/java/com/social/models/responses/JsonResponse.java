@@ -11,7 +11,7 @@ public class JsonResponse{
 	@JsonProperty("error")
 	private Error error;
 	
-	public boolean isErrorStatusResponse(){
+	public boolean isErrorResponse(){
 		return error != null;
 	}
 

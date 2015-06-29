@@ -28,7 +28,7 @@ public class JsonText {
 			e.printStackTrace();
 		}
     	
-    	if(usersGet.isErrorStatusResponse()){
+    	if(usersGet.isErrorResponse()){
     		System.out.println(usersGet.getError().getErrorCode());
     	} else {
     		System.out.println(usersGet.getUsers().size());
