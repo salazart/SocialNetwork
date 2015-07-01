@@ -2,22 +2,20 @@ package com.social.services;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.codehaus.jackson.map.ObjectMapper;
-
 import com.social.interfaces.ISocialNetwork;
+import com.social.models.Parameters;
 import com.social.models.Post;
 import com.social.models.User;
 import com.social.models.responses.FriendsGet;
 import com.social.models.responses.UsersGet;
 import com.social.models.responses.WallGet;
-import com.social.oauth.RequestBuilder;
 
 public class SocialNetworkService implements ISocialNetwork {
+
     public List<User> usersById(List<String> uids) {
 	final int COUNT_UIDS = 200;
 
@@ -27,15 +25,17 @@ public class SocialNetworkService implements ISocialNetwork {
 	RequestBuilder requestBuilder = null;
 	for (int i = 0; i < uids.size(); i += COUNT_UIDS) {
 	    requestBuilder = new RequestBuilder(url);
-	    requestBuilder.addParam("access_token", getAccessToken());
-	    requestBuilder.addParam("fields", "bdate,city,country,contacts");
+	    requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
+	    requestBuilder.addParam(Parameters.FIELDS, Parameters.BDATE,
+		    Parameters.CITY, Parameters.COUNTRY, Parameters.CONTACTS);
 
 	    int j = i;
 	    while (j < uids.size() && j < i + COUNT_UIDS) {
-		requestBuilder.addParam("uids", String.valueOf(uids.get(j)));
+		requestBuilder.addParam(Parameters.UIDS, uids.get(j));
 		j++;
 	    }
 
+	    System.out.println(requestBuilder.buildRequest());
 	    ConnectionService connectionService = new ConnectionService();
 	    String content = connectionService.createConnection(requestBuilder
 		    .buildRequest());
@@ -71,8 +71,8 @@ public class SocialNetworkService implements ISocialNetwork {
 	String url = "api.vk.com/method/friends.get";
 
 	RequestBuilder requestBuilder = new RequestBuilder(url);
-	// requestBuilder.addParam("access_token", getAccessToken());
-	requestBuilder.addParam("user_id", userId);
+	requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
+	requestBuilder.addParam(Parameters.USER_ID, userId);
 
 	ConnectionService connectionService = new ConnectionService();
 	String content = connectionService.createConnection(requestBuilder
@@ -89,10 +89,10 @@ public class SocialNetworkService implements ISocialNetwork {
 	String url = "api.vk.com/method/wall.get";
 
 	RequestBuilder requestBuilder = new RequestBuilder(url);
-	// requestBuilder.addParam("access_token", getAccessToken());
-	requestBuilder.addParam("owner_id", userId);
-	requestBuilder.addParam("offset", "0");
-	requestBuilder.addParam("count", "20");
+	requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
+	requestBuilder.addParam(Parameters.OWNER_ID, userId);
+	requestBuilder.addParam(Parameters.OFFSET, "0");
+	requestBuilder.addParam(Parameters.COUNT, "20");
 
 	System.out.println(requestBuilder.buildRequest());
 	ConnectionService connectionService = new ConnectionService();
@@ -115,9 +115,9 @@ public class SocialNetworkService implements ISocialNetwork {
 	String url = "api.vk.com/method/wall.post";
 
 	RequestBuilder requestBuilder = new RequestBuilder(url);
-	requestBuilder.addParam("access_token", getAccessToken());
-	requestBuilder.addParam("owner_id", post.getId());
-	requestBuilder.addParam("message", post.getText());
+	requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
+	requestBuilder.addParam(Parameters.OWNER_ID, post.getId());
+	requestBuilder.addParam(Parameters.MESSAGE, post.getText());
 
 	System.out.println(requestBuilder.buildRequest());
 	ConnectionService connectionService = new ConnectionService();

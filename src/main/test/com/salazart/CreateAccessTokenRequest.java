@@ -1,12 +1,12 @@
 package com.salazart;
-import com.social.oauth.OAuthRequest;
+import com.social.models.AccessToken;
 import com.social.services.ConnectionService;
 
 
 public class CreateAccessTokenRequest {
 
 	public static void main(String[] args) {
-		OAuthRequest oAuthRequest = new OAuthRequest(
+		AccessToken oAuthRequest = new AccessToken(
 				"https://oauth.vk.com/authorize");
 			oAuthRequest.setClientId("4517745");
 			oAuthRequest.setScope("wall,offline");

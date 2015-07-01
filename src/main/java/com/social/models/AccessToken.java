@@ -1,35 +1,37 @@
-package com.social.oauth;
+package com.social.models;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class OAuthRequest {
+import com.social.services.RequestBuilder;
+
+public class AccessToken {
     private String url;
     private Map<String, String> headers;
 
-    public OAuthRequest(String url) {
+    public AccessToken(String url) {
 	this.url = url;
 	this.headers = new HashMap<String, String>();
     }
 
     public void setClientId(String clientId) {
-	this.headers.put(OAuth.OAUTH_CLIENT_ID, clientId);
+	this.headers.put(Parameters.CLIENT_ID, clientId);
     }
 
     public void setScope(String scope) {
-	this.headers.put(OAuth.OAUTH_SCOPE, scope);
+	this.headers.put(Parameters.SCOPE, scope);
     }
 
     public void setRedirectURI(String redirectUrl) {
-	this.headers.put(OAuth.OAUTH_REDIRECT_URI, redirectUrl);
+	this.headers.put(Parameters.REDIRECT_URI, redirectUrl);
     }
 
     public void setDisplay(String display) {
-	this.headers.put(OAuth.OAUTH_DISPLAY, display);
+	this.headers.put(Parameters.DISPLAY, display);
     }
 
     public void setResponseType(String responseType) {
-	this.headers.put(OAuth.OAUTH_RESPONSE_TYPE, responseType);
+	this.headers.put(Parameters.RESPONSE_TYPE, responseType);
     }
 
     public String buildQueryMessage() {
