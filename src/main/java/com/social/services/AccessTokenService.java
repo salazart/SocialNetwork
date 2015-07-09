@@ -14,21 +14,45 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.social.models.Parameters;
 
 public class AccessTokenService {
+	private static final String NAME_EMAIL_FIELD = "email";
+	private static final String NAME_PASS_FIELD = "pass";
+	private static final String NAME_INPUT_FIELD = "input";
+	private static final String FORM_ELEMENT_AUTORIZE = "//form[@action='https://login.vk.com/?act=login&soft=1&utf8=1']";
+	private static final String FORM_ELEMENT_PERMISSION = "//form[@method='post']";
 	private String url;
 
 	public AccessTokenService(String url) {
 		this.url = url;
 	}
 
-	public String generateAccessToken(String login, String pass) {
-		HtmlPage htmlPage = autorizePage(login, pass);
-		if (htmlPage != null) {
-			URL url = htmlPage.getWebResponse().getRequestUrl();
-			RequestBuilder requestBuilder = new RequestBuilder();
-			System.out.println(requestBuilder.parseRequest(url, Parameters.ACCESS_TOKEN));
+	public URL generateAccessToken(String login, String pass) {
+		HtmlPage permissionPage = autorizePage(login, pass);
+		HtmlPage accessTokenPage = permissionPage(permissionPage);
+
+		if (accessTokenPage != null) {
+			return accessTokenPage.getWebResponse().getRequestUrl();
+		} else {
+			return permissionPage.getWebResponse().getRequestUrl();
+		}
+	}
+	
+	private HtmlPage permissionPage(HtmlPage autorizePage){
+		HtmlPage permissionPage = null;
+		HtmlForm form = autorizePage.getFirstByXPath(FORM_ELEMENT_PERMISSION);
+		if(form != null){
+			NodeList inputElements = form.getElementsByTagName(NAME_INPUT_FIELD);
+			HtmlSubmitInput htmlSubmitInput = getSubmitButton(inputElements);
+
+			if (htmlSubmitInput != null) {
+				try {
+					return htmlSubmitInput.click();
+				} catch (IOException e) {
+					return null;
+				}
+			}
 		}
 		
-		return new String();
+		return permissionPage;
 	}
 
 	private HtmlPage autorizePage(String login, String pass) {
@@ -37,28 +61,32 @@ public class AccessTokenService {
 			webClient.setCssEnabled(false);
 			webClient.setJavaScriptEnabled(false);
 
-			HtmlPage loginForm = webClient.getPage(url);
-			if (loginForm != null) {
-				HtmlForm form = loginForm
-						.getFirstByXPath("//form[@action='https://login.vk.com/?act=login&soft=1&utf8=1']");
-				form.getInputByName("email").setValueAttribute(login);
-				form.getInputByName("pass").setValueAttribute(pass);
+			HtmlPage autorizePage = webClient.getPage(url);
+			if (autorizePage != null) {
+				HtmlForm form = autorizePage.getFirstByXPath(FORM_ELEMENT_AUTORIZE);
+				form.getInputByName(NAME_EMAIL_FIELD).setValueAttribute(login);
+				form.getInputByName(NAME_PASS_FIELD).setValueAttribute(pass);
 
-				NodeList buttons = form.getElementsByTagName("input");
-				HtmlSubmitInput htmlSubmitInput = null;
-				for (int i = 0; i < buttons.getLength(); i++) {
-					if (buttons.item(i) instanceof HtmlSubmitInput) {
-						htmlSubmitInput = (HtmlSubmitInput) buttons.item(i);
-					}
-				}
+				NodeList inputElements = form.getElementsByTagName(NAME_INPUT_FIELD);
+				HtmlSubmitInput htmlSubmitInput = getSubmitButton(inputElements);
 
 				if (htmlSubmitInput != null) {
 					return htmlSubmitInput.click();
 				}
 			}
-		} catch (FailingHttpStatusCodeException | IOException e) {
+		} catch (IOException e) {
 			return null;
 		}
 		return null;
+	}
+
+	private HtmlSubmitInput getSubmitButton(NodeList inputElements) {
+		HtmlSubmitInput htmlSubmitInput = null;
+		for (int i = 0; i < inputElements.getLength(); i++) {
+			if (inputElements.item(i) instanceof HtmlSubmitInput) {
+				htmlSubmitInput = (HtmlSubmitInput) inputElements.item(i);
+			}
+		}
+		return htmlSubmitInput;
 	}
 }

@@ -1,8 +1,12 @@
 
 package com.salazart;
 
+import java.net.URL;
+
 import com.social.models.AccessToken;
+import com.social.models.Parameters;
 import com.social.services.AccessTokenService;
+import com.social.services.RequestBuilder;
 
 public class VkAccessToken {
 
@@ -16,6 +20,12 @@ public class VkAccessToken {
 			accessToken.setResponseType("token");
 
 			AccessTokenService accessTokenService = new AccessTokenService(accessToken.buildQueryMessage());
-			accessTokenService.generateAccessToken("", "");
+			URL url = accessTokenService.generateAccessToken("", "");
+			
+			RequestBuilder requestBuilder = new RequestBuilder();
+			String accessTokenOut = requestBuilder.parseRequest(url, Parameters.ACCESS_TOKEN);
+			
+			System.out.println(accessTokenOut);
+			
 	}
 }
