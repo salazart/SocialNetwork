@@ -6,12 +6,12 @@ import java.util.Map;
 import com.social.services.RequestBuilder;
 
 public class AccessToken {
-	private static final String HTTPS = "https://";
+    private static final String HTTPS = "https://";
     private String url;
     private Map<String, String> headers;
 
     private RequestBuilder parameterApplier = new RequestBuilder();
-    
+
     public AccessToken(String url) {
 	this.url = url;
 	this.headers = new HashMap<String, String>();
@@ -38,6 +38,6 @@ public class AccessToken {
     }
 
     public String buildQueryMessage() {
-    	return parameterApplier.buildRequest(HTTPS + url, headers);
+	return parameterApplier.buildRequest(HTTPS + url, headers);
     }
 }

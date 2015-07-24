@@ -16,6 +16,24 @@ import com.social.models.responses.WallGet;
 
 public class SocialNetworkService implements ISocialNetwork {
 
+    @Override
+    public String getAccessToken() {
+	String fileName = "src/main/resources/accessToken.txt";
+	String content = null;
+	try {
+	    content = new Scanner(new File(fileName)).useDelimiter("\\Z")
+		    .next();
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();
+	}
+	if (content == null || content.isEmpty()) {
+	    System.out.println("Not found access token");
+	    return "";
+	} else {
+	    return content;
+	}
+    }
+
     public List<User> usersById(List<String> uids) {
 	final int COUNT_UIDS = 200;
 
@@ -47,24 +65,6 @@ public class SocialNetworkService implements ISocialNetwork {
 	    users.addAll(usersGet.getUsers());
 	}
 	return users;
-    }
-
-    @Override
-    public String getAccessToken() {
-	String fileName = "src/main/resources/accessToken.txt";
-	String content = null;
-	try {
-	    content = new Scanner(new File(fileName)).useDelimiter("\\Z")
-		    .next();
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();
-	}
-	if (content == null || content.isEmpty()) {
-	    System.out.println("Not found access token");
-	    return "";
-	} else {
-	    return content;
-	}
     }
 
     public List<String> friendsById(String userId) {
