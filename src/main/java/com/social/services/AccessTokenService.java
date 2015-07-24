@@ -24,13 +24,18 @@ public class AccessTokenService {
     }
 
     public URL generateAccessToken(String login, String pass) {
-	HtmlPage permissionPage = autorizePage(login, pass);
-	HtmlPage accessTokenPage = permissionPage(permissionPage);
-
-	if (accessTokenPage != null) {
-	    return accessTokenPage.getWebResponse().getRequestUrl();
+	if (login == null || login.isEmpty() || pass == null || pass.isEmpty()) {
+	    System.out.println("Login or password is incorrect");
+	    return null;
 	} else {
-	    return permissionPage.getWebResponse().getRequestUrl();
+	    HtmlPage permissionPage = autorizePage(login, pass);
+	    HtmlPage accessTokenPage = permissionPage(permissionPage);
+
+	    if (accessTokenPage != null) {
+		return accessTokenPage.getWebResponse().getRequestUrl();
+	    } else {
+		return permissionPage.getWebResponse().getRequestUrl();
+	    }
 	}
     }
 

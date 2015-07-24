@@ -1,10 +1,7 @@
 package com.social.services;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import com.social.interfaces.ISocialNetwork;
 import com.social.models.Parameters;
@@ -18,20 +15,7 @@ public class SocialNetworkService implements ISocialNetwork {
 
     @Override
     public String getAccessToken() {
-	String fileName = "src/main/resources/accessToken.txt";
-	String content = null;
-	try {
-	    content = new Scanner(new File(fileName)).useDelimiter("\\Z")
-		    .next();
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();
-	}
-	if (content == null || content.isEmpty()) {
-	    System.out.println("Not found access token");
-	    return "";
-	} else {
-	    return content;
-	}
+	return null;
     }
 
     public List<User> usersById(List<String> uids) {
@@ -53,7 +37,6 @@ public class SocialNetworkService implements ISocialNetwork {
 		j++;
 	    }
 
-	    System.out.println(requestBuilder.buildRequest());
 	    ConnectionService connectionService = new ConnectionService();
 	    String content = connectionService.createConnection(requestBuilder
 		    .buildRequest());

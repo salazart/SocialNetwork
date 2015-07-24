@@ -15,7 +15,6 @@ public class ConnectionService {
     private int counterConnection;
 
     public String createConnection(String link) {
-	System.out.println(link);
 	URL url = null;
 	try {
 	    link = link.replace(" ", SPACE_SYMBOL);
