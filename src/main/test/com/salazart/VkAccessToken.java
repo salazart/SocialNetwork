@@ -9,10 +9,11 @@ import com.social.services.PropertyService;
 import com.social.services.RequestBuilder;
 
 public class VkAccessToken {
+    private final static String NAME_PROPERTY_ID_APP = "vkIdApplication";
     private final static String NAME_PROPERTY_AT = "vkAccessToken";
 
     private static String idApplication = PropertyService.getInstance()
-	    .getValueProperties(NAME_PROPERTY_AT);
+	    .getValueProperties(NAME_PROPERTY_ID_APP);
 
     public static void main(String[] args) {
 	AccessToken accessToken = new AccessToken("oauth.vk.com/authorize");
