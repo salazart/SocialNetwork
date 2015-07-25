@@ -3,8 +3,8 @@ package com.salazart;
 import com.social.models.AccessToken;
 
 public class SmallAccessToken {
-	private final static String login = "s.o.w@i.ua";
-	private final static String pass = ".salazart.1989...";
+	private final static String login = "";
+	private final static String pass = "";
 
 	public static void main(String[] args) {
 
