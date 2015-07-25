@@ -3,12 +3,12 @@ package com.salazart;
 import java.util.List;
 
 import com.social.models.User;
-import com.social.services.SocialNetworkService;
+import com.social.services.VkService;
 
 public class SelectFriendsById {
 
     public static void main(String[] args) {
-	SocialNetworkService socialNetworkService = new SocialNetworkService();
+	VkService socialNetworkService = new VkService();
 	List<String> uids = socialNetworkService.friendsById("107275348");
 	System.out.println("Count users uids: " + uids.size());
 

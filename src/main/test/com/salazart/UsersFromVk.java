@@ -5,12 +5,12 @@ import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
 import com.social.models.User;
-import com.social.services.SocialNetworkService;
+import com.social.services.VkService;
 
-public class SelectUsersByUids {
+public class UsersFromVk {
 
 	public static void main(String[] args) {
-    	ISocialNetwork socialNetwork = new SocialNetworkService();
+    	ISocialNetwork socialNetwork = new VkService();
     	
     	List<String> uids = new ArrayList<String>();
     	uids.add("135717579");

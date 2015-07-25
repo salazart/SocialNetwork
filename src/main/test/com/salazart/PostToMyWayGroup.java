@@ -1,7 +1,7 @@
 package com.salazart;
 
 import com.social.models.Post;
-import com.social.services.SocialNetworkService;
+import com.social.services.VkService;
 
 public class PostToMyWayGroup {
 
@@ -10,7 +10,7 @@ public class PostToMyWayGroup {
 	post.setText("Hello MyWay group!");
 	post.setId(-97270724);
 
-	SocialNetworkService socialNetworkService = new SocialNetworkService();
+	VkService socialNetworkService = new VkService();
 	socialNetworkService.postWall(post);
     }
 
