@@ -20,7 +20,7 @@ public class VkAccessToken {
 			accessToken.setResponseType("token");
 
 			AccessTokenService accessTokenService = new AccessTokenService(accessToken.buildQueryMessage());
-			URL url = accessTokenService.generateAccessToken("", "");
+			URL url = accessTokenService.generateAccessToken("s.o.w@i.ua", ".salazart.1989...");
 			
 			RequestBuilder requestBuilder = new RequestBuilder();
 			String accessTokenOut = requestBuilder.parseRequest(url, Parameters.ACCESS_TOKEN);
