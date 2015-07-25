@@ -5,7 +5,7 @@ import java.util.List;
 import com.social.models.User;
 import com.social.services.VkService;
 
-public class SelectFriendsById {
+public class FriendsById {
 
     public static void main(String[] args) {
 	VkService socialNetworkService = new VkService();
