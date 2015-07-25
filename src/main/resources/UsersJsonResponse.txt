@@ -1,1 +1,0 @@
-{"response":[{"uid":135717579,"first_name":"Andrey","last_name":"Kravchuk","bdate":"6.1","city":0,"country":2,"mobile_phone":"","home_phone":"","home_town":"Хмельницький"},{"uid":37837461,"first_name":"Татьяна","last_name":"Николенко","bdate":"9.4.1990","city":5799,"country":2}]}
