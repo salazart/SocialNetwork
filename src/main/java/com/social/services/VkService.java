@@ -4,110 +4,116 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
-import com.social.models.Parameters;
+import com.social.models.AccessToken;
 import com.social.models.Post;
 import com.social.models.User;
 import com.social.models.responses.FriendsGet;
 import com.social.models.responses.UsersGet;
 import com.social.models.responses.WallGet;
+import com.social.utils.ParametersDictionary;
+import com.social.utils.UrlsDictionary;
 
 public class VkService implements ISocialNetwork {
+    private static final int COUNT_UIDS = 200;
 
-	@Override
-	public String getAccessToken() {
-		return null;
-	}
+    @Override
+    public List<User> usersById(List<String> uids, AccessToken accessToken) {
 
-	public List<User> usersById(List<String> uids) {
-		final int COUNT_UIDS = 200;
+	List<User> users = new ArrayList<User>();
+	for (int i = 0; i < uids.size(); i += COUNT_UIDS) {
+	    String request = createRequest(uids, i, accessToken);
 
-		String url = "api.vk.com/method/users.get";
+	    ConnectionService connectionService = new ConnectionService();
+	    String content = connectionService.createConnection(request);
 
-		List<User> users = new ArrayList<User>();
-		RequestBuilder requestBuilder = null;
-		for (int i = 0; i < uids.size(); i += COUNT_UIDS) {
-			requestBuilder = new RequestBuilder(url);
-			// requestBuilder.addParam(Parameters.ACCESS_TOKEN,
-			// getAccessToken());
-			requestBuilder.addParam(Parameters.FIELDS, Parameters.BDATE,
-					Parameters.CITY, Parameters.COUNTRY, Parameters.CONTACTS);
+	    ResponseParser jsonNodeParser = new ResponseParser();
+	    UsersGet usersGet = jsonNodeParser.parseJson(content,
+		    new UsersGet());
 
-			int j = i;
-			while (j < uids.size() && j < i + COUNT_UIDS) {
-				requestBuilder.addParam(Parameters.UIDS, uids.get(j));
-				j++;
-			}
-
-			ConnectionService connectionService = new ConnectionService();
-			String content = connectionService.createConnection(requestBuilder
-					.buildRequest());
-
-			ResponseParser jsonNodeParser = new ResponseParser();
-			UsersGet usersGet = jsonNodeParser.parseJson(content,
-					new UsersGet());
-
-			users.addAll(usersGet.getUsers());
-		}
+	    if (!usersGet.isErrorResponse()) {
+		users.addAll(usersGet.getUsers());
+	    } else {
+		System.out.println(usersGet.getError().getErrorMsg());
 		return users;
+	    }
 	}
+	return users;
+    }
 
-	public List<String> friendsById(String userId) {
-		String url = "api.vk.com/method/friends.get";
+    private String createRequest(List<String> uids, int i, AccessToken accessToken) {
+	RequestBuilder requestBuilder = new RequestBuilder(
+		UrlsDictionary.VK_USERS_GET);
 
-		RequestBuilder requestBuilder = new RequestBuilder(url);
-		requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
-		requestBuilder.addParam(Parameters.USER_ID, userId);
+	requestBuilder.addParam(ParametersDictionary.FIELDS, ParametersDictionary.BDATE,
+		ParametersDictionary.CITY, ParametersDictionary.COUNTRY, ParametersDictionary.CONTACTS);
 
-		ConnectionService connectionService = new ConnectionService();
-		String content = connectionService.createConnection(requestBuilder
-				.buildRequest());
-
-		ResponseParser jsonNodeParser = new ResponseParser();
-		FriendsGet friendsGet = jsonNodeParser.parseJson(content,
-				new FriendsGet());
-
-		return friendsGet.getUids();
+	int j = i;
+	while (j < uids.size() && j < i + COUNT_UIDS) {
+	    requestBuilder.addParam(ParametersDictionary.UIDS, uids.get(j));
+	    j++;
 	}
+	
+	if(accessToken != null && accessToken.isValidAccessToken()){
+	    requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken.getAccessToken());
+	} 
+	
+	return requestBuilder.buildRequest();
+    }
 
-	public List<Post> getWall(String userId) {
-		String url = "api.vk.com/method/wall.get";
+    public List<String> friendsById(String userId) {
+	RequestBuilder requestBuilder = new RequestBuilder(UrlsDictionary.VK_FRIENDS_GET);
+	requestBuilder.addParam(ParametersDictionary.USER_ID, userId);
 
-		RequestBuilder requestBuilder = new RequestBuilder(url);
-		// requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
-		requestBuilder.addParam(Parameters.OWNER_ID, userId);
-		requestBuilder.addParam(Parameters.OFFSET, "0");
-		requestBuilder.addParam(Parameters.COUNT, "20");
+	ConnectionService connectionService = new ConnectionService();
+	String content = connectionService.createConnection(requestBuilder
+		.buildRequest());
 
-		System.out.println(requestBuilder.buildRequest());
-		ConnectionService connectionService = new ConnectionService();
-		String content = connectionService.createConnection(requestBuilder
-				.buildRequest());
-		System.out.println(content);
+	ResponseParser jsonNodeParser = new ResponseParser();
+	FriendsGet friendsGet = jsonNodeParser.parseJson(content,
+		new FriendsGet());
 
-		ResponseParser jsonNodeParser = new ResponseParser();
-		WallGet wallGet = jsonNodeParser.parseJson(content, new WallGet());
+	return friendsGet.getUids();
+    }
 
-		if (wallGet.isErrorResponse()) {
-			System.out.println(wallGet.getError().getErrorMsg());
-			return new ArrayList<Post>();
-		} else {
-			return wallGet.getPosts();
-		}
+    public List<Post> getWall(String userId) {
+	String url = "api.vk.com/method/wall.get";
+
+	RequestBuilder requestBuilder = new RequestBuilder(url);
+	// requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
+	requestBuilder.addParam(ParametersDictionary.OWNER_ID, userId);
+	requestBuilder.addParam(ParametersDictionary.OFFSET, "0");
+	requestBuilder.addParam(ParametersDictionary.COUNT, "20");
+
+	System.out.println(requestBuilder.buildRequest());
+	ConnectionService connectionService = new ConnectionService();
+	String content = connectionService.createConnection(requestBuilder
+		.buildRequest());
+	System.out.println(content);
+
+	ResponseParser jsonNodeParser = new ResponseParser();
+	WallGet wallGet = jsonNodeParser.parseJson(content, new WallGet());
+
+	if (wallGet.isErrorResponse()) {
+	    System.out.println(wallGet.getError().getErrorMsg());
+	    return new ArrayList<Post>();
+	} else {
+	    return wallGet.getPosts();
 	}
+    }
 
-	public void postWall(Post post) {
-		String url = "api.vk.com/method/wall.post";
+    public void postWall(Post post) {
+	String url = "api.vk.com/method/wall.post";
 
-		RequestBuilder requestBuilder = new RequestBuilder(url);
-		requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
-		requestBuilder.addParam(Parameters.OWNER_ID, post.getId());
-		requestBuilder.addParam(Parameters.MESSAGE, post.getText());
+	RequestBuilder requestBuilder = new RequestBuilder(url);
+	//requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
+	requestBuilder.addParam(ParametersDictionary.OWNER_ID, post.getId());
+	requestBuilder.addParam(ParametersDictionary.MESSAGE, post.getText());
 
-		System.out.println(requestBuilder.buildRequest());
-		ConnectionService connectionService = new ConnectionService();
-		String content = connectionService.createConnection(requestBuilder
-				.buildRequest());
-		System.out.println(content);
+	System.out.println(requestBuilder.buildRequest());
+	ConnectionService connectionService = new ConnectionService();
+	String content = connectionService.createConnection(requestBuilder
+		.buildRequest());
+	System.out.println(content);
 
-	}
+    }
 }

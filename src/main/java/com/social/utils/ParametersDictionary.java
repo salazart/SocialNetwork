@@ -1,6 +1,6 @@
-package com.social.models;
+package com.social.utils;
 
-public class Parameters {
+public class ParametersDictionary {
     public static final String ACCESS_TOKEN = "access_token";
     public static final String FIELDS = "fields";
     public static final String UIDS = "uids";

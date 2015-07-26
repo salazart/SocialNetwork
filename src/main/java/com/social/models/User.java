@@ -7,7 +7,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class User {
 	
 	@JsonProperty("uid")
-	private int id;
+	private int socialId;
 	
 	@JsonProperty("first_name")
 	private String firstName;
@@ -32,6 +32,20 @@ public class User {
 	
 	@JsonProperty("home_town")
 	private String homeTown;
+	
+	public String toString(){
+	    StringBuilder builder = new StringBuilder();
+	    builder.append(socialId + "\t");
+	    builder.append(firstName + "\t");
+	    builder.append(lastName + "\t");
+	    builder.append(birstDay + "\t");
+	    builder.append(country + "\t");
+	    builder.append(city + "\t");
+	    builder.append(homeTown + "\t");
+	    builder.append(mobilePhone + "\t");
+	    builder.append(homePhone);
+	    return builder.toString();
+	}
 	
 	public String getBirstDay() {
 		return birstDay;
@@ -82,11 +96,11 @@ public class User {
 	}
 
 	public int getId() {
-		return id;
+		return socialId;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.socialId = id;
 	}
 
 	public String getFirstName() {
