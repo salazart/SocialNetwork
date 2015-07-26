@@ -25,7 +25,7 @@ public class VkService implements ISocialNetwork {
 
 	    ConnectionService connectionService = new ConnectionService();
 	    String content = connectionService.createConnection(request);
-
+	    System.out.println(content);
 	    ResponseParser jsonNodeParser = new ResponseParser();
 	    UsersGet usersGet = jsonNodeParser.parseJson(content,
 		    new UsersGet());

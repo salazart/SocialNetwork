@@ -6,8 +6,10 @@ import com.social.models.User;
 import com.social.services.VkService;
 
 public class FriendsById {
-
+    
     public static void main(String[] args) {
+	
+	
 	VkService socialNetworkService = new VkService();
 	List<String> uids = socialNetworkService.friendsById("107275348");
 	System.out.println("Count users uids: " + uids.size());
