@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
-import com.social.models.User;
+import com.social.models.VkUser;
 import com.social.services.FbService;
 
 public class UsersFromFb {
@@ -16,7 +16,7 @@ public class UsersFromFb {
 	uids.add("135717579");
 	uids.add("37837462");
 	uids.add("78938531");
-	List<User> users = socialNetwork.usersById(uids, null);
+	List<VkUser> users = socialNetwork.usersById(uids, null);
 	//System.out.println(users.size());
     }
 }

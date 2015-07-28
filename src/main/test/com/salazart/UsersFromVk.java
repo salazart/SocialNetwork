@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
 import com.social.models.AccessToken;
-import com.social.models.User;
+import com.social.models.VkUser;
 import com.social.services.VkService;
 
 public class UsersFromVk {
@@ -22,7 +22,7 @@ public class UsersFromVk {
 	uids.add("135717579");
 	uids.add("37837462");
 	uids.add("78938531");
-	List<User> users = socialNetwork.usersById(uids, accessToken);
+	List<VkUser> users = socialNetwork.usersById(uids, accessToken);
 
 	System.out.println(users.size());
 	System.out.println("uid\tfirst_name\tlast_name\tbdate\tcountry"

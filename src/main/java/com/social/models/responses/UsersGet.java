@@ -6,19 +6,19 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.social.models.User;
+import com.social.models.VkUser;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsersGet extends JsonResponse{
 	
 	@JsonProperty("response")
-	List<User> users = new ArrayList<User>();
+	List<VkUser> users = new ArrayList<VkUser>();
 
-	public List<User> getUsers() {
+	public List<VkUser> getUsers() {
 		return users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<VkUser> users) {
 		this.users = users;
 	}
 

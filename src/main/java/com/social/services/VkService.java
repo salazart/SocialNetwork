@@ -6,7 +6,7 @@ import java.util.List;
 import com.social.interfaces.ISocialNetwork;
 import com.social.models.AccessToken;
 import com.social.models.Post;
-import com.social.models.User;
+import com.social.models.VkUser;
 import com.social.models.responses.FriendsGet;
 import com.social.models.responses.UsersGet;
 import com.social.models.responses.WallGet;
@@ -17,9 +17,9 @@ public class VkService implements ISocialNetwork {
     private static final int COUNT_UIDS = 200;
 
     @Override
-    public List<User> usersById(List<String> uids, AccessToken accessToken) {
+    public List<VkUser> usersById(List<String> uids, AccessToken accessToken) {
 
-	List<User> users = new ArrayList<User>();
+	List<VkUser> users = new ArrayList<VkUser>();
 	for (int i = 0; i < uids.size(); i += COUNT_UIDS) {
 	    String request = createRequest(uids, i, accessToken);
 

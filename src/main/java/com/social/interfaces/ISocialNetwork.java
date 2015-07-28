@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.social.models.AccessToken;
 import com.social.models.Post;
-import com.social.models.User;
+import com.social.models.VkUser;
 
 public interface ISocialNetwork {
-    List<User> usersById(List<String> uids, AccessToken accessToken);
+    List<VkUser> usersById(List<String> uids, AccessToken accessToken);
 
     List<String> friendsById(String userId);
 
