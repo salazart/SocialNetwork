@@ -16,13 +16,13 @@ public class UsersFromVk {
 	ISocialNetwork socialNetwork = new VkService();
 
 	AccessToken accessToken = new AccessToken();
-	accessToken.generateAccessToken(login, pass);
+	String textAccessToken = accessToken.generateAccessToken(login, pass);
 
 	List<String> uids = new ArrayList<String>();
 	uids.add("135717579");
 	uids.add("37837462");
 	uids.add("78938531");
-	List<VkUser> users = socialNetwork.usersById(uids, accessToken);
+	List<VkUser> users = socialNetwork.usersById(uids, textAccessToken);
 
 	System.out.println(users.size());
 	System.out.println("uid\tfirst_name\tlast_name\tbdate\tcountry"

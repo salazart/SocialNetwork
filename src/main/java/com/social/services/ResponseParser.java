@@ -10,6 +10,7 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.social.models.Post;
+import com.social.models.responses.CitiesGet;
 import com.social.models.responses.FriendsGet;
 import com.social.models.responses.UsersGet;
 import com.social.models.responses.WallGet;
@@ -42,6 +43,15 @@ public class ResponseParser {
 	    return mapper.readValue(content, usersGet.getClass());
 	} catch (IOException e) {
 	    return new UsersGet();
+	}
+    }
+    
+    public CitiesGet parseJson(String content, CitiesGet citiesGet) {
+	ObjectMapper mapper = new ObjectMapper();
+	try {
+	    return mapper.readValue(content, citiesGet.getClass());
+	} catch (IOException e) {
+	    return new CitiesGet();
 	}
     }
 

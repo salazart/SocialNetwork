@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
-import com.social.models.AccessToken;
 import com.social.models.Post;
+import com.social.models.VkCity;
 import com.social.models.VkUser;
+import com.social.models.responses.CitiesGet;
 import com.social.models.responses.FriendsGet;
 import com.social.models.responses.UsersGet;
 import com.social.models.responses.WallGet;
@@ -17,7 +18,7 @@ public class VkService implements ISocialNetwork {
     private static final int COUNT_UIDS = 200;
 
     @Override
-    public List<VkUser> usersById(List<String> uids, AccessToken accessToken) {
+    public List<VkUser> usersById(List<String> uids, String accessToken) {
 
 	List<VkUser> users = new ArrayList<VkUser>();
 	for (int i = 0; i < uids.size(); i += COUNT_UIDS) {
@@ -40,7 +41,7 @@ public class VkService implements ISocialNetwork {
 	return users;
     }
 
-    private String createRequest(List<String> uids, int i, AccessToken accessToken) {
+    private String createRequest(List<String> uids, int i, String accessToken) {
 	RequestBuilder requestBuilder = new RequestBuilder(
 		UrlsDictionary.VK_USERS_GET);
 
@@ -53,8 +54,8 @@ public class VkService implements ISocialNetwork {
 	    j++;
 	}
 	
-	if(accessToken != null && accessToken.isValidAccessToken()){
-	    requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken.getAccessToken());
+	if(accessToken != null && !accessToken.isEmpty()){
+	    requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken);
 	} 
 	
 	return requestBuilder.buildRequest();
@@ -115,5 +116,41 @@ public class VkService implements ISocialNetwork {
 		.buildRequest());
 	System.out.println(content);
 
+    }
+
+    @Override
+    public List<VkCity> citiesById(List<String> ids) {
+	List<VkCity> cities = new ArrayList<VkCity>();
+	for (int i = 0; i < ids.size(); i += COUNT_UIDS) {
+	    String request = createRequest(ids, i);
+
+	    ConnectionService connectionService = new ConnectionService();
+	    String content = connectionService.createConnection(request);
+	    System.out.println(content);
+	    ResponseParser jsonNodeParser = new ResponseParser();
+	    CitiesGet citiesGet = jsonNodeParser.parseJson(content,
+		    new CitiesGet());
+
+	    if (!citiesGet.isErrorResponse()) {
+		cities.addAll(citiesGet.getCities());
+	    } else {
+		System.out.println(citiesGet.getError().getErrorMsg());
+		return cities;
+	    }
+	}
+	return cities;
+    }
+    
+    private String createRequest(List<String> ids, int i) {
+	RequestBuilder requestBuilder = new RequestBuilder(
+		UrlsDictionary.VK_CITIES_BY_ID);
+
+	int j = i;
+	while (j < ids.size() && j < i + COUNT_UIDS) {
+	    requestBuilder.addParam(ParametersDictionary.CITY_IDS, ids.get(j));
+	    j++;
+	}
+	
+	return requestBuilder.buildRequest();
     }
 }
