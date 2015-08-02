@@ -102,11 +102,13 @@ public class VkService implements ISocialNetwork {
 	}
     }
 
-    public void postWall(Post post) {
-	String url = "api.vk.com/method/wall.post";
-
-	RequestBuilder requestBuilder = new RequestBuilder(url);
-	//requestBuilder.addParam(Parameters.ACCESS_TOKEN, getAccessToken());
+    public void postWall(Post post, String accessToken) {
+	RequestBuilder requestBuilder = new RequestBuilder(UrlsDictionary.VK_POST_WALL);
+	
+	if(accessToken != null && !accessToken.isEmpty()){
+	    requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken);
+	} 
+	
 	requestBuilder.addParam(ParametersDictionary.OWNER_ID, post.getId());
 	requestBuilder.addParam(ParametersDictionary.MESSAGE, post.getText());
 

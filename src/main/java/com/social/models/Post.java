@@ -4,112 +4,112 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Post extends Object{
-	
-	@JsonProperty("id")
-	private int id;
-	
-	@JsonProperty("owner_id")
-	private int ownerId;
-	
-	@JsonProperty("from_id")
-	private int fromId;	
-	
-	@JsonProperty("date")
-	private long date;
-	
-	@JsonProperty("text")
-	private String text;
-	
-	@JsonProperty("reply_owner_id")
-	private int replyOwnerId;
-	
-	@JsonProperty("reply_post_id")
-	private int replyPostId;
-	
-	@JsonProperty("friends_only")
-	private int friendsOnly;
-	
-	@JsonProperty("post_type")
-	private String postType;
-	
-	public int getOwnerId() {
-		return ownerId;
-	}
+public class Post extends Object {
 
-	public void setOwnerId(int ownerId) {
-		this.ownerId = ownerId;
-	}
+    @JsonProperty("id")
+    private String id = "";
 
-	public int getFromId() {
-		return fromId;
-	}
+    @JsonProperty("owner_id")
+    private int ownerId;
 
-	public void setFromId(int fromId) {
-		this.fromId = fromId;
-	}
+    @JsonProperty("from_id")
+    private int fromId;
 
-	public long getDate() {
-		return date;
-	}
+    @JsonProperty("date")
+    private long date;
 
-	public void setDate(long date) {
-		this.date = date;
-	}
+    @JsonProperty("text")
+    private String text;
 
-	public String getText() {
-		return text;
-	}
+    @JsonProperty("reply_owner_id")
+    private int replyOwnerId;
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    @JsonProperty("reply_post_id")
+    private int replyPostId;
 
-	public int getReplyOwnerId() {
-		return replyOwnerId;
-	}
+    @JsonProperty("friends_only")
+    private int friendsOnly;
 
-	public void setReplyOwnerId(int replyOwnerId) {
-		this.replyOwnerId = replyOwnerId;
-	}
+    @JsonProperty("post_type")
+    private String postType;
 
-	public int getReplyPostId() {
-		return replyPostId;
-	}
+    public int getOwnerId() {
+	return ownerId;
+    }
 
-	public void setReplyPostId(int replyPostId) {
-		this.replyPostId = replyPostId;
-	}
+    public void setOwnerId(int ownerId) {
+	this.ownerId = ownerId;
+    }
 
-	public int getFriendsOnly() {
-		return friendsOnly;
-	}
+    public int getFromId() {
+	return fromId;
+    }
 
-	public void setFriendsOnly(int friendsOnly) {
-		this.friendsOnly = friendsOnly;
-	}
+    public void setFromId(int fromId) {
+	this.fromId = fromId;
+    }
 
-	public String getPostType() {
-		return postType;
-	}
+    public long getDate() {
+	return date;
+    }
 
-	public void setPostType(String postType) {
-		this.postType = postType;
-	}
+    public void setDate(long date) {
+	this.date = date;
+    }
 
-	public boolean isEmpty(){
-		if(id == 0){
-			return true;
-		} else {
-			return false;
-		}
-	}
+    public String getText() {
+	return text;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public void setText(String text) {
+	this.text = text;
+    }
 
-	public void setId(int id) {
-		this.id = id;
+    public int getReplyOwnerId() {
+	return replyOwnerId;
+    }
+
+    public void setReplyOwnerId(int replyOwnerId) {
+	this.replyOwnerId = replyOwnerId;
+    }
+
+    public int getReplyPostId() {
+	return replyPostId;
+    }
+
+    public void setReplyPostId(int replyPostId) {
+	this.replyPostId = replyPostId;
+    }
+
+    public int getFriendsOnly() {
+	return friendsOnly;
+    }
+
+    public void setFriendsOnly(int friendsOnly) {
+	this.friendsOnly = friendsOnly;
+    }
+
+    public String getPostType() {
+	return postType;
+    }
+
+    public void setPostType(String postType) {
+	this.postType = postType;
+    }
+
+    public boolean isEmpty() {
+	if (id.isEmpty()) {
+	    return true;
+	} else {
+	    return false;
 	}
+    }
+    
+    public String getId() {
+	return id;
+    }
+
+    public void setId(String id) {
+	this.id = id;
+    }
 }

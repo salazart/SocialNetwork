@@ -13,7 +13,7 @@ public interface ISocialNetwork {
 
     List<Post> getWall(String userId);
 
-    void postWall(Post post);
+    void postWall(Post post, String accessToken);
     
     List<VkCity> citiesById(List<String> id);
 }
