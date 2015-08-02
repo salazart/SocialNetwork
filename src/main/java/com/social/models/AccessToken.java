@@ -21,7 +21,7 @@ public class AccessToken {
     private String accessToken = "";
 
     private RequestBuilder requestBuilder = new RequestBuilder();
-
+    
     public AccessToken() {
 	this(defaultUrl);
 	setClientId(defaultIdApplication);
@@ -71,10 +71,9 @@ public class AccessToken {
 	    this.accessToken = requestBuilder.parseRequest(url,
 		    ParametersDictionary.ACCESS_TOKEN);
 
-	    return this.accessToken;
-	} else {
-	    return this.accessToken;
-	}
+	} 
+	
+	return this.accessToken;
     }
 
     public String getAccessToken() {
