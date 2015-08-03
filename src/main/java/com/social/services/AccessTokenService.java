@@ -7,6 +7,7 @@ import org.w3c.dom.NodeList;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlButton;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
@@ -40,11 +41,11 @@ public class AccessTokenService {
 	    HtmlPage permissionPage = null;
 	    HtmlPage accessTokenPage = null;
 	    if(typeSN.equals("VK")){
-		permissionPage = autorizePage(login, pass);
-		accessTokenPage = permissionPage(permissionPage);
+		permissionPage = autorizePageVk(login, pass);
+		accessTokenPage = permissionPageVk(permissionPage);
 	    } else {
 		permissionPage = autorizePageFb(login, pass);
-		System.out.println(permissionPage.asXml());
+		accessTokenPage = permissionPageFb(permissionPage);
 	    }
 	    
 	    if (accessTokenPage != null) {
@@ -59,14 +60,10 @@ public class AccessTokenService {
     }
 
     public boolean isAuthCorrect(String login, String pass) {
-	if (login == null || login.isEmpty() || pass == null || pass.isEmpty()) {
-	    return false;
-	} else {
-	    return true;
-	}
+	return login != null && !login.isEmpty() && pass != null && !pass.isEmpty();
     }
 
-    private HtmlPage permissionPage(HtmlPage autorizePage) {
+    private HtmlPage permissionPageVk(HtmlPage autorizePage) {
 	HtmlPage permissionPage = null;
 	HtmlForm form = autorizePage.getFirstByXPath(FORM_ELEMENT_PERMISSION);
 	if (form != null) {
@@ -86,7 +83,7 @@ public class AccessTokenService {
 	return permissionPage;
     }
 
-    private HtmlPage autorizePage(String login, String pass) {
+    private HtmlPage autorizePageVk(String login, String pass) {
 	try {
 	    WebClient webClient = new WebClient(BrowserVersion.FIREFOX_3);
 	    webClient.setCssEnabled(false);
@@ -118,7 +115,8 @@ public class AccessTokenService {
 	    WebClient webClient = new WebClient(BrowserVersion.FIREFOX_3);
 	    webClient.setCssEnabled(false);
 	    webClient.setJavaScriptEnabled(false);
-
+	    webClient.setThrowExceptionOnScriptError(false);
+	    
 	    HtmlPage autorizePage = webClient.getPage(url);
 	    if (autorizePage != null) {
 		HtmlForm form = autorizePage
@@ -138,6 +136,29 @@ public class AccessTokenService {
 	    return null;
 	}
 	return null;
+    }
+    
+    private HtmlPage permissionPageFb(HtmlPage autorizePage) {
+	HtmlPage permissionPage = null;
+	HtmlForm form = autorizePage.getFirstByXPath(FORM_ELEMENT_PERMISSION);
+	if (form != null) {
+	    HtmlButton button = null;
+	    try {
+		button = form.getButtonByName("__CONFIRM__");
+	    } catch (Exception e) {
+		return null;
+	    }
+	    
+	    if (button != null) {
+		try {
+		    return button.click();
+		} catch (IOException e) {
+		    return null;
+		}
+	    }
+	}
+
+	return permissionPage;
     }
 
     private HtmlSubmitInput getSubmitButton(NodeList inputElements) {
