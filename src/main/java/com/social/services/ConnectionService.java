@@ -1,7 +1,10 @@
 package com.social.services;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -47,7 +50,19 @@ public class ConnectionService {
 	if (conn != null) {
 	    System.out.println("Reading from connection...");
 	    try {
-		content = readInputStream(conn.getInputStream());
+		BufferedReader in = new BufferedReader(
+			new InputStreamReader(conn.getInputStream(), "UTF-8"));
+		
+		String lineContent = "";
+		while ((lineContent = in.readLine()) != null) {
+		    content += lineContent;
+		}
+		
+		if(in!=null){
+		    in.close();
+		}
+		
+		System.out.println("Connection is closed.");
 	    } catch (IOException e) {
 		System.out.println(e.getMessage());
 	    }
@@ -83,23 +98,5 @@ public class ConnectionService {
 	    System.out.println(e.getMessage());
 	    return null;
 	}
-    }
-
-    private String readInputStream(InputStream is) {
-	String content = "";
-	Scanner s = new Scanner(is).useDelimiter("\\A");
-	while (s.hasNext()) {
-	    content = content + s.next();
-	}
-	if (is != null) {
-	    try {
-		is.close();
-		System.out.println("Connection is closed.");
-	    } catch (IOException e) {
-		System.out.println(e.getMessage());
-		return content;
-	    }
-	}
-	return content;
     }
 }
