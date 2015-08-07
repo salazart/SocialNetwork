@@ -3,10 +3,12 @@ package com.social.services;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
+import com.social.models.AccessToken;
 import com.social.models.Post;
 import com.social.models.VkCity;
 import com.social.models.VkUser;
 import com.social.utils.ParametersDictionary;
+import com.social.utils.PermissionDictionary;
 import com.social.utils.UrlsDictionary;
 
 public class FbService implements ISocialNetwork {
@@ -51,6 +53,18 @@ public class FbService implements ISocialNetwork {
     public List<VkCity> citiesById(List<String> id) {
 	// TODO Auto-generated method stub
 	return null;
+    }
+
+    @Override
+    public String getAccessToken() {
+	final String FB_CLIENT_ID_APPLICATION = "700011900132723";
+	AccessToken accessToken = new AccessToken(UrlsDictionary.FB_OAUTH_DIALOG);
+	accessToken.setClientId(FB_CLIENT_ID_APPLICATION);
+	accessToken.setResponseType(ParametersDictionary.TOKEN);
+	accessToken.setScope(PermissionDictionary.FB_PUBLISH_ACTION);
+	accessToken.setRedirectURI(UrlsDictionary.FB_REDIRECT_URL);
+	accessToken.setDisplay(ParametersDictionary.POPUP);
+	return accessToken.generateAccessToken("" , "");
     }
 
 }

@@ -67,7 +67,6 @@ public class AccessToken {
 		    queryMessage);
 
 	    URL url = accessTokenService.generateAccessToken(login, pass);
-
 	    this.accessToken = requestBuilder.parseRequest(url,
 		    ParametersDictionary.ACCESS_TOKEN);
 

@@ -17,10 +17,13 @@ public class ParametersDictionary {
     public static final String OWNER_ID = "owner_id";
     public static final String COUNT = "count";
     public static final String MESSAGE = "message";
+    public static final String TOKEN = "token";
 
     public static final String BDATE = "bdate";
     public static final String CITY = "city";
     public static final String COUNTRY = "country";
     public static final String CONTACTS = "contacts";
+    public static final String POPUP = "popup";
+    public static final String MOBILE = "mobile";
 
 }

@@ -10,7 +10,7 @@ public class PostToGroupWall {
 	String accessToken = "CAAJ8qDilXXMBAJ61kGJNM6fv3JgGrZCgVdIw5laR9ZBZBHMwQoErmYninXfdAyHYRJ756Gz3mX6MSw4M0RZBwMGhf0LiZCTTEFgzhs5hqzxBc4ZBZAMi5leszvAFBKxGOT6GdjassCkQc8uMG9g0qyGc9mDCJcWkT0SJy6Oj9N76Sw5HRywPDxSDkaqqZCeRR3gZA5iWEX08FVukq4ubwFfUF";
 
 	Post post = new Post();
-	post.setText("Hello");
+	post.setText("Hello my Way");
 	post.setId(groupId);
 
 	ISocialNetwork socialNetwork = new FbService();

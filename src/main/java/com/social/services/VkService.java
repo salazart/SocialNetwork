@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
+import com.social.models.AccessToken;
 import com.social.models.Post;
 import com.social.models.VkCity;
 import com.social.models.VkUser;
@@ -12,6 +13,7 @@ import com.social.models.responses.FriendsGet;
 import com.social.models.responses.UsersGet;
 import com.social.models.responses.WallGet;
 import com.social.utils.ParametersDictionary;
+import com.social.utils.PermissionDictionary;
 import com.social.utils.UrlsDictionary;
 
 public class VkService implements ISocialNetwork {
@@ -154,5 +156,17 @@ public class VkService implements ISocialNetwork {
 	}
 	
 	return requestBuilder.buildRequest();
+    }
+
+    @Override
+    public String getAccessToken() {
+	final String idApp = "4517745";
+	AccessToken accessToken = new AccessToken(UrlsDictionary.VK_OAUTH_DIALOG);
+	accessToken.setClientId(idApp);
+	accessToken.setResponseType(ParametersDictionary.TOKEN);
+	accessToken.setScope(PermissionDictionary.VK_WALL);
+	accessToken.setRedirectURI(UrlsDictionary.VK_REDIRECT_URL);
+	accessToken.setDisplay(ParametersDictionary.MOBILE);
+	return accessToken.generateAccessToken("" , "");
     }
 }
