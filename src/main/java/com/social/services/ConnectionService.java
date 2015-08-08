@@ -2,15 +2,14 @@ package com.social.services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import org.apache.commons.lang.StringUtils;
 
 public class ConnectionService {
 	public static final String GET_REQUEST_METHOD = "GET";
@@ -31,7 +30,7 @@ public class ConnectionService {
 
 	public String createConnection(String link) {
 		URL url = modifyUrl(link);
-
+		
 		HttpsURLConnection conn = tryGetConnection(url, MAX_CONNECTION);
 
 		if (!methodRequest.isEmpty()) {
@@ -80,10 +79,13 @@ public class ConnectionService {
 	}
 
 	private URL modifyUrl(String link) {
+		if(!StringUtils.startsWith(link, "http")){
+			link = PROTOCOL + link;
+		}
 		URL url = null;
 		try {
 			link = link.replace(" ", SPACE_SYMBOL);
-			url = new URL(PROTOCOL + link);
+			url = new URL(link);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

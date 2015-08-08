@@ -1,10 +1,10 @@
 package com.social.services;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
-import com.social.models.AccessToken;
 import com.social.models.Post;
 import com.social.models.SocialNetwork;
 import com.social.models.VkCity;
@@ -110,7 +110,8 @@ public class VkService implements ISocialNetwork {
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.VK_POST_WALL);
 		
-		String accessToken = getAccessToken(socialNetwork.getLogin(), socialNetwork.getPass());
+		String accessToken = getAccessToken(socialNetwork);
+		
 		requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken);
 		requestBuilder.addParam(ParametersDictionary.OWNER_ID, post.getId());
 		requestBuilder.addParam(ParametersDictionary.MESSAGE, post.getText());
@@ -160,13 +161,16 @@ public class VkService implements ISocialNetwork {
 	}
 
 	@Override
-	public String getAccessToken(String login, String pass) {
-		AccessToken accessToken = new AccessToken(UrlsDictionary.VK_OAUTH_DIALOG);
-		accessToken.setClientId(APP_ID);
-		accessToken.setResponseType(ParametersDictionary.TOKEN);
-		accessToken.setScope(PermissionDictionary.VK_WALL);
-		accessToken.setRedirectURI(UrlsDictionary.VK_REDIRECT_URL);
-		accessToken.setDisplay(ParametersDictionary.MOBILE);
-		return accessToken.generateAccessToken(login, pass);
+	public String getAccessToken(SocialNetwork socialNetwork) {
+		RequestBuilder requestBuilder = new RequestBuilder(UrlsDictionary.VK_OAUTH_DIALOG);
+		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, APP_ID);
+		requestBuilder.addParam(ParametersDictionary.RESPONSE_TYPE, ParametersDictionary.TOKEN);
+		requestBuilder.addParam(ParametersDictionary.SCOPE, PermissionDictionary.VK_WALL);
+		requestBuilder.addParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.VK_REDIRECT_URL);
+		requestBuilder.addParam(ParametersDictionary.DISPLAY, ParametersDictionary.MOBILE);
+		
+		AccessTokenService accessTokenService = new AccessTokenService(requestBuilder.buildRequest());
+		URL url = accessTokenService.generateAccessToken(socialNetwork);
+		return requestBuilder.parseRequest(url, ParametersDictionary.ACCESS_TOKEN);
 	}
 }

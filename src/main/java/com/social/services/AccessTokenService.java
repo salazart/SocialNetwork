@@ -11,43 +11,39 @@ import com.gargoylesoftware.htmlunit.html.HtmlButton;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
+import com.social.models.SocialNetwork;
 
 public class AccessTokenService {
-	private String typeSN = "";
 	private static final String NAME_EMAIL_FIELD = "email";
 	private static final String NAME_PASS_FIELD = "pass";
 	private static final String NAME_INPUT_FIELD = "input";
 	private static final String FORM_ELEMENT_AUTORIZE = "//form[@action='https://login.vk.com/?act=login&soft=1&utf8=1']";
 	private static final String FORM_ELEMENT_AUTORIZE_FB = "//form[@id='login_form']";
 	private static final String FORM_ELEMENT_PERMISSION = "//form[@method='post']";
+	private static final String FB_BUTTON_NAME = "__CONFIRM__";
 	private String url;
 
 	public AccessTokenService(String url) {
 		this.url = url;
-		typeSN = getTypeSocialNetwork(url);
 	}
 
-	private String getTypeSocialNetwork(String url) {
-
-		if (url.contains("facebook")) {
-			return "FB";
-		} else {
-			return "VK";
-		}
-	}
-
-	public URL generateAccessToken(String login, String pass) {
-		if (isAuthCorrect(login, pass)) {
+	public URL generateAccessToken(SocialNetwork socialNetwork) {
+		if (isAuthCorrect(socialNetwork)) {
 			HtmlPage permissionPage = null;
 			HtmlPage accessTokenPage = null;
-			if (typeSN.equals("VK")) {
-				permissionPage = autorizePageVk(login, pass);
+			switch (socialNetwork.getTypeSN()) {
+			case VKONTAKTE:
+				permissionPage = autorizePageVk(socialNetwork.getLogin(), socialNetwork.getPass());
 				accessTokenPage = permissionPageVk(permissionPage);
-			} else {
-				permissionPage = autorizePageFb(login, pass);
+				break;
+			case FACEBOOK:
+				permissionPage = autorizePageFb(socialNetwork.getLogin(), socialNetwork.getPass());
 				accessTokenPage = permissionPageFb(permissionPage);
+				break;
+			default:
+				break;
 			}
-
+			
 			if (accessTokenPage != null) {
 				return accessTokenPage.getWebResponse().getRequestUrl();
 			} else {
@@ -59,9 +55,10 @@ public class AccessTokenService {
 		}
 	}
 
-	public boolean isAuthCorrect(String login, String pass) {
-		return login != null && !login.isEmpty() && pass != null
-				&& !pass.isEmpty();
+	public boolean isAuthCorrect(SocialNetwork socialNetwork) {
+		return socialNetwork.getLogin() != null && !socialNetwork.getLogin().isEmpty() 
+				&& socialNetwork.getPass() != null
+				&& !socialNetwork.getPass().isEmpty();
 	}
 
 	private HtmlPage permissionPageVk(HtmlPage autorizePage) {
@@ -145,7 +142,7 @@ public class AccessTokenService {
 		if (form != null) {
 			HtmlButton button = null;
 			try {
-				button = form.getButtonByName("__CONFIRM__");
+				button = form.getButtonByName(FB_BUTTON_NAME);
 			} catch (Exception e) {
 				return null;
 			}

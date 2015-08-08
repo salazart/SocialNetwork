@@ -1,9 +1,9 @@
 package com.social.services;
 
+import java.net.URL;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
-import com.social.models.AccessToken;
 import com.social.models.Post;
 import com.social.models.SocialNetwork;
 import com.social.models.VkCity;
@@ -28,7 +28,7 @@ public class FbService implements ISocialNetwork {
 
 	@Override
 	public void postWall(Post post, SocialNetwork socialNetwork) {
-		String accessToken = getAccessToken(socialNetwork.getLogin(), socialNetwork.getPass());
+		String accessToken = getAccessToken(socialNetwork);
 		
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.FB_GRAPH + post.getId()
@@ -57,13 +57,16 @@ public class FbService implements ISocialNetwork {
 	}
 
 	@Override
-	public String getAccessToken(String login, String pass) {
-		AccessToken accessToken = new AccessToken(UrlsDictionary.FB_OAUTH_DIALOG);
-		accessToken.setClientId(APP_ID);
-		accessToken.setResponseType(ParametersDictionary.TOKEN);
-		accessToken.setScope(PermissionDictionary.FB_PUBLISH_ACTION);
-		accessToken.setRedirectURI(UrlsDictionary.FB_REDIRECT_URL);
-		accessToken.setDisplay(ParametersDictionary.POPUP);
-		return accessToken.generateAccessToken(login, pass);
+	public String getAccessToken(SocialNetwork socialNetwork) {
+		RequestBuilder requestBuilder = new RequestBuilder(UrlsDictionary.FB_OAUTH_DIALOG);
+		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, APP_ID);
+		requestBuilder.addParam(ParametersDictionary.RESPONSE_TYPE, ParametersDictionary.TOKEN);
+		requestBuilder.addParam(ParametersDictionary.SCOPE, PermissionDictionary.FB_PUBLISH_ACTION);
+		requestBuilder.addParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.FB_REDIRECT_URL);
+		requestBuilder.addParam(ParametersDictionary.DISPLAY, ParametersDictionary.POPUP);
+		
+		AccessTokenService accessTokenService = new AccessTokenService(requestBuilder.buildRequest());
+		URL url = accessTokenService.generateAccessToken(socialNetwork);
+		return requestBuilder.parseRequest(url, ParametersDictionary.ACCESS_TOKEN);
 	}
 }

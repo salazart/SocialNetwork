@@ -14,15 +14,13 @@ public class PostToMyWayGroup {
 		post.setText("Hello MyWay group!");
 		post.setId("-97270724");
 
-		new SocialNetworkFactory().postSocialNetwork(vkSocialNetwork, post);
+		//new SocialNetworkFactory().postSocialNetwork(vkSocialNetwork, post);
 
 		SocialNetwork fbSocialNetwork = new SocialNetwork(TypeSN.FACEBOOK, "", "");
 		post.setId("863375127077356");
 		
 		new SocialNetworkFactory().postSocialNetwork(fbSocialNetwork, post);
 		
-		//ISocialNetwork fbService = new FbService();
-		//String fbAccessToken = vkService.getAccessToken();
 	}
 
 }

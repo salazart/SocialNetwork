@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
  *
  */
 public class RequestBuilder {
+	private static final String HTTPS = "https://";
 	private static final String QUESTION_SEPARATOR = "?";
 	private static final String EQUAL_SEPARATOR = "=";
 	private static final String PROPERTY_SEPARATOR = "&";
@@ -77,7 +78,7 @@ public class RequestBuilder {
 				}
 
 			}
-			return parameterUrl.toString();
+			return HTTPS + parameterUrl.toString();
 		}
 	}
 
