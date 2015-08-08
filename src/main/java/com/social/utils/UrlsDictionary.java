@@ -5,6 +5,8 @@ public class UrlsDictionary {
     public static final String VK_FRIENDS_GET = "api.vk.com/method/friends.get";
     public static final String VK_CITIES_BY_ID = "api.vk.com/method/database.getCitiesById";
     public static final String VK_POST_WALL = "api.vk.com/method/wall.post";
+    public static final String VK_GET_WALL = "api.vk.com/method/wall.get";
+    
     public static final String VK_REDIRECT_URL = "https://oauth.vk.com/blank.html";
     public static final String VK_OAUTH_DIALOG = "oauth.vk.com/authorize";
     

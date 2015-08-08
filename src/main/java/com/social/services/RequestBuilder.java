@@ -19,83 +19,88 @@ import org.apache.commons.lang.StringUtils;
  *
  */
 public class RequestBuilder {
-    private static final String QUESTION_SEPARATOR = "?";
-    private static final String EQUAL_SEPARATOR = "=";
-    private static final String PROPERTY_SEPARATOR = "&";
-    private static final String COMMA_SEPARATOR = ",";
-    private static final String GRILLE_SEPARATOR = "#";
+	private static final String QUESTION_SEPARATOR = "?";
+	private static final String EQUAL_SEPARATOR = "=";
+	private static final String PROPERTY_SEPARATOR = "&";
+	private static final String COMMA_SEPARATOR = ",";
+	private static final String GRILLE_SEPARATOR = "#";
 
-    private String url;
-    private Map<String, String> params;
+	private String url;
+	private Map<String, String> params;
 
-    public RequestBuilder() {
-    };
+	public RequestBuilder() {
+	};
 
-    public RequestBuilder(String url) {
-	this.url = url;
-	this.params = new HashMap<String, String>();
-    }
-
-    public void addParam(String nameParam, String valueParam) {
-	if (params.get(nameParam) != null) {
-	    params.put(nameParam, params.get(nameParam) + COMMA_SEPARATOR
-		    + valueParam);
-	} else {
-	    params.put(nameParam, valueParam);
+	public RequestBuilder(String url) {
+		this.url = url;
+		this.params = new HashMap<String, String>();
 	}
-    }
 
-    public void addParam(String nameParam, int valueParam) {
-	addParam(nameParam, String.valueOf(valueParam));
-    }
-
-    public void addParam(String nameParam, String... valuesParam) {
-	for (int i = 0; i < valuesParam.length; i++) {
-	    addParam(nameParam, valuesParam[i]);
+	public void addParam(String nameParam, String valueParam) {
+		if(valueParam != null && !valueParam.isEmpty()){
+			if (params.get(nameParam) != null) {
+				params.put(nameParam, params.get(nameParam) + COMMA_SEPARATOR
+						+ valueParam);
+			} else {
+				params.put(nameParam, valueParam);
+			}
+		}
 	}
-    }
 
-    public String buildRequest(String url, Map<String, String> params) {
-	if (url == null) {
-	    return "";
-	} else {
-	    StringBuffer parameterUrl = new StringBuffer(url);
-	    for (Map.Entry<String, String> entry : params.entrySet()) {
-		if (parameterUrl.toString().contains(QUESTION_SEPARATOR)) {
-		    parameterUrl.append(PROPERTY_SEPARATOR)
-			    .append(entry.getKey()).append(EQUAL_SEPARATOR)
-			    .append(entry.getValue());
-		} else {
-		    parameterUrl.append(QUESTION_SEPARATOR)
-			    .append(entry.getKey()).append(EQUAL_SEPARATOR)
-			    .append(entry.getValue());
+	public void addParam(String nameParam, int valueParam) {
+		addParam(nameParam, String.valueOf(valueParam));
+	}
+
+	public void addParam(String nameParam, String... valuesParam) {
+		if(valuesParam != null){
+			for (int i = 0; i < valuesParam.length; i++) {
+				addParam(nameParam, valuesParam[i]);
+			}
 		}
 
-	    }
-	    return parameterUrl.toString();
-	}
-    }
-
-    public String buildRequest() {
-	return buildRequest(this.url, this.params);
-    }
-
-    public String parseRequest(URL url, String parameter) {
-	String textUrl = String.valueOf(url);
-	textUrl = StringUtils.substringAfter(textUrl, GRILLE_SEPARATOR);
-
-	List<String> properties = Arrays.asList(textUrl
-		.split(PROPERTY_SEPARATOR));
-	Properties prop = new Properties();
-
-	for (String string : properties) {
-	    try {
-		prop.load(new StringReader(string));
-	    } catch (IOException e) {
-		continue;
-	    }
 	}
 
-	return prop.getProperty(parameter);
-    }
+	public String buildRequest(String url, Map<String, String> params) {
+		if (url == null) {
+			return "";
+		} else {
+			StringBuffer parameterUrl = new StringBuffer(url);
+			for (Map.Entry<String, String> entry : params.entrySet()) {
+				if (parameterUrl.toString().contains(QUESTION_SEPARATOR)) {
+					parameterUrl.append(PROPERTY_SEPARATOR)
+							.append(entry.getKey()).append(EQUAL_SEPARATOR)
+							.append(entry.getValue());
+				} else {
+					parameterUrl.append(QUESTION_SEPARATOR)
+							.append(entry.getKey()).append(EQUAL_SEPARATOR)
+							.append(entry.getValue());
+				}
+
+			}
+			return parameterUrl.toString();
+		}
+	}
+
+	public String buildRequest() {
+		return buildRequest(this.url, this.params);
+	}
+
+	public String parseRequest(URL url, String parameter) {
+		String textUrl = String.valueOf(url);
+		textUrl = StringUtils.substringAfter(textUrl, GRILLE_SEPARATOR);
+
+		List<String> properties = Arrays.asList(textUrl
+				.split(PROPERTY_SEPARATOR));
+		Properties prop = new Properties();
+
+		for (String string : properties) {
+			try {
+				prop.load(new StringReader(string));
+			} catch (IOException e) {
+				continue;
+			}
+		}
+
+		return prop.getProperty(parameter);
+	}
 }

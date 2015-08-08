@@ -1,31 +1,28 @@
 package com.salazart;
 
-import com.social.interfaces.ISocialNetwork;
-import com.social.models.AccessToken;
 import com.social.models.Post;
-import com.social.services.FbService;
-import com.social.services.VkService;
+import com.social.models.SocialNetwork;
+import com.social.models.TypeSN;
+import com.social.services.SocialNetworkFactory;
 
 public class PostToMyWayGroup {
-    private final static String login = "";
-    private final static String pass = "";
+	public static void main(String[] args) {
+		
+		SocialNetwork vkSocialNetwork = new SocialNetwork(TypeSN.VKONTAKTE, "", "");
+		
+		Post post = new Post();
+		post.setText("Hello MyWay group!");
+		post.setId("-97270724");
 
-    public static void main(String[] args) {
-	//AccessToken accessToken = new AccessToken();
-	//String textAT = accessToken.generateAccessToken(login, pass);
-	
-	Post post = new Post();
-	post.setText("Hello MyWay group!");
-	
-	
-	ISocialNetwork vkService = new VkService();
-	//String vkAccessToken = vkService.getAccessToken();
-	//vkService.postWall(post, vkAccessToken);
-	
-	post.setId("863375127077356");
-	ISocialNetwork fbService = new FbService();
-	String fbAccessToken = vkService.getAccessToken();
-	fbService.postWall(post, fbAccessToken);
-    }
+		new SocialNetworkFactory().postSocialNetwork(vkSocialNetwork, post);
+
+		SocialNetwork fbSocialNetwork = new SocialNetwork(TypeSN.FACEBOOK, "", "");
+		post.setId("863375127077356");
+		
+		new SocialNetworkFactory().postSocialNetwork(fbSocialNetwork, post);
+		
+		//ISocialNetwork fbService = new FbService();
+		//String fbAccessToken = vkService.getAccessToken();
+	}
 
 }
