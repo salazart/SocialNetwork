@@ -32,7 +32,7 @@ public class RequestBuilder {
 	public RequestBuilder() {
 	};
 
-	public RequestBuilder(String url) {
+    public RequestBuilder(String url) {
 		this.url = url;
 		this.params = new HashMap<String, String>();
 	}

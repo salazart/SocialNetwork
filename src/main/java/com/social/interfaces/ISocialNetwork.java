@@ -8,9 +8,9 @@ import com.social.models.VkCity;
 import com.social.models.VkUser;
 
 public interface ISocialNetwork {
-    String getAccessToken(SocialNetwork socialNetwork);
+    String generateAccessToken(SocialNetwork socialNetwork, String typePermission);
     
-    List<VkUser> usersById(List<String> uids, String accessToken);
+    List<VkUser> usersById(List<String> uids, SocialNetwork socialNetwork);
 
     List<String> friendsById(String userId);
 

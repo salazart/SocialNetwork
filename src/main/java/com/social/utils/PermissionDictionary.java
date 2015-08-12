@@ -9,4 +9,8 @@ public class PermissionDictionary {
     public static final String FB_READ_CUSTOM_FRIENDLISTS = "read_custom_friendlists";
     
     public static final String VK_WALL = "wall";
+    public static final String VK_VIDEO = "video";
+    public static final String VK_OFFLINE = "offline";
+    public static final String VK_FRIENDS = "friends";
+    
 }

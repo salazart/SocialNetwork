@@ -2,6 +2,8 @@ package com.salazart;
 
 import java.util.List;
 
+import com.social.models.SocialNetwork;
+import com.social.models.TypeSN;
 import com.social.models.VkUser;
 import com.social.services.VkService;
 
@@ -13,8 +15,10 @@ public class FriendsById {
 	VkService socialNetworkService = new VkService();
 	List<String> uids = socialNetworkService.friendsById("107275348");
 	System.out.println("Count users uids: " + uids.size());
-
-	List<VkUser> users = socialNetworkService.usersById(uids, null);
+	
+	
+	SocialNetwork socialNetwork = new SocialNetwork(TypeSN.VKONTAKTE, "", "");
+	List<VkUser> users = socialNetworkService.usersById(uids, socialNetwork);
 
 	System.out.println("Count users: " + users.size());
 	System.out
