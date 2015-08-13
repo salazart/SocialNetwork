@@ -4,20 +4,21 @@ import java.net.URL;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
-import com.social.models.Post;
 import com.social.models.SocialNetwork;
-import com.social.models.VkCity;
-import com.social.models.VkUser;
+import com.social.models.requests.Post;
+import com.social.models.requests.VkCity;
+import com.social.models.requests.VkUser;
 import com.social.utils.ParametersDictionary;
 import com.social.utils.PermissionDictionary;
 import com.social.utils.UrlsDictionary;
 
 public class FbService implements ISocialNetwork {
     private static final String APP_ID = "700011900132723";
+    private String accessToken = "";
 
     @Override
     public void postWall(Post post, SocialNetwork socialNetwork) {
-	String accessToken = generateAccessToken(socialNetwork, PermissionDictionary.FB_PUBLISH_ACTION);
+	generateAccessToken(socialNetwork, PermissionDictionary.FB_PUBLISH_ACTION);
 
 	RequestBuilder requestBuilder = new RequestBuilder(
 		UrlsDictionary.FB_GRAPH + post.getId()
@@ -34,12 +35,12 @@ public class FbService implements ISocialNetwork {
 	System.out.println(content);
     }
 
-    public List<VkCity> citiesById(List<String> id) {
+    public List<VkCity> citiesByIds(List<String> id) {
 	return null;
     }
 
     @Override
-    public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
+    public void generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
 	RequestBuilder requestBuilder = new RequestBuilder(
 		UrlsDictionary.FB_OAUTH_DIALOG);
 	requestBuilder.addParam(ParametersDictionary.CLIENT_ID, APP_ID);
@@ -53,13 +54,13 @@ public class FbService implements ISocialNetwork {
 
 	AccessTokenService accessTokenService = new AccessTokenService(
 		requestBuilder.buildRequest(),socialNetwork);
-	URL url = accessTokenService.generateAccessToken();
-	return requestBuilder.parseRequest(url,
+	URL url = accessTokenService.getAccessTokenUrl();
+	accessToken = requestBuilder.parseRequest(url,
 		ParametersDictionary.ACCESS_TOKEN);
     }
 
     @Override
-    public List<VkUser> usersById(List<String> uids, SocialNetwork socialNetwork) {
+    public List<VkUser> usersByIds(List<String> uids, SocialNetwork socialNetwork) {
 	// TODO Auto-generated method stub
 	return null;
     }

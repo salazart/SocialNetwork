@@ -2,7 +2,7 @@ package com.salazart;
 
 import java.util.List;
 
-import com.social.models.Post;
+import com.social.models.requests.Post;
 import com.social.services.VkService;
 
 public class SelectWallPostsById {

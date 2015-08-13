@@ -2,15 +2,15 @@ package com.social.interfaces;
 
 import java.util.List;
 
-import com.social.models.Post;
 import com.social.models.SocialNetwork;
-import com.social.models.VkCity;
-import com.social.models.VkUser;
+import com.social.models.requests.Post;
+import com.social.models.requests.VkCity;
+import com.social.models.requests.VkUser;
 
 public interface ISocialNetwork {
-    String generateAccessToken(SocialNetwork socialNetwork, String typePermission);
+    void generateAccessToken(SocialNetwork socialNetwork, String typePermission);
     
-    List<VkUser> usersById(List<String> uids, SocialNetwork socialNetwork);
+    List<VkUser> usersByIds(List<String> uids, SocialNetwork socialNetwork);
 
     List<String> friendsById(String userId);
 
@@ -18,5 +18,5 @@ public interface ISocialNetwork {
 
     void postWall(Post post, SocialNetwork socialNetwork);
     
-    List<VkCity> citiesById(List<String> id);
+    List<VkCity> citiesByIds(List<String> id);
 }

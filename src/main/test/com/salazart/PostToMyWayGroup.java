@@ -1,9 +1,9 @@
 package com.salazart;
 
-import com.social.models.Post;
+import com.social.SocialNetworkFactory;
 import com.social.models.SocialNetwork;
 import com.social.models.TypeSN;
-import com.social.services.SocialNetworkFactory;
+import com.social.models.requests.Post;
 
 public class PostToMyWayGroup {
     public static void main(String[] args) {

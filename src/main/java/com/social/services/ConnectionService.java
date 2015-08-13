@@ -12,6 +12,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.lang.StringUtils;
 
 public class ConnectionService {
+    private static final String UTF_8_ENCODING = "UTF-8";
     public static final String GET_REQUEST_METHOD = "GET";
     public static final String POST_REQUEST_METHOD = "POST";
     private static final String PROTOCOL = "https://";
@@ -50,7 +51,7 @@ public class ConnectionService {
 	    System.out.println("Reading from connection...");
 	    try {
 		BufferedReader in = new BufferedReader(new InputStreamReader(
-			conn.getInputStream(), "UTF-8"));
+			conn.getInputStream(), UTF_8_ENCODING));
 
 		String lineContent = "";
 		while ((lineContent = in.readLine()) != null) {

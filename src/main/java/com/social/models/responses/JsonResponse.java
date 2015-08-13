@@ -3,7 +3,7 @@ package com.social.models.responses;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.social.models.Error;
+import com.social.models.requests.Error;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonResponse{

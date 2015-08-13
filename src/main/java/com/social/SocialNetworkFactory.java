@@ -1,8 +1,10 @@
-package com.social.services;
+package com.social;
 
 import com.social.interfaces.ISocialNetwork;
-import com.social.models.Post;
 import com.social.models.SocialNetwork;
+import com.social.models.requests.Post;
+import com.social.services.FbService;
+import com.social.services.VkService;
 
 public class SocialNetworkFactory {
     public void postSocialNetwork(SocialNetwork socialNetwork, Post post) {

@@ -6,7 +6,7 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.social.models.VkUser;
+import com.social.models.requests.VkUser;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsersGet extends JsonResponse{

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.social.models.SocialNetwork;
 import com.social.models.TypeSN;
-import com.social.models.VkUser;
+import com.social.models.requests.VkUser;
 import com.social.services.VkService;
 
 public class FriendsById {
@@ -18,7 +18,7 @@ public class FriendsById {
 	
 	
 	SocialNetwork socialNetwork = new SocialNetwork(TypeSN.VKONTAKTE, "", "");
-	List<VkUser> users = socialNetworkService.usersById(uids, socialNetwork);
+	List<VkUser> users = socialNetworkService.usersByIds(uids, socialNetwork);
 
 	System.out.println("Count users: " + users.size());
 	System.out

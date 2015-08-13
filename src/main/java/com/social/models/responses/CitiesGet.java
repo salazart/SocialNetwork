@@ -6,7 +6,7 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.social.models.VkCity;
+import com.social.models.requests.VkCity;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CitiesGet  extends JsonResponse{

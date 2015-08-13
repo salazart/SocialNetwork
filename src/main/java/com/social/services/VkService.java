@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
-import com.social.models.Post;
 import com.social.models.SocialNetwork;
-import com.social.models.VkCity;
-import com.social.models.VkUser;
+import com.social.models.requests.Post;
+import com.social.models.requests.VkCity;
+import com.social.models.requests.VkUser;
 import com.social.models.responses.CitiesGet;
 import com.social.models.responses.FriendsGet;
 import com.social.models.responses.UsersGet;
@@ -23,16 +23,17 @@ public class VkService implements ISocialNetwork {
     private String accessToken = "";
 
     @Override
-    public List<VkUser> usersById(List<String> uids, SocialNetwork socialNetwork) {
+    public List<VkUser> usersByIds(List<String> uids,
+	    SocialNetwork socialNetwork) {
 	List<VkUser> users = new ArrayList<VkUser>();
 	for (int i = 0; i < uids.size(); i += COUNT_UIDS) {
-	    String request = createRequest(uids, i, socialNetwork);
+	    String request = requestUserByIds(uids, i, socialNetwork);
 
 	    System.out.println(request);
 	    ConnectionService connectionService = new ConnectionService();
 	    String content = connectionService.createConnection(request);
 	    System.out.println(content);
-	    
+
 	    ResponseParser jsonNodeParser = new ResponseParser();
 	    UsersGet usersGet = jsonNodeParser.parseJson(content,
 		    new UsersGet());
@@ -47,7 +48,7 @@ public class VkService implements ISocialNetwork {
 	return users;
     }
 
-    private String createRequest(List<String> uids, int i,
+    private String requestUserByIds(List<String> uids, int i,
 	    SocialNetwork socialNetwork) {
 	RequestBuilder requestBuilder = new RequestBuilder(
 		UrlsDictionary.VK_USERS_GET);
@@ -63,11 +64,11 @@ public class VkService implements ISocialNetwork {
 	}
 
 	if (accessToken.isEmpty()) {
-	    accessToken = generateAccessToken(socialNetwork, PermissionDictionary.VK_OFFLINE);
-	    if (accessToken != null) {
-		requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken);
-	    }
+	    generateAccessToken(socialNetwork, PermissionDictionary.VK_OFFLINE);
+	    requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN,
+		    accessToken);
 	}
+
 	return requestBuilder.buildRequest();
     }
 
@@ -81,7 +82,7 @@ public class VkService implements ISocialNetwork {
 	String content = connectionService.createConnection(requestBuilder
 		.buildRequest());
 	System.out.println(content);
-	
+
 	ResponseParser jsonNodeParser = new ResponseParser();
 	FriendsGet friendsGet = jsonNodeParser.parseJson(content,
 		new FriendsGet());
@@ -119,8 +120,7 @@ public class VkService implements ISocialNetwork {
 		UrlsDictionary.VK_POST_WALL);
 
 	if (accessToken.isEmpty()) {
-	    accessToken = generateAccessToken(socialNetwork,
-		    PermissionDictionary.VK_WALL);
+	    generateAccessToken(socialNetwork, PermissionDictionary.VK_WALL);
 	}
 
 	requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken);
@@ -132,14 +132,13 @@ public class VkService implements ISocialNetwork {
 	String content = connectionService.createConnection(requestBuilder
 		.buildRequest());
 	System.out.println(content);
-
     }
 
     @Override
-    public List<VkCity> citiesById(List<String> ids) {
+    public List<VkCity> citiesByIds(List<String> ids) {
 	List<VkCity> cities = new ArrayList<VkCity>();
 	for (int i = 0; i < ids.size(); i += COUNT_UIDS) {
-	    String request = createRequest(ids, i);
+	    String request = requestCitiesByIds(ids, i);
 
 	    ConnectionService connectionService = new ConnectionService();
 	    String content = connectionService.createConnection(request);
@@ -158,7 +157,7 @@ public class VkService implements ISocialNetwork {
 	return cities;
     }
 
-    private String createRequest(List<String> ids, int i) {
+    private String requestCitiesByIds(List<String> ids, int i) {
 	RequestBuilder requestBuilder = new RequestBuilder(
 		UrlsDictionary.VK_CITIES_BY_ID);
 
@@ -172,7 +171,7 @@ public class VkService implements ISocialNetwork {
     }
 
     @Override
-    public String generateAccessToken(SocialNetwork socialNetwork,
+    public void generateAccessToken(SocialNetwork socialNetwork,
 	    String typePermission) {
 	RequestBuilder requestBuilder = new RequestBuilder(
 		UrlsDictionary.VK_OAUTH_DIALOG);
@@ -184,14 +183,14 @@ public class VkService implements ISocialNetwork {
 		UrlsDictionary.VK_REDIRECT_URL);
 	requestBuilder.addParam(ParametersDictionary.DISPLAY,
 		ParametersDictionary.MOBILE);
-	
+
 	System.out.println(requestBuilder.buildRequest());
 	AccessTokenService accessTokenService = new AccessTokenService(
 		requestBuilder.buildRequest(), socialNetwork);
-	URL url = accessTokenService.generateAccessToken();
+	URL url = accessTokenService.getAccessTokenUrl();
 	System.out.println(url);
-	
-	return requestBuilder.parseRequest(url,
+
+	accessToken = requestBuilder.parseRequest(url,
 		ParametersDictionary.ACCESS_TOKEN);
     }
 }

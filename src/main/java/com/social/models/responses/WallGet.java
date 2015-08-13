@@ -6,7 +6,7 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.social.models.Post;
+import com.social.models.requests.Post;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WallGet extends JsonResponse{

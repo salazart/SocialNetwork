@@ -1,4 +1,4 @@
-package com.social.models;
+package com.social.models.requests;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;

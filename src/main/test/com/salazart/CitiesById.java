@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
-import com.social.models.VkCity;
+import com.social.models.requests.VkCity;
 import com.social.services.VkService;
 
 public class CitiesById {
@@ -16,7 +16,7 @@ public class CitiesById {
 	ids.add("1158");
 	
 	ISocialNetwork socialNetwork = new VkService();
-	List<VkCity> vkCities = socialNetwork.citiesById(ids);
+	List<VkCity> vkCities = socialNetwork.citiesByIds(ids);
 	System.out.println(vkCities.get(0).getTitle());
 	System.out.println(vkCities.get(1).getTitle());
 	System.out.println(vkCities.get(2).getTitle());

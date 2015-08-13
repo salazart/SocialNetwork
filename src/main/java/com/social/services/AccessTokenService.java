@@ -41,7 +41,7 @@ public class AccessTokenService {
 
     }
 
-    public URL generateAccessToken() {
+    public URL getAccessTokenUrl() {
 	if (isAuthCorrect(socialNetwork)) {
 	    HtmlPage permissionPage = null;
 	    HtmlPage accessTokenPage = null;
