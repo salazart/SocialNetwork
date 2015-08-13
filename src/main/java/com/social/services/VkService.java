@@ -28,10 +28,11 @@ public class VkService implements ISocialNetwork {
 	for (int i = 0; i < uids.size(); i += COUNT_UIDS) {
 	    String request = createRequest(uids, i, socialNetwork);
 
+	    System.out.println(request);
 	    ConnectionService connectionService = new ConnectionService();
 	    String content = connectionService.createConnection(request);
-	    
 	    System.out.println(content);
+	    
 	    ResponseParser jsonNodeParser = new ResponseParser();
 	    UsersGet usersGet = jsonNodeParser.parseJson(content,
 		    new UsersGet());
@@ -75,10 +76,12 @@ public class VkService implements ISocialNetwork {
 		UrlsDictionary.VK_FRIENDS_GET);
 	requestBuilder.addParam(ParametersDictionary.USER_ID, userId);
 
+	System.out.println(requestBuilder.buildRequest());
 	ConnectionService connectionService = new ConnectionService();
 	String content = connectionService.createConnection(requestBuilder
 		.buildRequest());
-
+	System.out.println(content);
+	
 	ResponseParser jsonNodeParser = new ResponseParser();
 	FriendsGet friendsGet = jsonNodeParser.parseJson(content,
 		new FriendsGet());
@@ -181,10 +184,13 @@ public class VkService implements ISocialNetwork {
 		UrlsDictionary.VK_REDIRECT_URL);
 	requestBuilder.addParam(ParametersDictionary.DISPLAY,
 		ParametersDictionary.MOBILE);
-
+	
+	System.out.println(requestBuilder.buildRequest());
 	AccessTokenService accessTokenService = new AccessTokenService(
 		requestBuilder.buildRequest(), socialNetwork);
 	URL url = accessTokenService.generateAccessToken();
+	System.out.println(url);
+	
 	return requestBuilder.parseRequest(url,
 		ParametersDictionary.ACCESS_TOKEN);
     }
