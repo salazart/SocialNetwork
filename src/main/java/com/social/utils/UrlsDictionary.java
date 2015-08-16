@@ -16,4 +16,6 @@ public class UrlsDictionary {
     public static final String FB_OAUTH_DIALOG = "www.facebook.com/dialog/oauth";
     public static final String FB_REDIRECT_URL = "http://www.i.ua";
     
+    public static final String GOOGLE_POST_WALL = "www.googleapis.com/plusDomains/v1/people/110934328784445676668/activities";
+    
 }

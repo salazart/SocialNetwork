@@ -65,6 +65,7 @@ public class ConnectionService {
 		System.out.println("Connection is closed.");
 	    } catch (IOException e) {
 		System.out.println(e.getMessage());
+		return null;
 	    }
 	}
 	return content;
