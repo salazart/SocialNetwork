@@ -60,8 +60,10 @@ public class AccessTokenService {
 
 			if (accessTokenPage != null) {
 				return String.valueOf(accessTokenPage.getWebResponse().getRequestUrl());
-			} else {
+			} else if (permissionPage != null){
 				return String.valueOf(permissionPage.getWebResponse().getRequestUrl());
+			} else {
+				return "";
 			}
 		} else {
 			System.out.println("Login or password is incorrect");

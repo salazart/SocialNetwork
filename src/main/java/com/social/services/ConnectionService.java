@@ -32,79 +32,64 @@ public class ConnectionService {
 	public String createConnection(String link) {
 		URL url = modifyUrl(link);
 
-		HttpsURLConnection conn = getConnection(url);
-		
-		if (!methodRequest.isEmpty()) {
-			try {
-				conn.setRequestMethod(methodRequest);
-			} catch (ProtocolException e) {
-				System.out.println(e.getMessage());
-			}
-		}
-
 		String content = null;
-		while(content == null){
-			if(counterConnection > MAX_CONNECTION){
+		while (content == null) {
+			System.out.println("Wait " + counterConnection + " connection...");
+			
+			try {
+				HttpsURLConnection conn = (HttpsURLConnection) url
+						.openConnection();
+				if (!methodRequest.isEmpty()) {
+					conn.setRequestMethod(methodRequest);
+				}
+				content = readContent(conn);
+			} catch (IOException e1) {
+				System.out.println(e1.getMessage());
+			}
+
+			if (counterConnection > MAX_CONNECTION) {
 				try {
 					Thread.sleep(SLEEP_TIME * 1000);
 				} catch (InterruptedException e) {
 					System.out.println(e.getMessage());
 				}
 			}
-			
 			counterConnection++;
-			content = readContent(conn);
 		}
-		
 		return content;
 	}
 
 	private String readContent(HttpsURLConnection conn) {
-		String content = "";
-		if (conn != null) {
-			System.out.println("Reading from connection...");
-			try {
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						conn.getInputStream(), UTF_8_ENCODING));
+		try {
+			String content = "";
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					conn.getInputStream(), UTF_8_ENCODING));
 
-				String lineContent = "";
-				while ((lineContent = in.readLine()) != null) {
-					content += lineContent;
-				}
+			String lineContent = "";
+			while ((lineContent = in.readLine()) != null) {
+				content += lineContent;
+			}
 
-				if (in != null) {
-					in.close();
-				}
-
-				System.out.println("Connection is closed.");
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-				return null;
-			} 
+			if (in != null) {
+				in.close();
+			}
+			return content;
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			return null;
 		}
-		return content;
 	}
 
 	private URL modifyUrl(String link) {
 		if (!StringUtils.startsWith(link, "http")) {
 			link = PROTOCOL + link;
 		}
-		URL url = null;
+		
 		try {
 			link = link.replace(" ", SPACE_SYMBOL);
-			url = new URL(link);
+			return new URL(link);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-		}
-		return url;
-	}
-
-	private HttpsURLConnection getConnection(URL url) {
-		System.out.println("Try " + counterConnection + " connection to...");
-		try {
-			return (HttpsURLConnection) url.openConnection();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
 			return null;
 		}
 	}
