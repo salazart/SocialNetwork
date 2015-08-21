@@ -1,6 +1,5 @@
 package com.social.services;
 
-import java.net.URL;
 import java.util.List;
 
 import com.social.interfaces.ISocialNetwork;
