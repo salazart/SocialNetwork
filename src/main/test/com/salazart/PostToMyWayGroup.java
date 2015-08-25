@@ -21,7 +21,7 @@ public class PostToMyWayGroup {
 		"", "");
 	post.setId("863375127077356");
 
-	// new SocialNetworkFactory().postSocialNetwork(fbSocialNetwork, post);
+	//new SocialNetworkFactory().postSocialNetwork(fbSocialNetwork, post);
 
     }
 

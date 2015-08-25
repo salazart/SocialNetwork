@@ -1,21 +1,15 @@
 package com.social.services;
 
-import java.util.List;
-
-import com.social.interfaces.ISocialNetwork;
 import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
-import com.social.models.requests.VkCity;
-import com.social.models.requests.VkUser;
 import com.social.utils.ParametersDictionary;
 import com.social.utils.PermissionDictionary;
 import com.social.utils.UrlsDictionary;
 
-public class FbService implements ISocialNetwork {
+public class FbService {
 	private static final String APP_ID = "700011900132723";
 	private String accessToken = "";
 
-	@Override
 	public void postWall(Post post, SocialNetwork socialNetwork) {
 		generateAccessToken(socialNetwork,
 				PermissionDictionary.FB_PUBLISH_ACTION);
@@ -35,11 +29,6 @@ public class FbService implements ISocialNetwork {
 		System.out.println(content);
 	}
 
-	public List<VkCity> citiesByIds(List<String> id) {
-		return null;
-	}
-
-	@Override
 	public void generateAccessToken(SocialNetwork socialNetwork,
 			String typePermission) {
 		RequestBuilder requestBuilder = new RequestBuilder(
@@ -58,24 +47,5 @@ public class FbService implements ISocialNetwork {
 		String url = accessTokenService.getAccessTokenUrl();
 		accessToken = requestBuilder.parseRequest(url,
 				ParametersDictionary.ACCESS_TOKEN);
-	}
-
-	@Override
-	public List<VkUser> usersByIds(List<String> uids,
-			SocialNetwork socialNetwork) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<String> friendsById(String userId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Post> getWall(String userId) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
