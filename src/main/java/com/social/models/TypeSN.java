@@ -8,5 +8,5 @@ public enum TypeSN {
 	FACEBOOK,
 	VKONTAKTE,
 	GOOGLE,
-	ODNOKLASSNIKI
+	OK
 }

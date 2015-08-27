@@ -25,5 +25,8 @@ public class ParametersDictionary {
     public static final String CONTACTS = "contacts";
     public static final String POPUP = "popup";
     public static final String MOBILE = "mobile";
+    
+    public static final String LAYOUT = "layout";
+    public static final String M = "m";
 
 }

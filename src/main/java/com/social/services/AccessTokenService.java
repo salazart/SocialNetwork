@@ -16,13 +16,20 @@ import com.social.models.SocialNetwork;
 public class AccessTokenService {
 	private static final String NAME_EMAIL_FIELD = "email";
 	private static final String NAME_PASS_FIELD = "pass";
+	private static final String OK_EMAIL_FIELD = "fr.email";
+	private static final String OK_PASS_FIELD = "fr.password";
 	private static final String NAME_INPUT_FIELD = "input";
 	private static final String FORM_AUTORIZE_VK = "//form[@action='https://login.vk.com/?act=login&soft=1&utf8=1']";
 	private static final String FORM_AUTORIZE_FB = "//form[@id='login_form']";
+	private static final String FORM_AUTORIZE_OK = "//form[@method='post']";
 	private static final String FORM_ELEMENT_PERMISSION = "//form[@method='post']";
+	private static final String FORM_ELEMENT_PERMISSION_2 = "//form[@method='POST']";
 	private static final String FB_BUTTON_NAME = "__CONFIRM__";
+	private static final String OK_BUTTON_NAME = "button_accept_request";
 	private String url;
 	private String typeAutorizeForm = "";
+	private String emailField = "";
+	private String passField = "";
 	private SocialNetwork socialNetwork = null;
 
 	public AccessTokenService(String url, SocialNetwork socialNetwork) {
@@ -31,9 +38,18 @@ public class AccessTokenService {
 		switch (socialNetwork.getTypeSN()) {
 		case VKONTAKTE:
 			typeAutorizeForm = FORM_AUTORIZE_VK;
+			emailField = NAME_EMAIL_FIELD;
+			passField = NAME_PASS_FIELD;
 			break;
 		case FACEBOOK:
 			typeAutorizeForm = FORM_AUTORIZE_FB;
+			emailField = NAME_EMAIL_FIELD;
+			passField = NAME_PASS_FIELD;
+			break;
+		case OK:
+			typeAutorizeForm = FORM_AUTORIZE_OK;
+			emailField = OK_EMAIL_FIELD;
+			passField = OK_PASS_FIELD;
 			break;
 		default:
 			break;
@@ -53,6 +69,10 @@ public class AccessTokenService {
 			case FACEBOOK:
 				permissionPage = autorizePage(socialNetwork);
 				accessTokenPage = permissionPageFb(permissionPage);
+				break;
+			case OK:
+				permissionPage = autorizePage(socialNetwork);
+				accessTokenPage = permissionPageOk(permissionPage);
 				break;
 			default:
 				break;
@@ -122,6 +142,30 @@ public class AccessTokenService {
 		}
 		return permissionPage;
 	}
+	
+	private HtmlPage permissionPageOk(HtmlPage autorizePage) {
+		HtmlPage permissionPage = null;
+		HtmlForm form = autorizePage.getFirstByXPath(FORM_ELEMENT_PERMISSION_2);
+		if (form != null) {
+			HtmlButton button = null;
+			try {
+				button = form.getButtonByName(OK_BUTTON_NAME);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				return null;
+			}
+
+			if (button != null) {
+				try {
+					return button.click();
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
+					return null;
+				}
+			}
+		}
+		return permissionPage;
+	}
 
 	private HtmlPage autorizePage(SocialNetwork socialNetwork) {
 		try {
@@ -131,11 +175,12 @@ public class AccessTokenService {
 			HtmlPage autorizePage = webClient.getPage(url);
 			if (autorizePage != null) {
 				HtmlForm form = autorizePage.getFirstByXPath(typeAutorizeForm);
-				form.getInputByName(NAME_EMAIL_FIELD).setValueAttribute(
-						socialNetwork.getLogin());
-				form.getInputByName(NAME_PASS_FIELD).setValueAttribute(
-						socialNetwork.getPass());
 
+				form.getInputByName(emailField).setValueAttribute(
+						socialNetwork.getLogin());
+				form.getInputByName(passField).setValueAttribute(
+						socialNetwork.getPass());
+				
 				NodeList inputElements = form
 						.getElementsByTagName(NAME_INPUT_FIELD);
 				HtmlSubmitInput htmlSubmitInput = getSubmitButton(inputElements);
