@@ -24,7 +24,6 @@ public class RequestBuilder {
 	private static final String EQUAL_SEPARATOR = "=";
 	private static final String PROPERTY_SEPARATOR = "&";
 	private static final String COMMA_SEPARATOR = ",";
-	private static final String GRILLE_SEPARATOR = "#";
 
 	private String url;
 	private Map<String, String> params;
@@ -84,23 +83,5 @@ public class RequestBuilder {
 
 	public String buildRequest() {
 		return buildRequest(this.url, this.params);
-	}
-
-	public String parseRequest(String url, String parameter) {
-		url = StringUtils.substringAfter(url, GRILLE_SEPARATOR);
-
-		List<String> properties = Arrays.asList(url
-				.split(PROPERTY_SEPARATOR));
-		Properties prop = new Properties();
-
-		for (String string : properties) {
-			try {
-				prop.load(new StringReader(string));
-			} catch (IOException e) {
-				continue;
-			}
-		}
-		String textProperty = prop.getProperty(parameter);
-		return textProperty != null ? textProperty : "";
 	}
 }

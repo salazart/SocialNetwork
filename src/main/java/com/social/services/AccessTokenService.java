@@ -57,7 +57,7 @@ public class AccessTokenService {
 
 	}
 
-	public String getAccessTokenUrl() {
+	public String getAccessTokenResponse() {
 		if (isAuthCorrect(socialNetwork)) {
 			HtmlPage permissionPage = null;
 			HtmlPage accessTokenPage = null;

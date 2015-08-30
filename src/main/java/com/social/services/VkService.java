@@ -45,7 +45,7 @@ public class VkService{
 
 		AccessTokenService accessTokenService = new AccessTokenService(
 				requestBuilder.buildRequest(), socialNetwork);
-		String url = accessTokenService.getAccessTokenUrl();
+		String url = accessTokenService.getAccessTokenResponse();
 
 		accessToken = requestBuilder.parseRequest(url,
 				ParametersDictionary.ACCESS_TOKEN);
