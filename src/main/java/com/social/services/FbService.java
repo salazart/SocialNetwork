@@ -28,9 +28,26 @@ public class FbService {
 				.buildRequest());
 		System.out.println(content);
 	}
+	
+	
 
 	public void generateAccessToken(SocialNetwork socialNetwork,
 			String typePermission) {
+		
+		String accessTokenRequest = createAccessTokenRequest(typePermission);
+		
+		System.out.println(accessTokenRequest);
+		AccessTokenService accessTokenService = new AccessTokenService(
+				accessTokenRequest, socialNetwork);
+		String url = accessTokenService.getAccessTokenResponse();
+		System.out.println(url);
+		
+		ResponseParser responseParser = new ResponseParser();
+		accessToken = responseParser.parseRequest(url, ParametersDictionary.ACCESS_TOKEN);
+		System.out.println(accessToken);
+	}
+	
+	private String createAccessTokenRequest(String typePermission) {
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.FB_OAUTH_DIALOG);
 		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, APP_ID);
@@ -41,11 +58,6 @@ public class FbService {
 				UrlsDictionary.FB_REDIRECT_URL);
 		requestBuilder.addParam(ParametersDictionary.DISPLAY,
 				ParametersDictionary.POPUP);
-
-		AccessTokenService accessTokenService = new AccessTokenService(
-				requestBuilder.buildRequest(), socialNetwork);
-		String url = accessTokenService.getAccessTokenResponse();
-		accessToken = requestBuilder.parseRequest(url,
-				ParametersDictionary.ACCESS_TOKEN);
+		return requestBuilder.buildRequest();
 	}
 }

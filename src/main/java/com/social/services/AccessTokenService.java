@@ -110,7 +110,6 @@ public class AccessTokenService {
 				try {
 					return htmlSubmitInput.click();
 				} catch (IOException e) {
-					System.out.println(e.getMessage());
 					return null;
 				}
 			}
@@ -127,7 +126,6 @@ public class AccessTokenService {
 			try {
 				button = form.getButtonByName(FB_BUTTON_NAME);
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
 				return null;
 			}
 
@@ -135,7 +133,6 @@ public class AccessTokenService {
 				try {
 					return button.click();
 				} catch (IOException e) {
-					System.out.println(e.getMessage());
 					return null;
 				}
 			}
@@ -151,7 +148,6 @@ public class AccessTokenService {
 			try {
 				button = form.getButtonByName(OK_BUTTON_NAME);
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
 				return null;
 			}
 
@@ -159,7 +155,6 @@ public class AccessTokenService {
 				try {
 					return button.click();
 				} catch (IOException e) {
-					System.out.println(e.getMessage());
 					return null;
 				}
 			}

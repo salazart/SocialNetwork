@@ -8,7 +8,6 @@ import com.social.utils.UrlsDictionary;
 
 public class VkService{
 	private static final String APP_ID = "4517745";
-	private static final int COUNT_UIDS = 200;
 	private String accessToken = "";
 
 	public void postWall(Post post, SocialNetwork socialNetwork) {
@@ -32,6 +31,23 @@ public class VkService{
 
 	public void generateAccessToken(SocialNetwork socialNetwork,
 			String typePermission) {
+		
+		String accessTokenRequest = createAccessTokenRequest(typePermission);
+		System.out.println(accessTokenRequest);
+		
+		AccessTokenService accessTokenService = new AccessTokenService(
+				accessTokenRequest, socialNetwork);
+		String url = accessTokenService.getAccessTokenResponse();
+		System.out.println(url);
+		
+		ResponseParser responseParser = new ResponseParser();
+		accessToken = responseParser.parseRequest(url,
+				ParametersDictionary.ACCESS_TOKEN);
+		
+		System.out.println(accessToken);
+	}
+	
+	private String createAccessTokenRequest(String typePermission) {
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.VK_OAUTH_DIALOG);
 		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, APP_ID);
@@ -42,18 +58,6 @@ public class VkService{
 				UrlsDictionary.VK_REDIRECT_URL);
 		requestBuilder.addParam(ParametersDictionary.DISPLAY,
 				ParametersDictionary.MOBILE);
-
-		AccessTokenService accessTokenService = new AccessTokenService(
-				requestBuilder.buildRequest(), socialNetwork);
-		String url = accessTokenService.getAccessTokenResponse();
-
-		accessToken = requestBuilder.parseRequest(url,
-				ParametersDictionary.ACCESS_TOKEN);
-		
-		if(!accessToken.isEmpty()){
-			System.out.println("Access token obtained successfully");
-		} else {
-			System.out.println("Access token is error");
-		}
+		return requestBuilder.buildRequest();
 	}
 }

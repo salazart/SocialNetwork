@@ -15,14 +15,20 @@ public class OkService {
 	
 	public void generateAccessToken(SocialNetwork socialNetwork,
 			String typePermission) {
+		
 		String accessTokenRequest = createAccessTokenRequest(typePermission);
-System.out.println(accessTokenRequest);
+		
+		System.out.println(accessTokenRequest);
+
 		AccessTokenService accessTokenService = new AccessTokenService(
 				accessTokenRequest, socialNetwork);
 		String url = accessTokenService.getAccessTokenResponse();
+
 		System.out.println(url);
+		
 		ResponseParser responseParser = new ResponseParser();
 		accessToken = responseParser.parseRequest(url, ParametersDictionary.ACCESS_TOKEN);
+		
 		System.out.println(accessToken);
 	}
 
