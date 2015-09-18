@@ -32,16 +32,16 @@ public class OkService {
 		System.out.println(accessToken);
 	}
 
-	private String createAccessTokenRequest(String typePermission) {
-		RequestBuilder requestBuilder = new RequestBuilder(
-				UrlsDictionary.OK_OAUTH_DIALOG);
-		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, APP_ID);
-		requestBuilder.addParam(ParametersDictionary.RESPONSE_TYPE,
-				ParametersDictionary.TOKEN);
-		requestBuilder.addParam(ParametersDictionary.SCOPE, typePermission);
-		requestBuilder.addParam(ParametersDictionary.REDIRECT_URI,
-				UrlsDictionary.OK_REDIRECT_URL);
-		return requestBuilder.buildRequest();
-	}
+    private String createAccessTokenRequest(String typePermission) {
+	RequestBuilder requestBuilder = new RequestBuilder(
+		UrlsDictionary.OK_OAUTH_DIALOG);
+	requestBuilder.addParam(ParametersDictionary.CLIENT_ID, APP_ID);
+	requestBuilder.addParam(ParametersDictionary.RESPONSE_TYPE,
+		ParametersDictionary.TOKEN);
+	requestBuilder.addParam(ParametersDictionary.SCOPE, typePermission);
+	requestBuilder.addParam(ParametersDictionary.REDIRECT_URI,
+		UrlsDictionary.OK_REDIRECT_URL);
+	return requestBuilder.buildRequest();
+    }
 
 }

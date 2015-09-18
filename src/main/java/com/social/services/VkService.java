@@ -59,5 +59,5 @@ public class VkService{
 		requestBuilder.addParam(ParametersDictionary.DISPLAY,
 				ParametersDictionary.MOBILE);
 		return requestBuilder.buildRequest();
-	}
+    }
 }
