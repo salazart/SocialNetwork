@@ -28,5 +28,9 @@ public class ParametersDictionary {
     
     public static final String LAYOUT = "layout";
     public static final String M = "m";
+    
+    public static final String APP_KEY = "application_key";
+    public static final String METHOD = "method";
+    public static final String SIG = "sig";
 
 }
