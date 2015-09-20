@@ -1,7 +1,6 @@
 package com.social.services;
 
 import java.io.IOException;
-import java.net.URL;
 
 import org.w3c.dom.NodeList;
 

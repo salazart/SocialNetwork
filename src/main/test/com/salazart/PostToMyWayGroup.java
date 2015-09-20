@@ -4,8 +4,12 @@ import com.social.SocialNetworkFactory;
 import com.social.models.SocialNetwork;
 import com.social.models.TypeSN;
 import com.social.models.requests.Post;
+import com.social.utils.PropertyService;
 
 public class PostToMyWayGroup {
+	private static String login = PropertyService.getInstance().getValueProperties("okLogin");
+	private static String pass = PropertyService.getInstance().getValueProperties("okPass");
+	
 	public static void main(String[] args) {
 
 		Post post = new Post();
@@ -22,7 +26,7 @@ public class PostToMyWayGroup {
 
 		// new SocialNetworkFactory().postSocialNetwork(fbSocialNetwork, post);
 		
-		SocialNetwork okSocialNetwork = new SocialNetwork(TypeSN.OK, "", "");
+		SocialNetwork okSocialNetwork = new SocialNetwork(TypeSN.OK, login, pass);
 		
 		new SocialNetworkFactory().postSocialNetwork(okSocialNetwork, post);
 

@@ -32,5 +32,8 @@ public class ParametersDictionary {
     public static final String APP_KEY = "application_key";
     public static final String METHOD = "method";
     public static final String SIG = "sig";
+    public static final String UID = "uid";
+    public static final String TYPE = "type";
+    public static final String GID = "gid";
 
 }

@@ -14,5 +14,6 @@ public class PermissionDictionary {
     public static final String VK_FRIENDS = "friends";
     
     public static final String OK_GROUP_CONTENT = "GROUP_CONTENT";
+    public static final String OK_VALUABLE_ACCESS = "VALUABLE_ACCESS";
     
 }

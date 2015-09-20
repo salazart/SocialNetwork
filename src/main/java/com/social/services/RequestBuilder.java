@@ -1,15 +1,7 @@
 package com.social.services;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Class RequestBuilder build url with parameters for connection (Build api
@@ -19,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
  *
  */
 public class RequestBuilder {
-	private static final String HTTPS = "https://";
 	private static final String QUESTION_SEPARATOR = "?";
 	private static final String EQUAL_SEPARATOR = "=";
 	private static final String PROPERTY_SEPARATOR = "&";
@@ -77,7 +68,7 @@ public class RequestBuilder {
 				}
 
 			}
-			return HTTPS + parameterUrl.toString();
+			return parameterUrl.toString();
 		}
 	}
 
