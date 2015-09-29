@@ -26,8 +26,6 @@ public class OkService extends OkSessionService{
 
 	public void postWall(Post post, SocialNetwork socialNetwork) {
 		
-		
-		
 		if (accessToken.isEmpty()) {
 			generateAccessToken(socialNetwork, PermissionDictionary.OK_GROUP_CONTENT);
 		}
