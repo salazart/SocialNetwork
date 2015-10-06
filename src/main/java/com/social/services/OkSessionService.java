@@ -12,11 +12,18 @@ public class OkSessionService {
 	private static final String APP_KEY = "okAppKey";
 	
 	private String appSecretKey = PropertyService.getInstance().getValueProperties(APP_SECRET_KEY);
+	private String appKey = PropertyService.getInstance().getValueProperties(APP_KEY);
 	
 	public String generateSesionSignature(String accessToken, String methodName) {
-		String hashAccessTokenAndSectetKey = generateMD5(accessToken + appSecretKey);
+		//String hashAccessTokenAndSectetKey = generateMD5(accessToken + appSecretKey);
+		System.out.println(accessToken + appSecretKey);
+		String sig1 = generateMD5(accessToken + appSecretKey);
+		System.out.println(sig1);
 		
-		return generateSessionSignature(methodName, hashAccessTokenAndSectetKey);
+		System.out.println(getAppKey()+getMethod(methodName)+sig1);
+		String sig2 = generateMD5(getAppKey()+getMethod(methodName)+sig1);
+		
+		return sig2;
 	}
 
 	private String generateSessionSignature(String methodName, String hashAccessTokenAndSectetKey) {
@@ -38,6 +45,11 @@ public class OkSessionService {
 	private String getMethod(String methodName){
 		final String method = "method";
 		return !methodName.isEmpty() ? method + "=" + methodName : "";
+	}
+	
+	private String getAccessToken(String accessTokenValue){
+		final String accessToken = "access_token";
+		return !accessTokenValue.isEmpty() ? accessToken + "=" + accessTokenValue : "";
 	}
 	
 	private String generateMD5(String text) {

@@ -118,22 +118,13 @@ public class OkService extends OkSessionService{
 	}
 
 	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
-
 		String accessTokenRequest = createAccessTokenRequest(typePermission);
-
-		System.out.println(accessTokenRequest);
-
+System.out.println(accessTokenRequest);
 		AccessTokenService accessTokenService = new AccessTokenService(accessTokenRequest, socialNetwork);
 		String url = accessTokenService.getAccessTokenResponse();
-
-		System.out.println(url);
-
+System.out.println(url);
 		ResponseParser responseParser = new ResponseParser();
-		accessToken = responseParser.parseRequest(url, ParametersDictionary.ACCESS_TOKEN);
-		
-		System.out.println(accessToken);
-		
-		return accessToken;
+		return responseParser.parseRequest(url, ParametersDictionary.ACCESS_TOKEN);
 	}
 
 	private String createAccessTokenRequest(String typePermission) {
@@ -144,5 +135,35 @@ public class OkService extends OkSessionService{
 		requestBuilder.addParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.OK_REDIRECT_URL);
 		return requestBuilder.buildRequest();
 	}
+	
+	public void getFriends(SocialNetwork socialNetwork){
+		//accessToken = PropertyService.getInstance().getValueProperties("okAccessToken");
+		if (accessToken.isEmpty()) {
+			accessToken = generateAccessToken(socialNetwork, PermissionDictionary.OK_VALUABLE_ACCESS);
+			PropertyService.getInstance().setValueProperties("okAccessToken", accessToken);
+		}
+		System.out.println("access_token=" + accessToken);
+		
+		String request = createGetFriendsRequest();
+		
+		System.out.println(request);
+		ConnectionService connectionService = new ConnectionService();
+		String content = connectionService.createConnection(request);
+		System.out.println(content);
+	}
 
+	private String createGetFriendsRequest() {
+		final String methodName = "friends.get";
+		
+		String sig = generateSesionSignature(accessToken, methodName);
+		System.out.println("sig=" + sig);
+		
+		RequestBuilder requestBuilder = new RequestBuilder(UrlsDictionary.OK_URL_REQUEST);
+		String appKey = PropertyService.getInstance().getValueProperties(APP_KEY);
+		requestBuilder.addParam(ParametersDictionary.APP_KEY, appKey);
+		requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken);
+		requestBuilder.addParam(ParametersDictionary.METHOD, methodName);
+		requestBuilder.addParam(ParametersDictionary.SIG, sig);
+		return requestBuilder.buildRequest();
+	}
 }
