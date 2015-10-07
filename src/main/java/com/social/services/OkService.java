@@ -137,7 +137,7 @@ System.out.println(url);
 	}
 	
 	public void getFriends(SocialNetwork socialNetwork){
-		//accessToken = PropertyService.getInstance().getValueProperties("okAccessToken");
+		accessToken = PropertyService.getInstance().getValueProperties("okAccessToken");
 		if (accessToken.isEmpty()) {
 			accessToken = generateAccessToken(socialNetwork, PermissionDictionary.OK_VALUABLE_ACCESS);
 			PropertyService.getInstance().setValueProperties("okAccessToken", accessToken);
