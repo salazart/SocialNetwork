@@ -5,24 +5,24 @@ package com.social.models;
  *
  */
 public class SocialNetwork {
-	private TypeSN typeSN = null;
+	private SocialNetworkType type = null;
 	private String login = "";
 	private String pass = "";	
 	
 	/**
 	 * Constructor with parameters
-	 * @param typeSN - type social network
+	 * @param type - type social network
 	 * @param login - login or username
 	 * @param pass - password
 	 */
-	public SocialNetwork(TypeSN typeSN, String login, String pass) {
-		this.typeSN = typeSN;
+	public SocialNetwork(SocialNetworkType type, String login, String pass) {
+		this.type = type;
 		this.login = login;
 		this.pass = pass;
 	}
 
-	public TypeSN getTypeSN() {
-		return typeSN;
+	public SocialNetworkType getType() {
+		return type;
 	}
 
 	public String getLogin() {

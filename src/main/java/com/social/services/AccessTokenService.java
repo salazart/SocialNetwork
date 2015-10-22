@@ -34,7 +34,7 @@ public class AccessTokenService {
 	public AccessTokenService(String url, SocialNetwork socialNetwork) {
 		this.url = url;
 		this.socialNetwork = socialNetwork;
-		switch (socialNetwork.getTypeSN()) {
+		switch (socialNetwork.getType()) {
 		case VKONTAKTE:
 			typeAutorizeForm = FORM_AUTORIZE_VK;
 			emailField = NAME_EMAIL_FIELD;
@@ -60,7 +60,7 @@ public class AccessTokenService {
 		if (isAuthCorrect(socialNetwork)) {
 			HtmlPage permissionPage = null;
 			HtmlPage accessTokenPage = null;
-			switch (socialNetwork.getTypeSN()) {
+			switch (socialNetwork.getType()) {
 			case VKONTAKTE:
 				permissionPage = autorizePage(socialNetwork);
 				accessTokenPage = permissionPageVk(permissionPage);

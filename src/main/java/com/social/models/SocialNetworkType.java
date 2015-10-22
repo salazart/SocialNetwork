@@ -4,7 +4,7 @@ package com.social.models;
  * @author home
  *
  */
-public enum TypeSN {
+public enum SocialNetworkType {
 	FACEBOOK,
 	VKONTAKTE,
 	GOOGLE,
