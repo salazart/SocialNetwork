@@ -75,6 +75,7 @@ public class PropertyService {
 		if (valueProperties != null) {
 			return valueProperties;
 		} else {
+			setValueProperties(typeProperties, "");
 			return "";
 		}
 	}

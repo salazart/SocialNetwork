@@ -140,6 +140,9 @@ public class AccessTokenService {
 	}
 	
 	private HtmlPage permissionPageOk(HtmlPage autorizePage) {
+		if(autorizePage == null){
+			return null;
+		}
 		HtmlPage permissionPage = null;
 		HtmlForm form = autorizePage.getFirstByXPath(FORM_ELEMENT_PERMISSION_2);
 		if (form != null) {

@@ -13,7 +13,7 @@ public class PostToMyWayGroup {
 	public static void main(String[] args) {
 
 		Post post = new Post();
-		post.setText("Hello MyWay group!");
+		post.setText("Hello");
 
 		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VKONTAKTE, "", "");
 

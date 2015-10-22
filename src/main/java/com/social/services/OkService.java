@@ -1,14 +1,12 @@
 package com.social.services;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.salazart.UrlEncode;
 import com.social.models.Attachment;
 import com.social.models.Media;
 import com.social.models.SocialNetwork;
@@ -35,20 +33,20 @@ public class OkService extends OkSessionService{
 			accessToken = generateAccessToken(socialNetwork, PermissionDictionary.OK_GROUP_CONTENT);
 			PropertyService.setValueProperties(ACCESS_TOKEN,accessToken);
 		}
-		System.out.println(ACCESS_TOKEN + "=" + accessToken);
 		
-		String postRequest =  createPostRequest();
-		System.out.println(postRequest);
+		String attachmentsText = getAttachmentsText(post);
+		
+		String postRequest =  createPostRequest(attachmentsText);
 		
 		ConnectionService connectionService = new ConnectionService(ConnectionService.POST_REQUEST_METHOD);
 		String content = connectionService.createConnection(postRequest);
 		System.out.println(content);
 	}
 
-	private String getAttachmentsText() {
+	private String getAttachmentsText(Post post) {
 		Media media = new Media();
-		media.setType("text");
-		media.setText("hello");
+		media.setType(Media.TYPE_TEXT);
+		media.setText(post.getText());
 		
 		Attachment attachment = new Attachment();
 		attachment.getMedias().add(media);
@@ -57,17 +55,12 @@ public class OkService extends OkSessionService{
 			ObjectMapper mapper = new ObjectMapper();
 			return mapper.writeValueAsString(attachment);
 		} catch (IOException e) {
-			e.printStackTrace();
 			return "";
 		}
 	}
 
-	private String createPostRequest() {
-		
-		String attachmentsText = getAttachmentsText();
-		
+	private String createPostRequest(String attachmentsText) {
 		String sig = generateSesionSignature(accessToken, attachmentsText);
-		System.out.println(sig);
 		
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.OK_URL_REQUEST);
@@ -87,7 +80,7 @@ public class OkService extends OkSessionService{
 		requestBuilder.addParam(ParametersDictionary.GID, groupId);
 		
 		String type = PropertyService.getValueProperties(POST_TYPE);
-		requestBuilder.addParam(ParametersDictionary.TYPE, groupId);
+		requestBuilder.addParam(ParametersDictionary.TYPE, type);
 		
 		return requestBuilder.buildRequest();
 	}

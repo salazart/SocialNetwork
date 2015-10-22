@@ -1,6 +1,8 @@
 package com.social.models;
 
 public class Media {
+	public static final String TYPE_TEXT = "text";
+	
 	private String type;
 	private String text;
 
