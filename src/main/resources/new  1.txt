@@ -5,7 +5,7 @@ https://oauth.vk.com/blank.html#access_token=9a39da07e475b553d2eff78f4c83872a337
 -----------------------------------
 https://api.vk.com/method/users.get?uids=135717579,37837461&offset=1000&count=1000&fields=bdate,city,country,contacts%2Chome_town&access_token=9a39da07e475b553d2eff78f4c83872a337575d808ab5ce32f2a8b6e43b4386e9e909d3ddcd4d242a5391
 
-{"response":[{"uid":135717579,"first_name":"Andrey","last_name":"Kravchuk","bdate":"6.1","city":0,"country":2,"mobile_phone":"","home_phone":"","home_town":"Хмельницький"},{"uid":37837461,"first_name":"Татьяна","last_name":"Николенко","bdate":"9.4.1990","city":5799,"country":2,"mobile_phone":"80663231129","home_phone":"___...___","home_town":"Малая Павловка"}]}
+{"response":[{"uid":135717579,"first_name":"Andrey","last_name":"Kravchuk","bdate":"6.1","city":0,"country":2,"mobile_phone":"","home_phone":"","home_town":"РҐРјРµР»СЊРЅРёС†СЊРєРёР№"},{"uid":37837461,"first_name":"РўР°С‚СЊСЏРЅР°","last_name":"РќРёРєРѕР»РµРЅРєРѕ","bdate":"9.4.1990","city":5799,"country":2,"mobile_phone":"80663231129","home_phone":"___...___","home_town":"РњР°Р»Р°СЏ РџР°РІР»РѕРІРєР°"}]}
 
 ---------------------------------
 friends
@@ -21,7 +21,7 @@ https://oauth.vk.com/authorize?client_id=4517745&scope=audio&redirect_uri=https:
 https://oauth.vk.com/blank.html#access_token=7556032604b5086f1d409417eacd7c99db14fe60786d674162ba9751c8e2a0ee71822f23acf5791d17304&expires_in=86400&user_id=39046828
 
 https://api.vk.com/method/users.get?uids=135717579,37837461&offset=1000&count=1000&fields=bdate,city,country,contacts%2Chome_town&access_token=7556032604b5086f1d409417eacd7c99db14fe60786d674162ba9751c8e2a0ee71822f23acf5791d17304
-{"response":[{"uid":135717579,"first_name":"Andrey","last_name":"Kravchuk","bdate":"6.1","city":0,"country":2,"mobile_phone":"","home_phone":"","home_town":"Хмельницький"},{"uid":37837461,"first_name":"Татьяна","last_name":"Николенко","bdate":"9.4.1990","city":5799,"country":2}]}
+{"response":[{"uid":135717579,"first_name":"Andrey","last_name":"Kravchuk","bdate":"6.1","city":0,"country":2,"mobile_phone":"","home_phone":"","home_town":"РҐРјРµР»СЊРЅРёС†СЊРєРёР№"},{"uid":37837461,"first_name":"РўР°С‚СЊСЏРЅР°","last_name":"РќРёРєРѕР»РµРЅРєРѕ","bdate":"9.4.1990","city":5799,"country":2}]}
 
 
 ================
@@ -32,11 +32,11 @@ https://oauth.vk.com/blank.html#access_token=cd295e63e20945d2402812b521943dd1366
 -----------------------------
 https://api.vk.com/method/users.get?uids=135717579,37837461&offset=1000&count=1000&fields=bdate,city,country,contacts%2Chome_town&access_token=cd295e63e20945d2402812b521943dd13663d725d7c494767640452d3d2bfd591142580bc1926047b6e41
 
-{"response":[{"uid":135717579,"first_name":"Andrey","last_name":"Kravchuk","bdate":"6.1","city":0,"country":2,"mobile_phone":"","home_phone":""},{"uid":37837461,"first_name":"Татьяна","last_name":"Николенко","bdate":"9.4.1990","city":5799,"country":2,"home_phone":"___...___"}]}
+{"response":[{"uid":135717579,"first_name":"Andrey","last_name":"Kravchuk","bdate":"6.1","city":0,"country":2,"mobile_phone":"","home_phone":""},{"uid":37837461,"first_name":"РўР°С‚СЊСЏРЅР°","last_name":"РќРёРєРѕР»РµРЅРєРѕ","bdate":"9.4.1990","city":5799,"country":2,"home_phone":"___...___"}]}
 
 ===========================
 https://api.vk.com/method/wall.get?offset=0&owner_id=10262314&count=2
-{"response":[142,{"id":800,"from_id":10262314,"to_id":10262314,"date":1425987766,"post_type":"post","text":"","attachment":{"type":"page","page":{"pid":"48963731","gid":54530371,"title":"Подборки","view_url":"http:\/\/m.vk.com\/page-54530371_48963731?api_view=4abb543dfd640be4aad38bb543d172"}},"attachments":[{"type":"page","page":{"pid":"48963731","gid":54530371,"title":"Подборки","view_url":"http:\/\/m.vk.com\/page-54530371_48963731?api_view=4abb543dfd640be4aad38bb543d172"}}],"comments":{"count":0},"likes":{"count":0},"reposts":{"count":0}},{"id":799,"from_id":10262314,"to_id":10262314,"date":1425297080,"post_type":"copy","text":"#Интересное_rz<br><br>Компания Microsoft опубликовала видео, в котором показала собственное видение того, что нас ждёт в ближайшие 5-10 лет.","copy_post_date":1425290414,"copy_post_type":"post","copy_owner_id":-20877147,"copy_post_id":133426,"attachment":{"type":"video","video":{"vid":171302854,"owner_id":-20877147,"title":"Productivity Future Vision","duration":389,"description":"Learn more at: http:\/\/microsoft.com\/productivityvision <br><br>How could emerging technology transform the way get things done 5-10 years in the future? Watch Kat, a young independent marine biologist, and Lola, a corporate executive, work together in a highly interconnected and information rich future.","date":1425051508,"views":210618,"image":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","image_big":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","image_small":"http:\/\/cs622825.vk.me\/u292691979\/video\/s_c36a6006.jpg","image_xbig":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","access_key":"eab92567c9884ed8e1"}},"attachments":[{"type":"video","video":{"vid":171302854,"owner_id":-20877147,"title":"Productivity Future Vision","duration":389,"description":"Learn more at: http:\/\/microsoft.com\/productivityvision <br><br>How could emerging technology transform the way get things done 5-10 years in the future? Watch Kat, a young independent marine biologist, and Lola, a corporate executive, work together in a highly interconnected and information rich future.","date":1425051508,"views":210618,"image":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","image_big":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","image_small":"http:\/\/cs622825.vk.me\/u292691979\/video\/s_c36a6006.jpg","image_xbig":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","access_key":"eab92567c9884ed8e1"}}],"comments":{"count":0},"likes":{"count":0},"reposts":{"count":0}}]}
+{"response":[142,{"id":800,"from_id":10262314,"to_id":10262314,"date":1425987766,"post_type":"post","text":"","attachment":{"type":"page","page":{"pid":"48963731","gid":54530371,"title":"РџРѕРґР±РѕСЂРєРё","view_url":"http:\/\/m.vk.com\/page-54530371_48963731?api_view=4abb543dfd640be4aad38bb543d172"}},"attachments":[{"type":"page","page":{"pid":"48963731","gid":54530371,"title":"РџРѕРґР±РѕСЂРєРё","view_url":"http:\/\/m.vk.com\/page-54530371_48963731?api_view=4abb543dfd640be4aad38bb543d172"}}],"comments":{"count":0},"likes":{"count":0},"reposts":{"count":0}},{"id":799,"from_id":10262314,"to_id":10262314,"date":1425297080,"post_type":"copy","text":"#Р�РЅС‚РµСЂРµСЃРЅРѕРµ_rz<br><br>РљРѕРјРїР°РЅРёСЏ Microsoft РѕРїСѓР±Р»РёРєРѕРІР°Р»Р° РІРёРґРµРѕ, РІ РєРѕС‚РѕСЂРѕРј РїРѕРєР°Р·Р°Р»Р° СЃРѕР±СЃС‚РІРµРЅРЅРѕРµ РІРёРґРµРЅРёРµ С‚РѕРіРѕ, С‡С‚Рѕ РЅР°СЃ Р¶РґС‘С‚ РІ Р±Р»РёР¶Р°Р№С€РёРµ 5-10 Р»РµС‚.","copy_post_date":1425290414,"copy_post_type":"post","copy_owner_id":-20877147,"copy_post_id":133426,"attachment":{"type":"video","video":{"vid":171302854,"owner_id":-20877147,"title":"Productivity Future Vision","duration":389,"description":"Learn more at: http:\/\/microsoft.com\/productivityvision <br><br>How could emerging technology transform the way get things done 5-10 years in the future? Watch Kat, a young independent marine biologist, and Lola, a corporate executive, work together in a highly interconnected and information rich future.","date":1425051508,"views":210618,"image":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","image_big":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","image_small":"http:\/\/cs622825.vk.me\/u292691979\/video\/s_c36a6006.jpg","image_xbig":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","access_key":"eab92567c9884ed8e1"}},"attachments":[{"type":"video","video":{"vid":171302854,"owner_id":-20877147,"title":"Productivity Future Vision","duration":389,"description":"Learn more at: http:\/\/microsoft.com\/productivityvision <br><br>How could emerging technology transform the way get things done 5-10 years in the future? Watch Kat, a young independent marine biologist, and Lola, a corporate executive, work together in a highly interconnected and information rich future.","date":1425051508,"views":210618,"image":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","image_big":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","image_small":"http:\/\/cs622825.vk.me\/u292691979\/video\/s_c36a6006.jpg","image_xbig":"http:\/\/cs622825.vk.me\/u292691979\/video\/l_992c932c.jpg","access_key":"eab92567c9884ed8e1"}}],"comments":{"count":0},"likes":{"count":0},"reposts":{"count":0}}]}
 =========================================================
 http://graph.facebook.com/me
 -----------------------------------
@@ -174,10 +174,10 @@ https://www.googleapis.com/plus/v1/people/112795250731187014145?key=AIzaSyBIxa2Q
  "gender": "male",
  "objectType": "person",
  "id": "112795250731187014145",
- "displayName": "Сергей Чепела",
+ "displayName": "РЎРµСЂРіРµР№ Р§РµРїРµР»Р°",
  "name": {
-  "familyName": "Чепела",
-  "givenName": "Сергей"
+  "familyName": "Р§РµРїРµР»Р°",
+  "givenName": "РЎРµСЂРіРµР№"
  },
  "url": "https://plus.google.com/112795250731187014145",
  "image": {
@@ -186,7 +186,7 @@ https://www.googleapis.com/plus/v1/people/112795250731187014145?key=AIzaSyBIxa2Q
  },
  "placesLived": [
   {
-   "value": "Харьков",
+   "value": "РҐР°СЂСЊРєРѕРІ",
    "primary": true
   }
  ],
@@ -210,3 +210,4 @@ https://www.googleapis.com/plus/v1/people/112795250731187014145?key=AIzaSyBIxa2Q
 api/group/getInfo?application_key=[Application Key]&sig=[Signature]&session_key=[Session Key]&uids=53923499278353&fields=uid,name,description,shortname,pic_avatar,shop_visible_admin,shop_visible_public,members_count
 
 -------------------------------
+redirect_uri=https%3A%2F%2Fapiok.ru%2Fwiki%2Fcalc%2Foauth_callback.html

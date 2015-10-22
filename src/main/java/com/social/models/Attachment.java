@@ -8,7 +8,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class Attachment {
 	@JsonProperty("media")
 	private List<Media> medias = new ArrayList<Media>();
-	private Place place = new Place();
+	//private Place place = new Place();
 
 	public List<Media> getMedias() {
 		return medias;
@@ -18,12 +18,12 @@ public class Attachment {
 		this.medias = medias;
 	}
 
-	public Place getPlace() {
-		return place;
-	}
+	//public Place getPlace() {
+		//return place;
+	//}
 
-	public void setPlace(Place place) {
-		this.place = place;
-	}
+	//public void setPlace(Place place) {
+	//	this.place = place;
+	//}
 
 }

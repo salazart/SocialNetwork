@@ -10,33 +10,51 @@ public class OkSessionService {
 	
 	private static final String APP_SECRET_KEY = "okAppSecretKey";
 	private static final String APP_KEY = "okAppKey";
+	private static final String METHOD = "okMethod";
+	private static final String GROUP_ID = "okGroupId";
+	private static final String POST_TYPE = "okPostType";
 	
-	private String appSecretKey = PropertyService.getInstance().getValueProperties(APP_SECRET_KEY);
-	
-	public String generateSesionSignature(String accessToken, String methodName) {
-		String hashAccessTokenAndSectetKey = generateMD5(accessToken + appSecretKey);
+	public String generateSesionSignature(String accessToken, String attachmentsText) {
+		String appSecretKey = PropertyService.getValueProperties(APP_SECRET_KEY);
+		String hash = generateMD5(accessToken + appSecretKey);
 		
-		return generateSessionSignature(methodName, hashAccessTokenAndSectetKey);
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getAppKey());
+		stringBuilder.append(getAttachmentsText(attachmentsText));
+		stringBuilder.append(getGroupId());
+		stringBuilder.append(getMethod());
+		stringBuilder.append(getType());
+		stringBuilder.append(hash);
+		
+		return generateMD5(stringBuilder.toString());
 	}
-
-	private String generateSessionSignature(String methodName, String hashAccessTokenAndSectetKey) {
-		if(!hashAccessTokenAndSectetKey.isEmpty()){
-			return generateMD5(getAppKey() 
-					+ getMethod(methodName) 
-					+ hashAccessTokenAndSectetKey);
-		} else {
-			return "";
-		}
+	
+	private String getAttachmentsText(String attachmentsText){
+		final String attachment = "attachment";
+		return !attachmentsText.isEmpty() ? attachment + "=" + attachmentsText : "";
+	}
+	
+	private String getType(){
+		final String type = "type";
+		String groupId = PropertyService.getValueProperties(POST_TYPE);
+		return !groupId.isEmpty() ? type + "=" + groupId : "";
+	}
+	
+	private String getGroupId(){
+		final String gid = "gid";
+		String groupId = PropertyService.getValueProperties(GROUP_ID);
+		return !groupId.isEmpty() ? gid + "=" + groupId : "";
 	}
 	
 	private String getAppKey(){
 		final String applicationKey = "application_key";
-		String appKey = PropertyService.getInstance().getValueProperties(APP_KEY);
+		String appKey = PropertyService.getValueProperties(APP_KEY);
 		return !appKey.isEmpty() ? applicationKey + "=" + appKey : "";
 	}
 	
-	private String getMethod(String methodName){
+	private String getMethod(){
 		final String method = "method";
+		String methodName = PropertyService.getValueProperties(METHOD);
 		return !methodName.isEmpty() ? method + "=" + methodName : "";
 	}
 	

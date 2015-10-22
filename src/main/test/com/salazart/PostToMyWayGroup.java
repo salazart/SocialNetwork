@@ -7,8 +7,8 @@ import com.social.models.requests.Post;
 import com.social.utils.PropertyService;
 
 public class PostToMyWayGroup {
-	private static String login = PropertyService.getInstance().getValueProperties("okLogin");
-	private static String pass = PropertyService.getInstance().getValueProperties("okPass");
+	private static String login = PropertyService.getValueProperties("okLogin");
+	private static String pass = PropertyService.getValueProperties("okPass");
 	
 	public static void main(String[] args) {
 

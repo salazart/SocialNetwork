@@ -35,5 +35,6 @@ public class ParametersDictionary {
     public static final String UID = "uid";
     public static final String TYPE = "type";
     public static final String GID = "gid";
+    public static final String ATTACHMENT = "attachment";
 
 }

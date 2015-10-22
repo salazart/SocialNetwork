@@ -14,5 +14,6 @@ public class UrlsDictionary {
     public static final String OK_OAUTH_DIALOG = "https://connect.ok.ru/oauth/authorize";
     public static final String OK_REDIRECT_URL = "http://www.i.ua";
     public static final String OK_URL_REQUEST = "http://api.ok.ru/fb.do";
+    public static final String OK_GET_FRIENDS = "http://api.ok.ru/api/friends/get";
     
 }

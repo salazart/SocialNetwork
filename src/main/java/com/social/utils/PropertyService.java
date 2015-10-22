@@ -10,25 +10,9 @@ import java.util.Properties;
 
 public class PropertyService {
 	private final static String PATH_PROPERTIES = "src/main/resources/config.properties";
-	private String propFileName = PATH_PROPERTIES;
+	private static String propFileName = PATH_PROPERTIES;
 
-	private static PropertyService instance;
-
-	private PropertyService() {
-	}
-
-	public static PropertyService getInstance() {
-		if (instance == null) {
-			synchronized (PropertyService.class) {
-				if (instance == null) {
-					instance = new PropertyService();
-				}
-			}
-		}
-		return instance;
-	}
-
-	public void setValueProperties(String typeProperties, String valueProperties) {
+	public static void setValueProperties(String typeProperties, String valueProperties) {
 		Properties prop = new PropertyService().getProperties();
 		prop.setProperty(typeProperties, valueProperties);
 		OutputStream out = null;
@@ -36,8 +20,7 @@ public class PropertyService {
 			out = new FileOutputStream(propFileName);
 			prop.store(out, null);
 		} catch (IOException e) {
-			System.out.println(this.getClass().toString() + " "
-					+ e.getMessage() + " Error read properties from file: "
+			System.out.println(e.getMessage() + " Error read properties from file: "
 					+ propFileName);
 			if (createPath(propFileName)) {
 				setValueProperties(typeProperties, valueProperties);
@@ -48,13 +31,12 @@ public class PropertyService {
 					out.close();
 				}
 			} catch (IOException e) {
-				System.out.println(this.getClass().toString() + " "
-						+ e.getMessage() + " Error read properties");
+				System.out.println(e.getMessage() + " Error read properties");
 			}
 		}
 	}
 
-	private boolean createPath(String path) {
+	private static boolean createPath(String path) {
 		File f = new File(propFileName);
 		f.getParentFile().mkdirs();
 		try {
@@ -87,7 +69,7 @@ public class PropertyService {
 		return prop;
 	}
 
-	public String getValueProperties(String typeProperties) {
+	public static String getValueProperties(String typeProperties) {
 		Properties prop = new PropertyService().getProperties();
 		String valueProperties = prop.getProperty(typeProperties);
 		if (valueProperties != null) {
