@@ -1,12 +1,9 @@
 package com.social.services;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.salazart.UrlEncode;
 import com.social.models.Attachment;
 import com.social.models.Media;
 import com.social.models.SocialNetwork;
