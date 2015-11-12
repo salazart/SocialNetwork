@@ -98,6 +98,9 @@ public class AccessTokenService {
 	}
 
 	private HtmlPage permissionPageVk(HtmlPage autorizePage) {
+		if(autorizePage == null){
+			return null;
+		}
 		HtmlPage permissionPage = null;
 		HtmlForm form = autorizePage.getFirstByXPath(FORM_ELEMENT_PERMISSION);
 		if (form != null) {
@@ -118,6 +121,9 @@ public class AccessTokenService {
 	}
 
 	private HtmlPage permissionPageFb(HtmlPage autorizePage) {
+		if(autorizePage == null){
+			return null;
+		}
 		HtmlPage permissionPage = null;
 		HtmlForm form = autorizePage.getFirstByXPath(FORM_ELEMENT_PERMISSION);
 		if (form != null) {

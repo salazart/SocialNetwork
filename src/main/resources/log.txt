@@ -1,0 +1,13 @@
+2015-11-12 17:40:32,335 DEBUG [main] salazart.Log4j2 (Log4j2.java:11) - Hello this is a debug message
+2015-11-12 17:40:32,336 INFO  [main] salazart.Log4j2 (Log4j2.java:12) - Hello this is an info message
+2015-11-12 17:40:32,336 WARN  [main] salazart.Log4j2 (Log4j2.java:13) - Hello this is an warn message
+2015-11-12 17:40:32,336 ERROR [main] salazart.Log4j2 (Log4j2.java:14) - Hello this is an error message
+2015-11-12 17:40:32,337 FATAL [main] salazart.Log4j2 (Log4j2.java:15) - Hello this is an fatal message
+2015-11-12 17:40:59,824 TRACE [main] salazart.Log4j2 (Log4j2.java:9) - Start==========================
+2015-11-12 17:40:59,825 TRACE [main] salazart.Log4j2 (Log4j2.java:10) - Hello this is a trace message
+2015-11-12 17:40:59,826 DEBUG [main] salazart.Log4j2 (Log4j2.java:11) - Hello this is a debug message
+2015-11-12 17:40:59,826 INFO  [main] salazart.Log4j2 (Log4j2.java:12) - Hello this is an info message
+2015-11-12 17:40:59,826 WARN  [main] salazart.Log4j2 (Log4j2.java:13) - Hello this is an warn message
+2015-11-12 17:40:59,826 ERROR [main] salazart.Log4j2 (Log4j2.java:14) - Hello this is an error message
+2015-11-12 17:40:59,826 FATAL [main] salazart.Log4j2 (Log4j2.java:15) - Hello this is an fatal message
+2015-11-12 17:40:59,827 TRACE [main] salazart.Log4j2 (Log4j2.java:16) - End==========================

@@ -29,22 +29,19 @@ public class VkService{
 		System.out.println(content);
 	}
 
-	public void generateAccessToken(SocialNetwork socialNetwork,
+	public String generateAccessToken(SocialNetwork socialNetwork,
 			String typePermission) {
 		
 		String accessTokenRequest = createAccessTokenRequest(typePermission);
-		System.out.println(accessTokenRequest);
 		
 		AccessTokenService accessTokenService = new AccessTokenService(
 				accessTokenRequest, socialNetwork);
 		String url = accessTokenService.getAccessTokenResponse();
-		System.out.println(url);
 		
 		ResponseParser responseParser = new ResponseParser();
-		accessToken = responseParser.parseRequest(url,
+		return responseParser.parseRequest(url,
 				ParametersDictionary.ACCESS_TOKEN);
 		
-		System.out.println(accessToken);
 	}
 	
 	private String createAccessTokenRequest(String typePermission) {

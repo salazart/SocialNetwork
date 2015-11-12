@@ -1,9 +1,9 @@
 package com.salazart;
 
-import com.social.SocialNetworkFactory;
 import com.social.models.SocialNetwork;
 import com.social.models.SocialNetworkType;
 import com.social.models.requests.Post;
+import com.social.services.SocialNetworkFactory;
 import com.social.utils.PropertyService;
 
 public class PostToMyWayGroup {
@@ -13,7 +13,7 @@ public class PostToMyWayGroup {
 	public static void main(String[] args) {
 
 		Post post = new Post();
-		post.setText("Hello");
+		post.setText("Hello great world!");
 
 		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VKONTAKTE, "", "");
 
