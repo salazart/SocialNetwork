@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Log4j2 {
-	static final Logger logger = LogManager.getRootLogger();
+	private static final Logger logger = LogManager.getRootLogger();
 	public static void main(String[] args) {
 		logger.trace("Start==========================");
 		logger.trace("Hello this is a trace message");

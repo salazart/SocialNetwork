@@ -2,6 +2,8 @@ package com.social.services;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.social.models.Attachment;
@@ -21,6 +23,8 @@ public class OkService extends OkSessionService{
 	
 	private static final String APP_KEY = "okAppKey";
 	private static final String GROUP_ID = "okGroupId";
+	
+	private static final Logger log = LogManager.getRootLogger();
 	
 	private String accessToken = "";
 
@@ -58,6 +62,7 @@ public class OkService extends OkSessionService{
 
 	private String createPostRequest(String attachmentsText) {
 		String sig = generateSesionSignature(accessToken, attachmentsText);
+		log.debug("Session signature: ", sig);
 		
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.OK_URL_REQUEST);
@@ -84,12 +89,14 @@ public class OkService extends OkSessionService{
 
 	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
 		String accessTokenRequest = createAccessTokenRequest(typePermission);
-
+		log.debug("Access token request: " +  accessTokenRequest);
+		
 		AccessTokenService accessTokenService = new AccessTokenService(accessTokenRequest, socialNetwork);
-		String url = accessTokenService.getAccessTokenResponse();
+		String accessTokenResponse = accessTokenService.getAccessTokenResponse();
+		log.debug("Access token response: " + accessTokenResponse);
 
 		ResponseParser responseParser = new ResponseParser();
-		return responseParser.parseRequest(url, ParametersDictionary.ACCESS_TOKEN);
+		return responseParser.parseRequest(accessTokenResponse, ParametersDictionary.ACCESS_TOKEN);
 	}
 
 	private String createAccessTokenRequest(String typePermission) {

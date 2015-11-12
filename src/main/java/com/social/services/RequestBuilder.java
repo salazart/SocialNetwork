@@ -3,6 +3,9 @@ package com.social.services;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Class RequestBuilder build url with parameters for connection (Build api
  * stream)
@@ -16,6 +19,8 @@ public class RequestBuilder {
 	private static final String PROPERTY_SEPARATOR = "&";
 	private static final String COMMA_SEPARATOR = ",";
 
+	private static final Logger log = LogManager.getRootLogger();
+	
 	private String url;
 	private Map<String, String> params;
 

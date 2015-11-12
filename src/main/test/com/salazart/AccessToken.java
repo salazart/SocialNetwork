@@ -1,5 +1,8 @@
 package com.salazart;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.social.models.SocialNetwork;
 import com.social.models.SocialNetworkType;
 import com.social.services.FbService;
@@ -21,6 +24,8 @@ public class AccessToken {
 	
 	private static String vkLogin = PropertyService.getValueProperties("vkLogin");
 	private static String vkPass = PropertyService.getValueProperties("vkPass");
+	
+	private static final Logger log = LogManager.getRootLogger();
 	
 	public static void main(String[] args) {
 		SocialNetwork okSocialNetwork = new SocialNetwork(SocialNetworkType.OK, okLogin, okPass);

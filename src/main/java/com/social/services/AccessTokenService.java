@@ -2,6 +2,8 @@ package com.social.services;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.NodeList;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
@@ -25,6 +27,9 @@ public class AccessTokenService {
 	private static final String FORM_ELEMENT_PERMISSION_2 = "//form[@method='POST']";
 	private static final String FB_BUTTON_NAME = "__CONFIRM__";
 	private static final String OK_BUTTON_NAME = "button_accept_request";
+	
+	private static final Logger log = LogManager.getRootLogger();
+	
 	private String url;
 	private String typeAutorizeForm = "";
 	private String emailField = "";
@@ -34,6 +39,7 @@ public class AccessTokenService {
 	public AccessTokenService(String url, SocialNetwork socialNetwork) {
 		this.url = url;
 		this.socialNetwork = socialNetwork;
+		
 		switch (socialNetwork.getType()) {
 		case VKONTAKTE:
 			typeAutorizeForm = FORM_AUTORIZE_VK;

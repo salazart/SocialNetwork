@@ -4,79 +4,66 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+/**
+ * Class created for work with file config.properties
+ * @author salazart
+ *
+ */
 public class PropertyService {
-	private final static String PATH_PROPERTIES = "src/main/resources/config.properties";
-	private static String propFileName = PATH_PROPERTIES;
+	private final static String PATH_PROPERTIES = "/src/main/resources/config.properties";
+	private static String fileName = System.getProperty("user.dir") + PATH_PROPERTIES;
+	
+	private static final Logger log = LogManager.getRootLogger();
 
 	public static void setValueProperties(String typeProperties, String valueProperties) {
-		Properties prop = new PropertyService().getProperties();
-		prop.setProperty(typeProperties, valueProperties);
-		OutputStream out = null;
+		Properties properties = readFromFile();
+		properties.setProperty(typeProperties, valueProperties);
+		writeToFile(properties);
+	}
+
+	private static void writeToFile(Properties properties) {
+		createDirectory();
+			
 		try {
-			out = new FileOutputStream(propFileName);
-			prop.store(out, null);
+			properties.store(new FileOutputStream(fileName), null);
+			log.debug("File saved successfully: " + fileName);
 		} catch (IOException e) {
-			System.out.println(e.getMessage() + " Error read properties from file: "
-					+ propFileName);
-			if (createPath(propFileName)) {
-				setValueProperties(typeProperties, valueProperties);
-			}
-		} finally {
-			try {
-				if (out != null) {
-					out.close();
-				}
-			} catch (IOException e) {
-				System.out.println(e.getMessage() + " Error read properties");
-			}
+			log.error(e);
+		} 
+	}
+
+	private static void createDirectory() {
+		File parentFolder = new File(new File(fileName).getParent());
+		if(!parentFolder.isDirectory()){
+			System.out.println(parentFolder.getParent());
+			if(parentFolder.mkdirs()){
+				log.debug("Folder created successfully: " + parentFolder);
+			};
 		}
 	}
 
-	private static boolean createPath(String path) {
-		File f = new File(propFileName);
-		f.getParentFile().mkdirs();
+	private static Properties readFromFile() {
+		Properties properties = new Properties();
 		try {
-			f.createNewFile();
-			System.out.println("File: " + propFileName
-					+ " created successfully");
-			return true;
-		} catch (IOException e) {
-			System.out.println(e.getMessage() + " Can't create file: " + path);
-			return false;
+			properties.load(new FileInputStream(fileName));
+		} catch (Exception e) {
+			log.error(e);
 		}
-	}
-
-	public Properties getProperties() {
-		Properties prop = new Properties();
-		if (new File(propFileName).isFile()) {
-			InputStream inputStream = null;
-			try {
-				inputStream = new FileInputStream(propFileName);
-				prop.load(inputStream);
-				inputStream.close();
-			} catch (Exception e) {
-				System.out.println(this.getClass().toString() + " "
-						+ e.getMessage() + " Error read properties");
-			}
-		} else {
-			System.out.println(this.getClass().toString()
-					+ " Don't found propertyfile " + PATH_PROPERTIES);
-		}
-		return prop;
+		return properties;
 	}
 
 	public static String getValueProperties(String typeProperties) {
-		Properties prop = new PropertyService().getProperties();
-		String valueProperties = prop.getProperty(typeProperties);
-		if (valueProperties != null) {
-			return valueProperties;
-		} else {
+		String valueProperties = readFromFile().getProperty(typeProperties);
+		if (valueProperties == null) {
 			setValueProperties(typeProperties, "");
 			return "";
+		} else {
+			return valueProperties;
 		}
 	}
 }
