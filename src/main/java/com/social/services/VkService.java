@@ -1,13 +1,19 @@
 package com.social.services;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.social.accesstoken.services.AccessTokenFactory;
 import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
 import com.social.utils.ParametersDictionary;
 import com.social.utils.PermissionDictionary;
+import com.social.utils.PropertyService;
 import com.social.utils.UrlsDictionary;
 
 public class VkService{
-	private static final String APP_ID = "4517745";
+	private static final Logger log = LogManager.getRootLogger();
+	private static final String APP_ID = "vkAppId";
 	private String accessToken = "";
 
 	public void postWall(Post post, SocialNetwork socialNetwork) {
@@ -22,24 +28,25 @@ public class VkService{
 		requestBuilder.addParam(ParametersDictionary.OWNER_ID, post.getId());
 		requestBuilder.addParam(ParametersDictionary.MESSAGE, post.getText());
 
-		System.out.println(requestBuilder.buildRequest());
+		log.debug("Post request: " + requestBuilder.buildRequest());
 		ConnectionService connectionService = new ConnectionService();
 		String content = connectionService.createConnection(requestBuilder
 				.buildRequest());
-		System.out.println(content);
+		log.debug("Post response: " + content);
 	}
 
 	public String generateAccessToken(SocialNetwork socialNetwork,
 			String typePermission) {
 		
-		String accessTokenRequest = createAccessTokenRequest(typePermission);
+		String urlRequest = createAccessTokenRequest(typePermission);
+		log.debug("Access token request: " +  urlRequest);
 		
-		AccessTokenService accessTokenService = new AccessTokenService(
-				accessTokenRequest, socialNetwork);
-		String url = accessTokenService.getAccessTokenResponse();
+		AccessTokenFactory accessTokenService = new AccessTokenFactory(urlRequest);
+		String accessTokenResponse = accessTokenService.getAccessTokenResponse(socialNetwork);
+		log.debug("Access token response: " + accessTokenResponse);
 		
 		ResponseParser responseParser = new ResponseParser();
-		return responseParser.parseRequest(url,
+		return responseParser.parseRequest(accessTokenResponse,
 				ParametersDictionary.ACCESS_TOKEN);
 		
 	}
@@ -47,7 +54,10 @@ public class VkService{
 	private String createAccessTokenRequest(String typePermission) {
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.VK_OAUTH_DIALOG);
-		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, APP_ID);
+		
+		String appId = PropertyService.getValueProperties(APP_ID);
+		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, appId);
+		
 		requestBuilder.addParam(ParametersDictionary.RESPONSE_TYPE,
 				ParametersDictionary.TOKEN);
 		requestBuilder.addParam(ParametersDictionary.SCOPE, typePermission);
