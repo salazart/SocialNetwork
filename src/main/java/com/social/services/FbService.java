@@ -8,10 +8,11 @@ import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
 import com.social.utils.ParametersDictionary;
 import com.social.utils.PermissionDictionary;
+import com.social.utils.PropertyService;
 import com.social.utils.UrlsDictionary;
 
 public class FbService {
-	private static final String APP_ID = "700011900132723";
+	private static final String APP_ID = "fbAppId";
 	
 	private static final Logger log = LogManager.getRootLogger();
 	
@@ -39,17 +40,16 @@ public class FbService {
 		log.debug("Access token request: " +  urlRequest);
 		
 		AccessTokenFactory accessTokenService = new AccessTokenFactory(urlRequest);
-		String accessTokenResponse = accessTokenService.getAccessTokenResponse(socialNetwork);
-		log.debug("Access token response: " + accessTokenResponse);
-		
-		ResponseParser responseParser = new ResponseParser();
-		return responseParser.parseRequest(accessTokenResponse, ParametersDictionary.ACCESS_TOKEN);
+		return accessTokenService.getAccessTokenResponse(socialNetwork);
 	}
 	
 	private String createAccessTokenRequest(String typePermission) {
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.FB_OAUTH_DIALOG);
-		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, APP_ID);
+		
+		String appId = PropertyService.getValueProperties(APP_ID);
+		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, appId);
+
 		requestBuilder.addParam(ParametersDictionary.RESPONSE_TYPE,
 				ParametersDictionary.TOKEN);
 		requestBuilder.addParam(ParametersDictionary.SCOPE, typePermission);

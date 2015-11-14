@@ -1,7 +1,5 @@
 package com.social.accesstoken.services;
 
-import java.io.IOException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.NodeList;
@@ -39,25 +37,31 @@ public class VKAccessToken extends AutorizeService{
 	}
 
 	private HtmlPage handlePermissionPage(HtmlPage autorizePage) {
-		if(autorizePage == null){
+		HtmlForm form = getPermissionForm(autorizePage);
+		
+		return emulatePermissionButtonClick(form);
+	}
+	
+	private HtmlForm getPermissionForm(HtmlPage autorizePage) {
+		if(autorizePage != null){
+			log.debug("Gettign permission form");
+			return autorizePage.getFirstByXPath(AutorizeDictionary.FORM_ELEMENT_PERMISSION);
+		} else {
+			log.debug("Authorize page is null");
 			return null;
 		}
-		HtmlPage permissionPage = null;
-		HtmlForm form = autorizePage.getFirstByXPath(AutorizeDictionary.FORM_ELEMENT_PERMISSION);
-		if (form != null) {
+	}
+
+	private HtmlPage emulatePermissionButtonClick(HtmlForm form) {
+		try {
+			log.debug("Emulating button click for getting rule");
 			NodeList inputElements = form
 					.getElementsByTagName(AutorizeDictionary.NAME_INPUT_FIELD);
 			HtmlSubmitInput htmlSubmitInput = getSubmitButton(inputElements);
-
-			if (htmlSubmitInput != null) {
-				try {
-					return htmlSubmitInput.click();
-				} catch (IOException e) {
-					return null;
-				}
-			}
+			return htmlSubmitInput.click();
+		} catch (Exception e) {
+			log.debug(e);
+			return null;
 		}
-
-		return permissionPage;
 	}
 }

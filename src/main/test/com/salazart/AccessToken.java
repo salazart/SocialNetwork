@@ -29,8 +29,8 @@ public class AccessToken {
 	
 	public static void main(String[] args) {
 		SocialNetwork okSocialNetwork = new SocialNetwork(SocialNetworkType.OK, okLogin, okPass);
-		SocialNetwork fbSocialNetwork = new SocialNetwork(SocialNetworkType.FACEBOOK, fbLogin, fbPass);
-		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VKONTAKTE, vkLogin, vkPass);
+		SocialNetwork fbSocialNetwork = new SocialNetwork(SocialNetworkType.FB, fbLogin, fbPass);
+		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VK, vkLogin, vkPass);
 
 		OkService okService = new OkService();
 		String okAccessToken = okService.generateAccessToken(okSocialNetwork, PermissionDictionary.OK_GROUP_CONTENT);

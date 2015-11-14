@@ -1,6 +1,7 @@
 package com.social.accesstoken.services;
 
-import java.io.IOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.gargoylesoftware.htmlunit.html.HtmlButton;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
@@ -10,7 +11,7 @@ import com.social.models.SocialNetwork;
 import com.social.utils.AutorizeDictionary;
 
 public class OKAccessToken extends AutorizeService{
-	
+	private static final Logger log = LogManager.getRootLogger();
 	private AutorizeEntity autorizeEntity;
 	
 	public OKAccessToken(String url) {
@@ -22,40 +23,42 @@ public class OKAccessToken extends AutorizeService{
 	}
 	
 	public String getAccessTokenResponse(SocialNetwork socialNetwork){
-		HtmlPage permissionPage = handleAutorizePage(autorizeEntity, socialNetwork);
-		HtmlPage accessTokenPage = permissionPage(permissionPage);
-		
-		if (accessTokenPage != null) {
-			return String.valueOf(accessTokenPage.getWebResponse().getRequestUrl());
-		} else if (permissionPage != null){
-			return String.valueOf(permissionPage.getWebResponse().getRequestUrl());
+		if(isAuthCorrect(socialNetwork)){
+			log.debug("Login and pass is correct");
+			HtmlPage permissionPage = handleAutorizePage(autorizeEntity, socialNetwork);
+			HtmlPage accessTokenPage = handlePermissionPage(permissionPage);
+			
+			return getRequestUrl(permissionPage, accessTokenPage);
 		} else {
+			log.error("Login or pass is incorrect");
 			return "";
 		}
 	}
 	
-	private HtmlPage permissionPage(HtmlPage autorizePage) {
-		if(autorizePage == null){
+	private HtmlPage handlePermissionPage(HtmlPage autorizePage) {
+		HtmlForm form = getPermissionForm(autorizePage);
+		
+		return emulatePermissionButtonClick(form);
+	}
+	
+	private HtmlForm getPermissionForm(HtmlPage autorizePage) {
+		if(autorizePage != null){
+			log.debug("Gettign permission form");
+			return autorizePage.getFirstByXPath(AutorizeDictionary.OK_FORM_ELEMENT_PERMISSION);
+		} else {
+			log.debug("Authorize page is null");
 			return null;
 		}
-		HtmlPage permissionPage = null;
-		HtmlForm form = autorizePage.getFirstByXPath(AutorizeDictionary.OK_FORM_ELEMENT_PERMISSION_2);
-		if (form != null) {
-			HtmlButton button = null;
-			try {
-				button = form.getButtonByName(AutorizeDictionary.OK_BUTTON_NAME);
-			} catch (Exception e) {
-				return null;
-			}
-
-			if (button != null) {
-				try {
-					return button.click();
-				} catch (IOException e) {
-					return null;
-				}
-			}
+	}
+	
+	private HtmlPage emulatePermissionButtonClick(HtmlForm form) {
+		try {
+			log.debug("Emulating button click for getting rule");
+			HtmlButton button = form.getButtonByName(AutorizeDictionary.OK_BUTTON_NAME);
+			return button.click();
+		} catch (Exception e) {
+			log.debug(e);
+			return null;
 		}
-		return permissionPage;
 	}
 }

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.social.accesstoken.services.AccessTokenFactory;
+import com.social.accesstoken.services.RequestParser;
 import com.social.models.Attachment;
 import com.social.models.Media;
 import com.social.models.SocialNetwork;
@@ -93,11 +94,7 @@ public class OkService extends OkSessionService{
 		log.debug("Access token request: " +  urlRequest);
 		
 		AccessTokenFactory accessTokenService = new AccessTokenFactory(urlRequest);
-		String accessTokenResponse = accessTokenService.getAccessTokenResponse(socialNetwork);
-		log.debug("Access token response: " + accessTokenResponse);
-
-		ResponseParser responseParser = new ResponseParser();
-		return responseParser.parseRequest(accessTokenResponse, ParametersDictionary.ACCESS_TOKEN);
+		return accessTokenService.getAccessTokenResponse(socialNetwork);
 	}
 
 	private String createAccessTokenRequest(String typePermission) {

@@ -15,13 +15,13 @@ public class PostToMyWayGroup {
 		Post post = new Post();
 		post.setText("Hello great world!");
 
-		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VKONTAKTE, "", "");
+		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VK, "", "");
 
 		post.setId("-97270724");
 
 		//new SocialNetworkFactory().postSocialNetwork(vkSocialNetwork, post);
 
-		SocialNetwork fbSocialNetwork = new SocialNetwork(SocialNetworkType.FACEBOOK, "", "");
+		SocialNetwork fbSocialNetwork = new SocialNetwork(SocialNetworkType.FB, "", "");
 		post.setId("863375127077356");
 
 		//new SocialNetworkFactory().postSocialNetwork(fbSocialNetwork, post);

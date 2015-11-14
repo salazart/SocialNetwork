@@ -1,7 +1,5 @@
 package com.social.accesstoken.services;
 
-import java.io.IOException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,28 +36,29 @@ public class FBAccessToken extends AutorizeService{
 	}
 	
 	private HtmlPage handlePermissionPage(HtmlPage autorizePage) {
-		if(autorizePage == null){
-			return null;
-		}
-		HtmlPage permissionPage = null;
-		HtmlForm form = autorizePage.getFirstByXPath(AutorizeDictionary.FORM_ELEMENT_PERMISSION);
-		if (form != null) {
-			HtmlButton button = null;
-			try {
-				button = form.getButtonByName(AutorizeDictionary.FB_BUTTON_NAME);
-			} catch (Exception e) {
-				return null;
-			}
-
-			if (button != null) {
-				try {
-					return button.click();
-				} catch (IOException e) {
-					return null;
-				}
-			}
-		}
-		return permissionPage;
+		HtmlForm form = getPermissionForm(autorizePage);
+		
+		return emulatePermissionButtonClick(form);
 	}
 	
+	private HtmlForm getPermissionForm(HtmlPage autorizePage) {
+		if(autorizePage != null){
+			log.debug("Gettign permission form");
+			return autorizePage.getFirstByXPath(AutorizeDictionary.FORM_ELEMENT_PERMISSION);
+		} else {
+			log.debug("Authorize page is null");
+			return null;
+		}
+	}
+	
+	private HtmlPage emulatePermissionButtonClick(HtmlForm form) {
+		try {
+			log.debug("Emulating button click for getting rule");
+			HtmlButton button = form.getButtonByName(AutorizeDictionary.FB_BUTTON_NAME);
+			return button.click();
+		} catch (Exception e) {
+			log.debug(e);
+			return null;
+		}
+	}
 }

@@ -1,4 +1,4 @@
-package com.social.services;
+package com.social.accesstoken.services;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -16,13 +16,13 @@ import org.apache.logging.log4j.Logger;
  *
  */
 
-public class ResponseParser {
+public class RequestParser {
     private static final String GRILLE_SEPARATOR = "#";
     private static final String PROPERTY_SEPARATOR = "&";
     
     private static final Logger log = LogManager.getRootLogger();
     
-    public String parseRequest(String url, String parameter) {
+    protected String parseRequest(String url, String parameter) {
     	log.debug("Url for parsing: " + url);
     	String urlsEntity = StringUtils.substringAfter(url, GRILLE_SEPARATOR);
 

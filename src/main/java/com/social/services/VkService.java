@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.social.accesstoken.services.AccessTokenFactory;
+import com.social.accesstoken.services.RequestParser;
 import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
 import com.social.utils.ParametersDictionary;
@@ -42,13 +43,7 @@ public class VkService{
 		log.debug("Access token request: " +  urlRequest);
 		
 		AccessTokenFactory accessTokenService = new AccessTokenFactory(urlRequest);
-		String accessTokenResponse = accessTokenService.getAccessTokenResponse(socialNetwork);
-		log.debug("Access token response: " + accessTokenResponse);
-		
-		ResponseParser responseParser = new ResponseParser();
-		return responseParser.parseRequest(accessTokenResponse,
-				ParametersDictionary.ACCESS_TOKEN);
-		
+		return accessTokenService.getAccessTokenResponse(socialNetwork);
 	}
 	
 	private String createAccessTokenRequest(String typePermission) {
