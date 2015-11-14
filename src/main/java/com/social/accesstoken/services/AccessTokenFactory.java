@@ -13,11 +13,11 @@ public class AccessTokenFactory {
 	public String getAccessTokenResponse(SocialNetwork socialNetwork) {
 		switch (socialNetwork.getType()) {
 		case VK:
-			return new VKAccessToken(url).getAccessTokenResponse(socialNetwork);
+			return new VkAccessToken(url).getAccessToken(socialNetwork);
 		case FB:
-			return new FBAccessToken(url).getAccessTokenResponse(socialNetwork);
+			return new FbAccessToken(url).getAccessToken(socialNetwork);
 		case OK:
-			return new OKAccessToken(url).getAccessTokenResponse(socialNetwork);
+			return new OkAccessToken(url).getAccessToken(socialNetwork);
 		default:
 			return "";
 		}

@@ -6,8 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.social.accesstoken.services.AccessTokenFactory;
-import com.social.accesstoken.services.RequestParser;
+import com.social.accesstoken.services.OkAccessToken;
 import com.social.models.Attachment;
 import com.social.models.Media;
 import com.social.models.SocialNetwork;
@@ -18,32 +17,32 @@ import com.social.utils.PropertyService;
 import com.social.utils.UrlsDictionary;
 
 public class OkService extends OkSessionService{
-	private static final String ACCESS_TOKEN = "okAccessToken";
 	private static final String APP_ID = "okAppId";
 	private static final String METHOD = "okMethod";
 	private static final String POST_TYPE = "okPostType";
-	
 	private static final String APP_KEY = "okAppKey";
 	private static final String GROUP_ID = "okGroupId";
 	
 	private static final Logger log = LogManager.getRootLogger();
 	
-	private String accessToken = "";
-
-	public void postWall(Post post, SocialNetwork socialNetwork) {
-		accessToken = PropertyService.getValueProperties(ACCESS_TOKEN);
-		if (accessToken.isEmpty()) {
-			accessToken = generateAccessToken(socialNetwork, PermissionDictionary.OK_GROUP_CONTENT);
-			PropertyService.setValueProperties(ACCESS_TOKEN,accessToken);
-		}
-		
+	private SocialNetwork socialNetwork;
+	
+	public OkService(SocialNetwork socialNetwork) {
+		this.socialNetwork = socialNetwork;
+	}
+	
+	public void postToWall(Post post) {
+		log.debug("=Start process posting to OK...=");
 		String attachmentsText = getAttachmentsText(post);
+		log.debug("Attachment text: " + attachmentsText);
 		
 		String postRequest =  createPostRequest(attachmentsText);
+		log.debug("Post request: " + postRequest);
 		
 		ConnectionService connectionService = new ConnectionService(ConnectionService.POST_REQUEST_METHOD);
 		String content = connectionService.createConnection(postRequest);
-		System.out.println(content);
+		log.debug("Post response: " + content);
+		log.debug("=Finish process posting to OK...=");
 	}
 
 	private String getAttachmentsText(Post post) {
@@ -63,8 +62,9 @@ public class OkService extends OkSessionService{
 	}
 
 	private String createPostRequest(String attachmentsText) {
+		String accessToken = generateAccessToken(PermissionDictionary.OK_GROUP_CONTENT);
+		
 		String sig = generateSesionSignature(accessToken, attachmentsText);
-		log.debug("Session signature: ", sig);
 		
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.OK_URL_REQUEST);
@@ -89,15 +89,7 @@ public class OkService extends OkSessionService{
 		return requestBuilder.buildRequest();
 	}
 
-	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
-		String urlRequest = createAccessTokenRequest(typePermission);
-		log.debug("Access token request: " +  urlRequest);
-		
-		AccessTokenFactory accessTokenService = new AccessTokenFactory(urlRequest);
-		return accessTokenService.getAccessTokenResponse(socialNetwork);
-	}
-
-	private String createAccessTokenRequest(String typePermission) {
+	public String generateAccessToken(String typePermission) {
 		RequestBuilder requestBuilder = new RequestBuilder(UrlsDictionary.OK_OAUTH_DIALOG);
 		
 		String appId = PropertyService.getValueProperties(APP_ID);
@@ -106,6 +98,10 @@ public class OkService extends OkSessionService{
 		requestBuilder.addParam(ParametersDictionary.RESPONSE_TYPE, ParametersDictionary.TOKEN);
 		requestBuilder.addParam(ParametersDictionary.SCOPE, typePermission);
 		requestBuilder.addParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.OK_REDIRECT_URL);
-		return requestBuilder.buildRequest();
+		
+		String urlRequest = requestBuilder.buildRequest();
+		log.debug("Access token request: " +  urlRequest);
+		
+		return new OkAccessToken(urlRequest).getAccessToken(socialNetwork);
 	}
 }

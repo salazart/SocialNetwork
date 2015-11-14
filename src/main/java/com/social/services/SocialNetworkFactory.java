@@ -4,16 +4,16 @@ import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
 
 public class SocialNetworkFactory {
-	public void post(SocialNetwork socialNetwork, Post post) {
+	public void postToWall(SocialNetwork socialNetwork, Post post) {
 		switch (socialNetwork.getType()) {
 		case VK:
-			new VkService().postWall(post, socialNetwork);
+			new VkService(socialNetwork).postToWall(post);
 			break;
 		case FB:
-			new FbService().postWall(post, socialNetwork);
+			new FbService(socialNetwork).postToWall(post);
 			break;
 		case OK:
-			new OkService().postWall(post, socialNetwork);
+			new OkService(socialNetwork).postToWall(post);
 			break;
 		default:
 			break;

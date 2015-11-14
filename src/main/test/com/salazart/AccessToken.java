@@ -32,18 +32,18 @@ public class AccessToken {
 		SocialNetwork fbSocialNetwork = new SocialNetwork(SocialNetworkType.FB, fbLogin, fbPass);
 		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VK, vkLogin, vkPass);
 
-		OkService okService = new OkService();
-		String okAccessToken = okService.generateAccessToken(okSocialNetwork, PermissionDictionary.OK_GROUP_CONTENT);
+		OkService okService = new OkService(okSocialNetwork);
+		String okAccessToken = okService.generateAccessToken(PermissionDictionary.OK_GROUP_CONTENT);
 		//PropertyService.setValueProperties(OK_ACCESS_TOKEN, okAccessToken);
 		System.out.println(OK_ACCESS_TOKEN + " = " + okAccessToken);
 
-		FbService fbService = new FbService();
-		String fbAccessToken = fbService.generateAccessToken(fbSocialNetwork, PermissionDictionary.FB_PUBLISH_ACTION);
+		FbService fbService = new FbService(fbSocialNetwork);
+		String fbAccessToken = fbService.generateAccessToken(PermissionDictionary.FB_PUBLISH_ACTION);
 		//PropertyService.setValueProperties(FB_ACCESS_TOKEN, fbAccessToken);
 		System.out.println(FB_ACCESS_TOKEN + " = " + fbAccessToken);
 		
-		VkService vkService = new VkService();
-		String vkAccessToken = vkService.generateAccessToken(vkSocialNetwork, PermissionDictionary.VK_WALL);
+		VkService vkService = new VkService(vkSocialNetwork);
+		String vkAccessToken = vkService.generateAccessToken(PermissionDictionary.VK_WALL);
 		//PropertyService.setValueProperties(VK_ACCESS_TOKEN, vkAccessToken);
 		System.out.println(VK_ACCESS_TOKEN + " = " + vkAccessToken);
 	}

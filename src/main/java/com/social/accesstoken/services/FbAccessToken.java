@@ -10,19 +10,19 @@ import com.social.accesstoken.models.AutorizeEntity;
 import com.social.models.SocialNetwork;
 import com.social.utils.AutorizeDictionary;
 
-public class OKAccessToken extends AutorizeService{
+public class FbAccessToken extends AutorizeService{
 	private static final Logger log = LogManager.getRootLogger();
 	private AutorizeEntity autorizeEntity;
 	
-	public OKAccessToken(String url) {
+	public FbAccessToken(String url) {
 		autorizeEntity = new AutorizeEntity(
 				url, 
-				AutorizeDictionary.FORM_AUTORIZE_OK, 
-				AutorizeDictionary.OK_EMAIL_FIELD, 
-				AutorizeDictionary.OK_PASS_FIELD);
+				AutorizeDictionary.FB_FORM_AUTORIZE, 
+				AutorizeDictionary.NAME_EMAIL_FIELD, 
+				AutorizeDictionary.NAME_PASS_FIELD);
 	}
-	
-	public String getAccessTokenResponse(SocialNetwork socialNetwork){
+
+	public String getAccessToken(SocialNetwork socialNetwork){
 		if(isAuthCorrect(socialNetwork)){
 			log.debug("Login and pass is correct");
 			HtmlPage permissionPage = handleAutorizePage(autorizeEntity, socialNetwork);
@@ -44,7 +44,7 @@ public class OKAccessToken extends AutorizeService{
 	private HtmlForm getPermissionForm(HtmlPage autorizePage) {
 		if(autorizePage != null){
 			log.debug("Gettign permission form");
-			return autorizePage.getFirstByXPath(AutorizeDictionary.OK_FORM_ELEMENT_PERMISSION);
+			return autorizePage.getFirstByXPath(AutorizeDictionary.FORM_ELEMENT_PERMISSION);
 		} else {
 			log.debug("Authorize page is null");
 			return null;
@@ -54,7 +54,7 @@ public class OKAccessToken extends AutorizeService{
 	private HtmlPage emulatePermissionButtonClick(HtmlForm form) {
 		try {
 			log.debug("Emulating button click for getting rule");
-			HtmlButton button = form.getButtonByName(AutorizeDictionary.OK_BUTTON_NAME);
+			HtmlButton button = form.getButtonByName(AutorizeDictionary.FB_BUTTON_NAME);
 			return button.click();
 		} catch (Exception e) {
 			log.debug(e);

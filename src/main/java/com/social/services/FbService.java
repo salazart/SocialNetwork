@@ -3,7 +3,7 @@ package com.social.services;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.social.accesstoken.services.AccessTokenFactory;
+import com.social.accesstoken.services.FbAccessToken;
 import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
 import com.social.utils.ParametersDictionary;
@@ -16,9 +16,15 @@ public class FbService {
 	
 	private static final Logger log = LogManager.getRootLogger();
 	
-	public void postWall(Post post, SocialNetwork socialNetwork) {
-		String accessToken = generateAccessToken(socialNetwork,
-				PermissionDictionary.FB_PUBLISH_ACTION);
+	private SocialNetwork socialNetwork;
+	
+	public FbService(SocialNetwork socialNetwork) {
+		this.socialNetwork = socialNetwork;
+	}
+	
+	public void postToWall(Post post) {
+		log.debug("=Start process posting to FB...=");
+		String accessToken = generateAccessToken(PermissionDictionary.FB_PUBLISH_ACTION);
 
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.FB_GRAPH + post.getId()
@@ -33,17 +39,10 @@ public class FbService {
 		String content = connectionService.createConnection(requestBuilder
 				.buildRequest());
 		log.debug("Post response: " + content);
+		log.debug("=Finish process posting to FB...=");
 	}
 
-	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
-		String urlRequest = createAccessTokenRequest(typePermission);
-		log.debug("Access token request: " +  urlRequest);
-		
-		AccessTokenFactory accessTokenService = new AccessTokenFactory(urlRequest);
-		return accessTokenService.getAccessTokenResponse(socialNetwork);
-	}
-	
-	private String createAccessTokenRequest(String typePermission) {
+	public String generateAccessToken(String typePermission) {
 		RequestBuilder requestBuilder = new RequestBuilder(
 				UrlsDictionary.FB_OAUTH_DIALOG);
 		
@@ -57,6 +56,10 @@ public class FbService {
 				UrlsDictionary.FB_REDIRECT_URL);
 		requestBuilder.addParam(ParametersDictionary.DISPLAY,
 				ParametersDictionary.POPUP);
-		return requestBuilder.buildRequest();
+		
+		String urlRequest = requestBuilder.buildRequest();
+		log.debug("Access token request: " +  urlRequest);
+		
+		return new FbAccessToken(urlRequest).getAccessToken(socialNetwork);
 	}
 }
