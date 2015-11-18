@@ -7,16 +7,16 @@ import org.w3c.dom.NodeList;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.social.accesstoken.models.AutorizeEntity;
+import com.social.accesstoken.models.AuthorizeEntity;
 import com.social.models.SocialNetwork;
 import com.social.utils.AutorizeDictionary;
 
 public class VkAccessToken extends AutorizeService{
 	private static final Logger log = LogManager.getRootLogger();
-	private AutorizeEntity autorizeEntity;
+	private AuthorizeEntity autorizeEntity;
 	
 	public VkAccessToken(String url) {
-		autorizeEntity = new AutorizeEntity(
+		autorizeEntity = new AuthorizeEntity(
 				url, 
 				AutorizeDictionary.FORM_AUTORIZE_VK, 
 				AutorizeDictionary.NAME_EMAIL_FIELD, 

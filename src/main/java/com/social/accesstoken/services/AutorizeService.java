@@ -12,7 +12,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.social.accesstoken.models.AutorizeEntity;
+import com.social.accesstoken.models.AuthorizeEntity;
 import com.social.models.SocialNetwork;
 import com.social.utils.AutorizeDictionary;
 import com.social.utils.ParametersDictionary;
@@ -20,7 +20,7 @@ import com.social.utils.ParametersDictionary;
 public class AutorizeService extends RequestParser{
 	private static final Logger log = LogManager.getRootLogger();
 	
-	protected HtmlPage handleAutorizePage(AutorizeEntity autorizeEntity, SocialNetwork socialNetwork) {
+	protected HtmlPage handleAutorizePage(AuthorizeEntity autorizeEntity, SocialNetwork socialNetwork) {
 		HtmlPage autorizePage = getAuthorizePage(autorizeEntity);
 		
 		HtmlForm form = enterAuthorizationData(autorizeEntity, socialNetwork, autorizePage);
@@ -28,7 +28,7 @@ public class AutorizeService extends RequestParser{
 		return emulateAutorizeButtonClick(form);
 	}
 	
-	private HtmlPage getAuthorizePage(AutorizeEntity autorizeEntity) {
+	private HtmlPage getAuthorizePage(AuthorizeEntity autorizeEntity) {
 		try {
 			log.debug("Getting authorization page");
 			WebClient webClient = new WebClient(BrowserVersion.FIREFOX_3);
@@ -40,7 +40,7 @@ public class AutorizeService extends RequestParser{
 		}
 	}
 
-	private HtmlForm enterAuthorizationData(AutorizeEntity autorizeEntity, SocialNetwork socialNetwork,
+	private HtmlForm enterAuthorizationData(AuthorizeEntity autorizeEntity, SocialNetwork socialNetwork,
 			HtmlPage autorizePage) {
 		try {
 			log.debug("Emulate a login and pass on the form");

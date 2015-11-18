@@ -1,12 +1,12 @@
 package com.social.accesstoken.models;
 
-public class AutorizeEntity {
+public class AuthorizeEntity {
 	private String url;
 	private String typeAutorizeForm = "";
 	private String emailField = "";
 	private String passField = "";
 	
-	public AutorizeEntity(String url, String typeAutorizeForm, String emailField, String passField) {
+	public AuthorizeEntity(String url, String typeAutorizeForm, String emailField, String passField) {
 		setUrl(url);
 		setTypeAutorizeForm(typeAutorizeForm);
 		setEmailField(emailField);
