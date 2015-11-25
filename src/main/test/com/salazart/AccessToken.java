@@ -34,18 +34,15 @@ public class AccessToken {
 
 		OkService okService = new OkService(okSocialNetwork);
 		String okAccessToken = okService.generateAccessToken(PermissionDictionary.OK_GROUP_CONTENT);
-		//PropertyService.setValueProperties(OK_ACCESS_TOKEN, okAccessToken);
-		System.out.println(OK_ACCESS_TOKEN + " = " + okAccessToken);
+		log.debug(OK_ACCESS_TOKEN + " = " + okAccessToken);
 
 		FbService fbService = new FbService(fbSocialNetwork);
 		String fbAccessToken = fbService.generateAccessToken(PermissionDictionary.FB_PUBLISH_ACTION);
-		//PropertyService.setValueProperties(FB_ACCESS_TOKEN, fbAccessToken);
-		System.out.println(FB_ACCESS_TOKEN + " = " + fbAccessToken);
+		log.debug(FB_ACCESS_TOKEN + " = " + fbAccessToken);
 		
 		VkService vkService = new VkService(vkSocialNetwork);
 		String vkAccessToken = vkService.generateAccessToken(PermissionDictionary.VK_WALL);
-		//PropertyService.setValueProperties(VK_ACCESS_TOKEN, vkAccessToken);
-		System.out.println(VK_ACCESS_TOKEN + " = " + vkAccessToken);
+		log.debug(VK_ACCESS_TOKEN + " = " + vkAccessToken);
 	}
 
 }

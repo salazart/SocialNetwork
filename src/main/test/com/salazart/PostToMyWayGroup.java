@@ -19,7 +19,7 @@ public class PostToMyWayGroup {
 	public static void main(String[] args) {
 
 		Post post = new Post();
-		post.setText("Hello great great great world!");
+		post.setText("Hello world number one!");
 
 		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VK, vkLogin, vkPass);
 		SocialNetwork okSocialNetwork = new SocialNetwork(SocialNetworkType.OK, okLogin, okPass);

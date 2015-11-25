@@ -2,6 +2,7 @@ package com.social.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.social.accesstoken.services.FbAccessToken;
 import com.social.models.SocialNetwork;
@@ -26,38 +27,31 @@ public class FbService {
 		log.debug("=Start process posting to FB...=");
 		String accessToken = generateAccessToken(PermissionDictionary.FB_PUBLISH_ACTION);
 
-		RequestBuilder requestBuilder = new RequestBuilder(
-				UrlsDictionary.FB_GRAPH + post.getId()
-						+ UrlsDictionary.FB_POST_WALL);
-
-		requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken);
-		requestBuilder.addParam(ParametersDictionary.MESSAGE, post.getText());
-
-		log.debug("Post request: " + requestBuilder.buildRequest());
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
+				UrlsDictionary.FB_GRAPH + post.getId() + UrlsDictionary.FB_POST_WALL)
+				.queryParam(ParametersDictionary.ACCESS_TOKEN, accessToken)
+				.queryParam(ParametersDictionary.MESSAGE, post.getText());
+		
+		log.debug("Post request: " + builder.build().encode().toUri().toString());
 		ConnectionService connectionService = new ConnectionService(
 				ConnectionService.POST_REQUEST_METHOD);
-		String content = connectionService.createConnection(requestBuilder
-				.buildRequest());
+		String content = connectionService.createConnection(
+				builder.build().encode().toUri().toString());
 		log.debug("Post response: " + content);
 		log.debug("=Finish process posting to FB...=");
 	}
 
 	public String generateAccessToken(String typePermission) {
-		RequestBuilder requestBuilder = new RequestBuilder(
-				UrlsDictionary.FB_OAUTH_DIALOG);
-		
 		String appId = PropertyService.getValueProperties(APP_ID);
-		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, appId);
-
-		requestBuilder.addParam(ParametersDictionary.RESPONSE_TYPE,
-				ParametersDictionary.TOKEN);
-		requestBuilder.addParam(ParametersDictionary.SCOPE, typePermission);
-		requestBuilder.addParam(ParametersDictionary.REDIRECT_URI,
-				UrlsDictionary.FB_REDIRECT_URL);
-		requestBuilder.addParam(ParametersDictionary.DISPLAY,
-				ParametersDictionary.POPUP);
 		
-		String urlRequest = requestBuilder.buildRequest();
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.FB_OAUTH_DIALOG)
+				.queryParam(ParametersDictionary.CLIENT_ID, appId)
+				.queryParam(ParametersDictionary.RESPONSE_TYPE,	ParametersDictionary.TOKEN)
+				.queryParam(ParametersDictionary.SCOPE, typePermission)
+				.queryParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.FB_REDIRECT_URL)
+				.queryParam(ParametersDictionary.DISPLAY, ParametersDictionary.POPUP);
+		
+		String urlRequest = builder.build().encode().toUri().toString();
 		log.debug("Access token request: " +  urlRequest);
 		
 		return new FbAccessToken(urlRequest).getAccessToken(socialNetwork);

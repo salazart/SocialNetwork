@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.social.accesstoken.services.OkAccessToken;
 import com.social.models.Attachment;
@@ -63,43 +64,34 @@ public class OkService extends OkSessionService{
 
 	private String createPostRequest(String attachmentsText) {
 		String accessToken = generateAccessToken(PermissionDictionary.OK_GROUP_CONTENT);
-		
 		String sig = generateSesionSignature(accessToken, attachmentsText);
-		
-		RequestBuilder requestBuilder = new RequestBuilder(
-				UrlsDictionary.OK_URL_REQUEST);
-		
-		requestBuilder.addParam(ParametersDictionary.ATTACHMENT, attachmentsText);
-
 		String appKey = PropertyService.getValueProperties(APP_KEY);
-		requestBuilder.addParam(ParametersDictionary.APP_KEY, appKey);
-		
 		String methodName = PropertyService.getValueProperties(METHOD);
-		requestBuilder.addParam(ParametersDictionary.METHOD, methodName);
-		
-		requestBuilder.addParam(ParametersDictionary.ACCESS_TOKEN, accessToken);
-		requestBuilder.addParam(ParametersDictionary.SIG, sig);
-		
 		String groupId = PropertyService.getValueProperties(GROUP_ID);
-		requestBuilder.addParam(ParametersDictionary.GID, groupId);
-		
 		String type = PropertyService.getValueProperties(POST_TYPE);
-		requestBuilder.addParam(ParametersDictionary.TYPE, type);
 		
-		return requestBuilder.buildRequest();
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.OK_URL_REQUEST)
+				.queryParam(ParametersDictionary.ATTACHMENT, attachmentsText)
+				.queryParam(ParametersDictionary.APP_KEY, appKey)
+				.queryParam(ParametersDictionary.METHOD, methodName)
+				.queryParam(ParametersDictionary.ACCESS_TOKEN, accessToken)
+				.queryParam(ParametersDictionary.SIG, sig)
+				.queryParam(ParametersDictionary.GID, groupId)
+				.queryParam(ParametersDictionary.TYPE, type);
+		
+		return builder.build().encode().toUri().toString();
 	}
 
 	public String generateAccessToken(String typePermission) {
-		RequestBuilder requestBuilder = new RequestBuilder(UrlsDictionary.OK_OAUTH_DIALOG);
-		
 		String appId = PropertyService.getValueProperties(APP_ID);
-		requestBuilder.addParam(ParametersDictionary.CLIENT_ID, appId);
 		
-		requestBuilder.addParam(ParametersDictionary.RESPONSE_TYPE, ParametersDictionary.TOKEN);
-		requestBuilder.addParam(ParametersDictionary.SCOPE, typePermission);
-		requestBuilder.addParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.OK_REDIRECT_URL);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.OK_OAUTH_DIALOG)
+				.queryParam(ParametersDictionary.CLIENT_ID, appId)
+				.queryParam(ParametersDictionary.RESPONSE_TYPE, ParametersDictionary.TOKEN)
+				.queryParam(ParametersDictionary.SCOPE, PermissionDictionary.OK_GROUP_CONTENT)
+				.queryParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.OK_REDIRECT_URL);
+		String urlRequest = builder.build().encode().toUri().toString();
 		
-		String urlRequest = requestBuilder.buildRequest();
 		log.debug("Access token request: " +  urlRequest);
 		
 		return new OkAccessToken(urlRequest).getAccessToken(socialNetwork);
