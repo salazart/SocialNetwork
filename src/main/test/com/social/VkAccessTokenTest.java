@@ -22,6 +22,6 @@ public class VkAccessTokenTest {
 		VkService vkService = new VkService(vkSocialNetwork);
 		String vkAccessToken = vkService.generateAccessToken(PermissionDictionary.VK_WALL);
 		
-		assertTrue(vkAccessToken != null && vkAccessToken != "") ;
+		assertTrue(vkAccessToken != null && !vkAccessToken.isEmpty()) ;
 	}
 }

@@ -22,7 +22,7 @@ public class FbAccessTokenTest {
 		FbService fbService = new FbService(fbSocialNetwork);
 		String fbAccessToken = fbService.generateAccessToken(PermissionDictionary.FB_PUBLISH_ACTION);
 		
-		assertTrue(fbAccessToken != null && fbAccessToken != "") ;
+		assertTrue(fbAccessToken != null && !fbAccessToken.isEmpty()) ;
 	}
 
 }

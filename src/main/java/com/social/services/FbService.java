@@ -25,7 +25,7 @@ public class FbService {
 		this.socialNetwork = socialNetwork;
 	}
 	
-	public void postToWall(Post post) {
+	public String postToWall(Post post) {
 		log.debug("=Start process posting to FB...=");
 		String accessToken = generateAccessToken(PermissionDictionary.FB_PUBLISH_ACTION);
 
@@ -35,14 +35,25 @@ public class FbService {
 				.queryParam(ParametersDictionary.MESSAGE, post.getText());
 		
 		log.debug("Post request: " + builder.build().encode().toUri().toString());
+		
+		FbResponse fbResponse = new FbResponse();
+		
 		RestTemplate restTemplate = new RestTemplate();
-		FbResponse fbResponse = restTemplate.getForObject(builder.build().encode().toUri(), FbResponse.class);
-		ConnectionService connectionService = new ConnectionService(
-				ConnectionService.POST_REQUEST_METHOD);
-		String content = connectionService.createConnection(
-				builder.build().encode().toUri().toString());
-		log.debug("Post response: " + content);
+		//FbResponse fbResponse = restTemplate.getForObject(builder.build().encode().toUri(), FbResponse.class);
+		String content = restTemplate.postForObject(builder.build().encode().toUri(), String.class, null);
+		System.out.println("Ku: " + content);
+		//ConnectionService connectionService = new ConnectionService(
+		//		ConnectionService.POST_REQUEST_METHOD);
+		//String content = connectionService.createConnection(
+		//		builder.build().encode().toUri().toString());
+		/*if (!fbResponse.isEmpty()){
+			log.debug("Post id: " + fbResponse.getId());
+		} else {
+			log.error("Error posting");
+		}*/
+		
 		log.debug("=Finish process posting to FB...=");
+		return fbResponse.getId();
 	}
 
 	public String generateAccessToken(String typePermission) {

@@ -6,4 +6,8 @@ public class FbResponse {
 	public boolean isEmpty(){
 		return (id == null || id.isEmpty());
 	}
+	
+	public String getId() {
+		return id;
+	}
 }
