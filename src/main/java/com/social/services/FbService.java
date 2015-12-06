@@ -2,11 +2,13 @@ package com.social.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.social.accesstoken.services.FbAccessToken;
 import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
+import com.social.models.responses.FbResponse;
 import com.social.utils.ParametersDictionary;
 import com.social.utils.PermissionDictionary;
 import com.social.utils.PropertyService;
@@ -33,6 +35,8 @@ public class FbService {
 				.queryParam(ParametersDictionary.MESSAGE, post.getText());
 		
 		log.debug("Post request: " + builder.build().encode().toUri().toString());
+		RestTemplate restTemplate = new RestTemplate();
+		FbResponse fbResponse = restTemplate.getForObject(builder.build().encode().toUri(), FbResponse.class);
 		ConnectionService connectionService = new ConnectionService(
 				ConnectionService.POST_REQUEST_METHOD);
 		String content = connectionService.createConnection(

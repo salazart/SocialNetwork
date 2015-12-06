@@ -1,4 +1,4 @@
-package com.salazart;
+package com.social;
 
 import static org.junit.Assert.assertTrue;
 

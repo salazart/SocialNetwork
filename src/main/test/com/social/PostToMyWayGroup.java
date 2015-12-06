@@ -1,4 +1,4 @@
-package com.salazart;
+package com.social;
 
 import com.social.models.SocialNetwork;
 import com.social.models.SocialNetworkType;

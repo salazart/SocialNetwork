@@ -1,21 +1,30 @@
-package com.salazart;
+package com.social;
+
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.Test;
 
 import com.social.models.Attachment;
 import com.social.models.Media;
 
 public class AttachmentsTest {
-	public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException {
+	
+	@Test
+	public void test() {
 		Attachment attachment = createAttachment();
 		
 		ObjectMapper mapper = new ObjectMapper();
-		String attachmentsText = mapper.writeValueAsString(attachment);
-		System.out.println(attachmentsText);
+		String attachmentsText = "";
+		try {
+			attachmentsText = mapper.writeValueAsString(attachment);
+		} catch (IOException e) {
+			attachmentsText = "";
+		}
+		
+		assertTrue(attachmentsText.equals("{\"media\":[{\"type\":\"text\",\"text\":\"hello\"}]}"));
 	}
 	
 	private static Attachment createAttachment() {
