@@ -12,6 +12,8 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ConnectionService {
 	private static final String UTF_8_ENCODING = "UTF-8";
@@ -20,6 +22,9 @@ public class ConnectionService {
 	private static final String HTTPS = "https";
 	private static final String HTTP = "http";
 	private static final String SPACE_SYMBOL = "%20";
+	
+	private static final Logger log = LogManager.getRootLogger();
+	
 	private String methodRequest;
 
 	public ConnectionService() {
@@ -34,7 +39,7 @@ public class ConnectionService {
 		try {
 			return getContent(link);
 		} catch (IOException e) {
-			System.out.println(e);
+			log.error(e);
 			return "";
 		}
 	}

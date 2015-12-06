@@ -40,7 +40,6 @@ public class PropertyService {
 	private static void createDirectory() {
 		File parentFolder = new File(new File(fileName).getParent());
 		if(!parentFolder.isDirectory()){
-			System.out.println(parentFolder.getParent());
 			if(parentFolder.mkdirs()){
 				log.debug("Folder created successfully: " + parentFolder);
 			};
