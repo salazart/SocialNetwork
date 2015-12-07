@@ -19,8 +19,8 @@ public class FbAccessTokenTest {
 	public void test() {
 		SocialNetwork fbSocialNetwork = new SocialNetwork(SocialNetworkType.FB, fbLogin, fbPass);
 		
-		FbService fbService = new FbService(fbSocialNetwork);
-		String fbAccessToken = fbService.generateAccessToken(PermissionDictionary.FB_PUBLISH_ACTION);
+		FbService fbService = new FbService();
+		String fbAccessToken = fbService.generateAccessToken(fbSocialNetwork, PermissionDictionary.FB_PUBLISH_ACTION);
 		
 		assertTrue(fbAccessToken != null && !fbAccessToken.isEmpty()) ;
 	}

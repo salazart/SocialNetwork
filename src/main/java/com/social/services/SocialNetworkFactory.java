@@ -7,16 +7,13 @@ public class SocialNetworkFactory {
 	public String postToWall(SocialNetwork socialNetwork, Post post) {
 		switch (socialNetwork.getType()) {
 		case VK:
-			new VkService(socialNetwork).postToWall(post);
-			break;
+			return new VkService().postToWall(socialNetwork, post);
 		case FB:
-			return new FbService(socialNetwork).postToWall(post);
+			return new FbService().postToWall(socialNetwork, post);
 		case OK:
-			new OkService(socialNetwork).postToWall(post);
-			break;
+			return new OkService().postToWall(socialNetwork, post);
 		default:
-			break;
+			return "";
 		}
-		return "";
 	}
 }

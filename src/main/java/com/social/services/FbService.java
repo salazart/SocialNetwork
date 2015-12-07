@@ -2,6 +2,8 @@ package com.social.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,44 +21,46 @@ public class FbService {
 	
 	private static final Logger log = LogManager.getRootLogger();
 	
-	private SocialNetwork socialNetwork;
-	
-	public FbService(SocialNetwork socialNetwork) {
-		this.socialNetwork = socialNetwork;
-	}
-	
-	public String postToWall(Post post) {
+	public String postToWall(SocialNetwork socialNetwork, Post post) {
 		log.debug("=Start process posting to FB...=");
-		String accessToken = generateAccessToken(PermissionDictionary.FB_PUBLISH_ACTION);
+		String accessToken = generateAccessToken(socialNetwork, PermissionDictionary.FB_PUBLISH_ACTION);
+		log.debug("Access token: " + accessToken);
+		
+		MultiValueMap<String, String> headers = getHeaders(post, accessToken);
+		log.debug("Headers: " + headers.toString());
+		
+		FbResponse fbResponse = sendRequest(post, headers);
 
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-				UrlsDictionary.FB_GRAPH + post.getId() + UrlsDictionary.FB_POST_WALL)
-				.queryParam(ParametersDictionary.ACCESS_TOKEN, accessToken)
-				.queryParam(ParametersDictionary.MESSAGE, post.getText());
-		
-		log.debug("Post request: " + builder.build().encode().toUri().toString());
-		
-		FbResponse fbResponse = new FbResponse();
-		
-		RestTemplate restTemplate = new RestTemplate();
-		//FbResponse fbResponse = restTemplate.getForObject(builder.build().encode().toUri(), FbResponse.class);
-		String content = restTemplate.postForObject(builder.build().encode().toUri(), String.class, null);
-		System.out.println("Ku: " + content);
-		//ConnectionService connectionService = new ConnectionService(
-		//		ConnectionService.POST_REQUEST_METHOD);
-		//String content = connectionService.createConnection(
-		//		builder.build().encode().toUri().toString());
-		/*if (!fbResponse.isEmpty()){
+		log.debug("=Finish process posting to FB...=");
+		return getResponse(fbResponse);
+	}
+
+	private String getResponse(FbResponse fbResponse) {
+		if (fbResponse != null && !fbResponse.isEmpty()){
 			log.debug("Post id: " + fbResponse.getId());
+			return fbResponse.getId();
 		} else {
 			log.error("Error posting");
-		}*/
-		
-		log.debug("=Finish process posting to FB...=");
-		return fbResponse.getId();
+			return "";
+		}
 	}
 
-	public String generateAccessToken(String typePermission) {
+	private FbResponse sendRequest(Post post, MultiValueMap<String, String> map) {
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.postForObject(
+				UrlsDictionary.FB_GRAPH + post.getId() + UrlsDictionary.FB_POST_WALL, 
+				map, 
+				FbResponse.class);
+	}
+
+	private MultiValueMap<String, String> getHeaders(Post post, String accessToken) {
+		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+		map.add(ParametersDictionary.ACCESS_TOKEN, accessToken);
+		map.add(ParametersDictionary.MESSAGE, post.getText());
+		return map;
+	}
+
+	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
 		String appId = PropertyService.getValueProperties(APP_ID);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.FB_OAUTH_DIALOG)

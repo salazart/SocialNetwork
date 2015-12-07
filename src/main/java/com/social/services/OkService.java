@@ -5,6 +5,9 @@ import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.social.accesstoken.services.OkAccessToken;
@@ -26,24 +29,27 @@ public class OkService extends OkSessionService{
 	
 	private static final Logger log = LogManager.getRootLogger();
 	
-	private SocialNetwork socialNetwork;
-	
-	public OkService(SocialNetwork socialNetwork) {
-		this.socialNetwork = socialNetwork;
+	public String postToWall(SocialNetwork socialNetwork, Post post) {
+		log.debug("=Start process posting to OK...=");
+		String accessToken = generateAccessToken(socialNetwork, PermissionDictionary.OK_GROUP_CONTENT);
+		log.debug("Access token: " + accessToken);
+		
+		MultiValueMap<String, String> headers = getHeaders(post, accessToken);
+		log.debug("Headers: " + headers.toString());
+		
+		String response = sendRequest(post, headers);
+		log.debug("=Finish process posting to OK...=");
+		return getResponse(response);
 	}
 	
-	public void postToWall(Post post) {
-		log.debug("=Start process posting to OK...=");
-		String attachmentsText = getAttachmentsText(post);
-		log.debug("Attachment text: " + attachmentsText);
-		
-		String postRequest =  createPostRequest(attachmentsText);
-		log.debug("Post request: " + postRequest);
-		
-		ConnectionService connectionService = new ConnectionService(ConnectionService.POST_REQUEST_METHOD);
-		String content = connectionService.createConnection(postRequest);
-		log.debug("Post response: " + content);
-		log.debug("=Finish process posting to OK...=");
+	private String getResponse(String response) {
+		if (response != null && !response.isEmpty()){
+			log.debug("Post id: " + response);
+			return response;
+		} else {
+			log.error("Error posting");
+			return "";
+		}
 	}
 
 	private String getAttachmentsText(Post post) {
@@ -62,27 +68,35 @@ public class OkService extends OkSessionService{
 		}
 	}
 
-	private String createPostRequest(String attachmentsText) {
-		String accessToken = generateAccessToken(PermissionDictionary.OK_GROUP_CONTENT);
+	private MultiValueMap<String, String> getHeaders(Post post, String accessToken) {
+		String attachmentsText = getAttachmentsText(post);
 		String sig = generateSesionSignature(accessToken, attachmentsText);
 		String appKey = PropertyService.getValueProperties(APP_KEY);
 		String methodName = PropertyService.getValueProperties(METHOD);
 		String groupId = PropertyService.getValueProperties(GROUP_ID);
 		String type = PropertyService.getValueProperties(POST_TYPE);
 		
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.OK_URL_REQUEST)
-				.queryParam(ParametersDictionary.ATTACHMENT, attachmentsText)
-				.queryParam(ParametersDictionary.APP_KEY, appKey)
-				.queryParam(ParametersDictionary.METHOD, methodName)
-				.queryParam(ParametersDictionary.ACCESS_TOKEN, accessToken)
-				.queryParam(ParametersDictionary.SIG, sig)
-				.queryParam(ParametersDictionary.GID, groupId)
-				.queryParam(ParametersDictionary.TYPE, type);
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add(ParametersDictionary.ATTACHMENT, attachmentsText);
+		headers.add(ParametersDictionary.APP_KEY, appKey);
+		headers.add(ParametersDictionary.METHOD, methodName);
+		headers.add(ParametersDictionary.ACCESS_TOKEN, accessToken);
+		headers.add(ParametersDictionary.SIG, sig);
+		headers.add(ParametersDictionary.GID, groupId);
+		headers.add(ParametersDictionary.TYPE, type);
 		
-		return builder.build().encode().toUri().toString();
+		return headers;
 	}
-
-	public String generateAccessToken(String typePermission) {
+	
+	private String sendRequest(Post post, MultiValueMap<String, String> map) {
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.postForObject(
+				UrlsDictionary.OK_URL_REQUEST, 
+				map, 
+				String.class);
+	}
+	
+	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
 		String appId = PropertyService.getValueProperties(APP_ID);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.OK_OAUTH_DIALOG)

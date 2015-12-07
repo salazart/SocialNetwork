@@ -24,7 +24,7 @@ public class FbPostTest {
 		String fbGroupId = PropertyService.getValueProperties("fbGroupId");
 		post.setId(fbGroupId);
 		
-		String id = new SocialNetworkFactory().postToWall(fbSocialNetwork, post);
-		assertTrue(id != null && !id.isEmpty());
+		String postId = new SocialNetworkFactory().postToWall(fbSocialNetwork, post);
+		assertTrue(postId != null && !postId.isEmpty());
 	}
 }

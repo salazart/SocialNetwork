@@ -19,8 +19,8 @@ public class OkAccessTokenTest{
 	public void test() {
 		SocialNetwork okSocialNetwork = new SocialNetwork(SocialNetworkType.OK, okLogin, okPass);
 		
-		OkService okService = new OkService(okSocialNetwork);
-		String okAccessToken = okService.generateAccessToken(PermissionDictionary.OK_GROUP_CONTENT);
+		OkService okService = new OkService();
+		String okAccessToken = okService.generateAccessToken(okSocialNetwork, PermissionDictionary.OK_GROUP_CONTENT);
 		
 		assertTrue(okAccessToken != null && !okAccessToken.isEmpty()) ;
 	}

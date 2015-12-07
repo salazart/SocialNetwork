@@ -6,22 +6,25 @@ import org.junit.Test;
 
 import com.social.models.SocialNetwork;
 import com.social.models.SocialNetworkType;
-import com.social.services.VkService;
-import com.social.utils.PermissionDictionary;
+import com.social.models.requests.Post;
+import com.social.services.SocialNetworkFactory;
 import com.social.utils.PropertyService;
 
-public class VkAccessTokenTest {
-	
+public class VkPostTest {
 	private String vkLogin = PropertyService.getValueProperties("vkLogin");
 	private String vkPass = PropertyService.getValueProperties("vkPass");
 	
 	@Test
 	public void test(){
+		Post post = new Post();
+		post.setText("Hello world number one!");
+		
 		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VK, vkLogin, vkPass);
 		
-		VkService vkService = new VkService();
-		String vkAccessToken = vkService.generateAccessToken(vkSocialNetwork, PermissionDictionary.VK_WALL);
+		String vkGroupId = PropertyService.getValueProperties("vkGroupId");
+		post.setId(vkGroupId);
 		
-		assertTrue(vkAccessToken != null && !vkAccessToken.isEmpty()) ;
+		String postId = new SocialNetworkFactory().postToWall(vkSocialNetwork, post);
+		assertTrue(postId != null && !postId.isEmpty());
 	}
 }

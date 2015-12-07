@@ -4,7 +4,7 @@ import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
 
 public interface ISocialNetwork {
-    void generateAccessToken(SocialNetwork socialNetwork, String typePermission);
+    String postWall(SocialNetwork socialNetwork, Post post);
     
-    void postWall(Post post, SocialNetwork socialNetwork);
+    String generateAccessToken(SocialNetwork socialNetwork, String typePermission);
 }
