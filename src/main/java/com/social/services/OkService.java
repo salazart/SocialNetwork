@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.social.accesstoken.services.OkAccessToken;
+import com.social.interfaces.ISocialNetworkService;
 import com.social.models.Attachment;
 import com.social.models.Media;
 import com.social.models.SocialNetwork;
@@ -20,7 +21,7 @@ import com.social.utils.PermissionDictionary;
 import com.social.utils.PropertyService;
 import com.social.utils.UrlsDictionary;
 
-public class OkService extends OkSessionService{
+public class OkService extends OkSessionService implements ISocialNetworkService{
 	private static final String APP_ID = "okAppId";
 	private static final String METHOD = "okMethod";
 	private static final String POST_TYPE = "okPostType";

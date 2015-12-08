@@ -100,6 +100,7 @@ public class AutorizeService extends RequestParser{
 		}
 		
 		log.debug("Access token response: " + requestUrl);
+		
 		return parseRequest(requestUrl, ParametersDictionary.ACCESS_TOKEN);
 	}
 }

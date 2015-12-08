@@ -1,19 +1,20 @@
 package com.social.services;
 
+import com.social.interfaces.ISocialNetworkService;
 import com.social.models.SocialNetwork;
-import com.social.models.requests.Post;
 
 public class SocialNetworkFactory {
-	public String postToWall(SocialNetwork socialNetwork, Post post) {
+	
+	public ISocialNetworkService getSocialNetworkService(SocialNetwork socialNetwork) {
 		switch (socialNetwork.getType()) {
 		case VK:
-			return new VkService().postToWall(socialNetwork, post);
+			return new VkService();
 		case FB:
-			return new FbService().postToWall(socialNetwork, post);
+			return new FbService();
 		case OK:
-			return new OkService().postToWall(socialNetwork, post);
+			return new OkService();
 		default:
-			return "";
+			return null;
 		}
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.social.accesstoken.services.VkAccessToken;
+import com.social.interfaces.ISocialNetworkService;
 import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
 import com.social.models.responses.VkResponse;
@@ -20,7 +21,7 @@ import com.social.utils.PermissionDictionary;
 import com.social.utils.PropertyService;
 import com.social.utils.UrlsDictionary;
 
-public class VkService{
+public class VkService implements ISocialNetworkService{
 	private static final String APP_ID = "vkAppId";
 	
 	private Logger log = LogManager.getRootLogger();

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.social.interfaces.ISocialNetworkService;
 import com.social.models.SocialNetwork;
 import com.social.models.SocialNetworkType;
 import com.social.models.requests.Post;
@@ -24,7 +25,9 @@ public class OkPostTest {
 		String okGroupId = PropertyService.getValueProperties("fbGroupId");
 		post.setId(okGroupId);
 		
-		String postId = new SocialNetworkFactory().postToWall(okSocialNetwork, post);
+		ISocialNetworkService socialNetworkService = new SocialNetworkFactory().getSocialNetworkService(okSocialNetwork);
+		String postId = socialNetworkService.postToWall(okSocialNetwork, post);
+		
 		assertTrue(postId != null && !postId.isEmpty());
 	}
 

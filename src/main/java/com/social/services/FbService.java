@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.social.accesstoken.services.FbAccessToken;
+import com.social.interfaces.ISocialNetworkService;
 import com.social.models.SocialNetwork;
 import com.social.models.requests.Post;
 import com.social.models.responses.FbResponse;
@@ -16,7 +17,7 @@ import com.social.utils.PermissionDictionary;
 import com.social.utils.PropertyService;
 import com.social.utils.UrlsDictionary;
 
-public class FbService {
+public class FbService implements ISocialNetworkService{
 	private static final String APP_ID = "fbAppId";
 	
 	private static final Logger log = LogManager.getRootLogger();
