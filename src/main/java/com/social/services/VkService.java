@@ -1,9 +1,13 @@
 package com.social.services;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,31 +23,20 @@ import com.social.utils.UrlsDictionary;
 public class VkService{
 	private static final String APP_ID = "vkAppId";
 	
-	private static final Logger log = LogManager.getRootLogger();
+	private Logger log = LogManager.getRootLogger();
 	
 	public String postToWall(SocialNetwork socialNetwork, Post post) {
 		log.debug("=Start process posting to VK...=");
 		String accessToken = generateAccessToken(socialNetwork, PermissionDictionary.VK_WALL);
 		log.debug("Access token: " + accessToken);
 		
-		MultiValueMap<String, String> headers = getHeaders(post, accessToken);
-		log.debug("Headers: " + headers.toString());
+		URI url = getUrl(post, accessToken);
+		log.debug("Post request: " + url.toString());
 		
-		//String response = sendRequest(post, headers);
-		VkResponse vkResponse = sendRequest(post, headers);
+		VkResponse vkResponse = sendRequest(url);
 		
 		log.debug("=Finish process posting to VK.=");
 		return getResponse(vkResponse);
-	}
-	
-	private String getResponse(String response) {
-		if (response != null && !response.isEmpty()){
-			log.debug("Post id: " + response);
-			return response;
-		} else {
-			log.error("Error posting");
-			return "";
-		}
 	}
 	
 	private String getResponse(VkResponse vkResponse) {
@@ -56,20 +49,24 @@ public class VkService{
 		}
 	}
 	
-	private VkResponse sendRequest(Post post, MultiValueMap<String, String> map) {
+	private VkResponse sendRequest(URI url) {
 		RestTemplate restTemplate = new RestTemplate();
-		return restTemplate.postForObject(
-				UrlsDictionary.VK_POST_WALL, 
-				map, 
+		
+		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+	    messageConverters.add(new MappingJackson2HttpMessageConverter());
+	    restTemplate.setMessageConverters(messageConverters);
+		
+		return restTemplate.getForObject(
+				url,
 				VkResponse.class);
 	}
 	
-	private MultiValueMap<String, String> getHeaders(Post post, String accessToken) {
-		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-		map.add(ParametersDictionary.ACCESS_TOKEN, accessToken);
-		map.add(ParametersDictionary.OWNER_ID, post.getId());
-		map.add(ParametersDictionary.MESSAGE, post.getText());
-		return map;
+	private URI getUrl(Post post, String accessToken) {
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.VK_POST_WALL)
+				.queryParam(ParametersDictionary.ACCESS_TOKEN, accessToken)
+				.queryParam(ParametersDictionary.OWNER_ID, post.getId())
+				.queryParam(ParametersDictionary.MESSAGE, post.getText());
+		return builder.build().encode().toUri();
 	}
 
 	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {

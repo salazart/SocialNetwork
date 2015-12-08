@@ -1,7 +1,7 @@
 package com.social.models.responses;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VkResponse {
@@ -12,5 +12,8 @@ public class VkResponse {
 	public Response getResponse(){
 		return response;
 	}
+	
+	public void setResponse(Response response){
+		this.response = response;
+	}
 }
-//{"response":{"post_id":32}}
