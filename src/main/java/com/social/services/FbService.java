@@ -9,8 +9,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.social.accesstoken.services.FbAccessToken;
 import com.social.interfaces.ISocialNetworkService;
+import com.social.models.Post;
 import com.social.models.SocialNetwork;
-import com.social.models.requests.Post;
 import com.social.models.responses.FbResponse;
 import com.social.utils.ParametersDictionary;
 import com.social.utils.PermissionDictionary;
@@ -45,7 +45,13 @@ public class FbService implements ISocialNetworkService{
 			return "";
 		}
 	}
-
+	
+	/**
+	 * Send request through Spring RestTemplate and get FbResponse object
+	 * @param post - post object
+	 * @param map - headers for post
+	 * @return
+	 */
 	private FbResponse sendRequest(Post post, MultiValueMap<String, String> map) {
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForObject(

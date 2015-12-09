@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.social.interfaces.ISocialNetworkService;
+import com.social.models.Post;
 import com.social.models.SocialNetwork;
 import com.social.models.SocialNetworkType;
-import com.social.models.requests.Post;
 import com.social.services.SocialNetworkFactory;
 import com.social.utils.PropertyService;
 

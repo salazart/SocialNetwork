@@ -13,8 +13,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.social.accesstoken.services.VkAccessToken;
 import com.social.interfaces.ISocialNetworkService;
+import com.social.models.Post;
 import com.social.models.SocialNetwork;
-import com.social.models.requests.Post;
 import com.social.models.responses.VkResponse;
 import com.social.utils.ParametersDictionary;
 import com.social.utils.PermissionDictionary;
@@ -31,7 +31,7 @@ public class VkService implements ISocialNetworkService{
 		String accessToken = generateAccessToken(socialNetwork, PermissionDictionary.VK_WALL);
 		log.debug("Access token: " + accessToken);
 		
-		URI url = getUrl(post, accessToken);
+		URI url = getRequest(post, accessToken);
 		log.debug("Post request: " + url.toString());
 		
 		VkResponse vkResponse = sendRequest(url);
@@ -62,7 +62,7 @@ public class VkService implements ISocialNetworkService{
 				VkResponse.class);
 	}
 	
-	private URI getUrl(Post post, String accessToken) {
+	private URI getRequest(Post post, String accessToken) {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.VK_POST_WALL)
 				.queryParam(ParametersDictionary.ACCESS_TOKEN, accessToken)
 				.queryParam(ParametersDictionary.OWNER_ID, post.getId())

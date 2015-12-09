@@ -15,12 +15,16 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.social.accesstoken.models.AuthorizeEntity;
 import com.social.models.SocialNetwork;
 import com.social.utils.AutorizeDictionary;
-import com.social.utils.ParametersDictionary;
 
-public class AutorizeService extends RequestParser{
+/**
+ * Service login on websites of social networks
+ * @author salazart
+ *
+ */
+public class AuthorizationService {
 	private static final Logger log = LogManager.getRootLogger();
 	
-	protected HtmlPage handleAutorizePage(AuthorizeEntity autorizeEntity, SocialNetwork socialNetwork) {
+	public HtmlPage handleAutorizePage(AuthorizeEntity autorizeEntity, SocialNetwork socialNetwork) {
 		HtmlPage autorizePage = getAuthorizePage(autorizeEntity);
 		
 		HtmlForm form = enterAuthorizationData(autorizeEntity, socialNetwork, autorizePage);
@@ -78,29 +82,5 @@ public class AutorizeService extends RequestParser{
 			}
 		}
 		return htmlSubmitInput;
-	}
-	
-	protected boolean isAuthCorrect(SocialNetwork socialNetwork) {
-		return socialNetwork.getLogin() != null
-				&& !socialNetwork.getLogin().isEmpty()
-				&& socialNetwork.getPass() != null
-				&& !socialNetwork.getPass().isEmpty();
-	}
-	
-	protected String getRequestUrl(HtmlPage permissionPage, HtmlPage accessTokenPage) {
-		String requestUrl = "";
-		if (accessTokenPage != null) {
-			log.debug("Permission page return access token page");
-			requestUrl = String.valueOf(accessTokenPage.getWebResponse().getRequestUrl());
-		} else if (permissionPage != null){
-			log.debug("Authorize page return access token page");
-			requestUrl =  String.valueOf(permissionPage.getWebResponse().getRequestUrl());
-		} else {
-			log.debug("Authorize page and permission page return null");
-		}
-		
-		log.debug("Access token response: " + requestUrl);
-		
-		return parseRequest(requestUrl, ParametersDictionary.ACCESS_TOKEN);
 	}
 }
