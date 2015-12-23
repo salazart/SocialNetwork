@@ -16,10 +16,10 @@ import com.social.interfaces.ISocialNetworkService;
 import com.social.models.Post;
 import com.social.models.SocialNetwork;
 import com.social.models.responses.VkResponse;
-import com.social.utils.ParametersDictionary;
-import com.social.utils.PermissionDictionary;
+import com.social.utils.ParamDic;
+import com.social.utils.RuleDic;
 import com.social.utils.PropertyService;
-import com.social.utils.UrlsDictionary;
+import com.social.utils.UrlDic;
 
 public class VkService implements ISocialNetworkService{
 	private static final String APP_ID = "vkAppId";
@@ -28,7 +28,7 @@ public class VkService implements ISocialNetworkService{
 	
 	public String postToWall(SocialNetwork socialNetwork, Post post) {
 		log.debug("=Start process posting to VK...=");
-		String accessToken = generateAccessToken(socialNetwork, PermissionDictionary.VK_WALL);
+		String accessToken = generateAccessToken(socialNetwork, /*RuleDic.VK_VIDEO*/"docs" );
 		log.debug("Access token: " + accessToken);
 		
 		URI url = getRequest(post, accessToken);
@@ -63,22 +63,22 @@ public class VkService implements ISocialNetworkService{
 	}
 	
 	private URI getRequest(Post post, String accessToken) {
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.VK_POST_WALL)
-				.queryParam(ParametersDictionary.ACCESS_TOKEN, accessToken)
-				.queryParam(ParametersDictionary.OWNER_ID, post.getId())
-				.queryParam(ParametersDictionary.MESSAGE, post.getText());
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlDic.VK_POST_WALL)
+				.queryParam(ParamDic.ACCESS_TOKEN, accessToken)
+				.queryParam(ParamDic.OWNER_ID, post.getId())
+				.queryParam(ParamDic.MESSAGE, post.getText());
 		return builder.build().encode().toUri();
 	}
 
 	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
 		String appId = PropertyService.getValueProperties(APP_ID);
 		
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.VK_OAUTH_DIALOG)
-				.queryParam(ParametersDictionary.CLIENT_ID, appId)
-				.queryParam(ParametersDictionary.RESPONSE_TYPE, ParametersDictionary.TOKEN)
-				.queryParam(ParametersDictionary.SCOPE, typePermission)
-				.queryParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.VK_REDIRECT_URL)
-				.queryParam(ParametersDictionary.DISPLAY, ParametersDictionary.MOBILE);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlDic.VK_OAUTH_DIALOG)
+				.queryParam(ParamDic.CLIENT_ID, appId)
+				.queryParam(ParamDic.RESPONSE_TYPE, ParamDic.TOKEN)
+				.queryParam(ParamDic.SCOPE, typePermission)
+				.queryParam(ParamDic.REDIRECT_URI, UrlDic.VK_REDIRECT_URL)
+				.queryParam(ParamDic.DISPLAY, ParamDic.MOBILE);
 		
 		String urlRequest = builder.build().toUri().toString();
 		log.debug("Access token request: " +  urlRequest);

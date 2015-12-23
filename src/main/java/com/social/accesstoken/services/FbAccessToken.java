@@ -4,9 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.social.accesstoken.models.AuthorizeEntity;
+import com.social.accesstoken.models.AuthEntity;
 import com.social.models.SocialNetwork;
-import com.social.utils.AutorizeDictionary;
+import com.social.utils.AuthDic;
 
 /**
  * Service login on the facebook.com website
@@ -14,27 +14,27 @@ import com.social.utils.AutorizeDictionary;
  */
 public class FbAccessToken extends ResponseParser{
 	private static final Logger log = LogManager.getRootLogger();
-	private AuthorizeEntity autorizeEntity;
+	private AuthEntity autorizeEntity;
 	
 	public FbAccessToken(String url) {
-		autorizeEntity = new AuthorizeEntity(
+		autorizeEntity = new AuthEntity(
 				url, 
-				AutorizeDictionary.FB_FORM_AUTORIZE, 
-				AutorizeDictionary.NAME_EMAIL_FIELD, 
-				AutorizeDictionary.NAME_PASS_FIELD);
+				AuthDic.FB_FORM_AUTORIZE, 
+				AuthDic.NAME_EMAIL_FIELD, 
+				AuthDic.NAME_PASS_FIELD);
 	}
 
 	public String getAccessToken(SocialNetwork socialNetwork){
 		if(isAuthCorrect(socialNetwork)){
 			log.debug("Login and pass is correct");
 			
-			AuthorizationService authorizationService = new AuthorizationService();
-			HtmlPage permissionPage = authorizationService.handleAutorizePage(autorizeEntity, socialNetwork);
+			AuthService authorizationService = new AuthService();
+			HtmlPage permissionPage = authorizationService.getPermissionPage(autorizeEntity, socialNetwork);
 			
 			PermissionService permissionService = new PermissionService(
-					AutorizeDictionary.FORM_ELEMENT_PERMISSION,
-					AutorizeDictionary.FB_BUTTON_NAME);
-			HtmlPage accessTokenPage = permissionService.handlePermissionPage(permissionPage);
+					AuthDic.FORM_ELEMENT_PERMISSION,
+					AuthDic.FB_BUTTON_NAME);
+			HtmlPage accessTokenPage = permissionService.getAccessTokenPage(permissionPage);
 			
 			return getRequestUrl(permissionPage, accessTokenPage);
 		} else {

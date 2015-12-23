@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.social.models.SocialNetwork;
 import com.social.models.SocialNetworkType;
 import com.social.services.OkService;
-import com.social.utils.PermissionDictionary;
+import com.social.utils.RuleDic;
 import com.social.utils.PropertyService;
 
 public class OkAccessTokenTest{
@@ -20,7 +20,7 @@ public class OkAccessTokenTest{
 		SocialNetwork okSocialNetwork = new SocialNetwork(SocialNetworkType.OK, okLogin, okPass);
 		
 		OkService okService = new OkService();
-		String okAccessToken = okService.generateAccessToken(okSocialNetwork, PermissionDictionary.OK_GROUP_CONTENT);
+		String okAccessToken = okService.generateAccessToken(okSocialNetwork, RuleDic.OK_GROUP_CONTENT);
 		
 		assertTrue(okAccessToken != null && !okAccessToken.isEmpty()) ;
 	}

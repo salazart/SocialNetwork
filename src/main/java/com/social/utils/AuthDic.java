@@ -1,6 +1,6 @@
 package com.social.utils;
 
-public class AutorizeDictionary {
+public class AuthDic {
 	public static final String NAME_EMAIL_FIELD = "email";
 	public static final String NAME_PASS_FIELD = "pass";
 	public static final String FB_FORM_AUTORIZE = "//form[@id='login_form']";

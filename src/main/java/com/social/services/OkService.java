@@ -16,10 +16,10 @@ import com.social.models.Attachment;
 import com.social.models.Media;
 import com.social.models.Post;
 import com.social.models.SocialNetwork;
-import com.social.utils.ParametersDictionary;
-import com.social.utils.PermissionDictionary;
+import com.social.utils.ParamDic;
+import com.social.utils.RuleDic;
 import com.social.utils.PropertyService;
-import com.social.utils.UrlsDictionary;
+import com.social.utils.UrlDic;
 
 public class OkService extends OkSessionService implements ISocialNetworkService{
 	private static final String APP_ID = "okAppId";
@@ -32,7 +32,7 @@ public class OkService extends OkSessionService implements ISocialNetworkService
 	
 	public String postToWall(SocialNetwork socialNetwork, Post post) {
 		log.debug("=Start process posting to OK...=");
-		String accessToken = generateAccessToken(socialNetwork, PermissionDictionary.OK_GROUP_CONTENT);
+		String accessToken = generateAccessToken(socialNetwork, RuleDic.OK_GROUP_CONTENT);
 		log.debug("Access token: " + accessToken);
 		
 		MultiValueMap<String, String> headers = getHeaders(post, accessToken);
@@ -78,13 +78,13 @@ public class OkService extends OkSessionService implements ISocialNetworkService
 		String type = PropertyService.getValueProperties(POST_TYPE);
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add(ParametersDictionary.ATTACHMENT, attachmentsText);
-		headers.add(ParametersDictionary.APP_KEY, appKey);
-		headers.add(ParametersDictionary.METHOD, methodName);
-		headers.add(ParametersDictionary.ACCESS_TOKEN, accessToken);
-		headers.add(ParametersDictionary.SIG, sig);
-		headers.add(ParametersDictionary.GID, groupId);
-		headers.add(ParametersDictionary.TYPE, type);
+		headers.add(ParamDic.ATTACHMENT, attachmentsText);
+		headers.add(ParamDic.APP_KEY, appKey);
+		headers.add(ParamDic.METHOD, methodName);
+		headers.add(ParamDic.ACCESS_TOKEN, accessToken);
+		headers.add(ParamDic.SIG, sig);
+		headers.add(ParamDic.GID, groupId);
+		headers.add(ParamDic.TYPE, type);
 		
 		return headers;
 	}
@@ -92,7 +92,7 @@ public class OkService extends OkSessionService implements ISocialNetworkService
 	private String sendRequest(Post post, MultiValueMap<String, String> map) {
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForObject(
-				UrlsDictionary.OK_URL_REQUEST, 
+				UrlDic.OK_URL_REQUEST, 
 				map, 
 				String.class);
 	}
@@ -100,11 +100,11 @@ public class OkService extends OkSessionService implements ISocialNetworkService
 	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
 		String appId = PropertyService.getValueProperties(APP_ID);
 		
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.OK_OAUTH_DIALOG)
-				.queryParam(ParametersDictionary.CLIENT_ID, appId)
-				.queryParam(ParametersDictionary.RESPONSE_TYPE, ParametersDictionary.TOKEN)
-				.queryParam(ParametersDictionary.SCOPE, PermissionDictionary.OK_GROUP_CONTENT)
-				.queryParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.OK_REDIRECT_URL);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlDic.OK_OAUTH_DIALOG)
+				.queryParam(ParamDic.CLIENT_ID, appId)
+				.queryParam(ParamDic.RESPONSE_TYPE, ParamDic.TOKEN)
+				.queryParam(ParamDic.SCOPE, RuleDic.OK_GROUP_CONTENT)
+				.queryParam(ParamDic.REDIRECT_URI, UrlDic.OK_REDIRECT_URL);
 		String urlRequest = builder.build().encode().toUri().toString();
 		
 		log.debug("Access token request: " +  urlRequest);

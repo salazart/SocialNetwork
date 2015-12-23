@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.social.models.SocialNetwork;
 import com.social.models.SocialNetworkType;
 import com.social.services.VkService;
-import com.social.utils.PermissionDictionary;
+import com.social.utils.RuleDic;
 import com.social.utils.PropertyService;
 
 public class VkAccessTokenTest {
@@ -20,7 +20,7 @@ public class VkAccessTokenTest {
 		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VK, vkLogin, vkPass);
 		
 		VkService vkService = new VkService();
-		String vkAccessToken = vkService.generateAccessToken(vkSocialNetwork, PermissionDictionary.VK_WALL);
+		String vkAccessToken = vkService.generateAccessToken(vkSocialNetwork, RuleDic.VK_WALL);
 		
 		assertTrue(vkAccessToken != null && !vkAccessToken.isEmpty()) ;
 	}

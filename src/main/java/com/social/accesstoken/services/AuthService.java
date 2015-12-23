@@ -12,19 +12,19 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.social.accesstoken.models.AuthorizeEntity;
+import com.social.accesstoken.models.AuthEntity;
 import com.social.models.SocialNetwork;
-import com.social.utils.AutorizeDictionary;
+import com.social.utils.AuthDic;
 
 /**
  * Service login on websites of social networks
  * @author salazart
  *
  */
-public class AuthorizationService {
+public class AuthService {
 	private static final Logger log = LogManager.getRootLogger();
 	
-	public HtmlPage handleAutorizePage(AuthorizeEntity autorizeEntity, SocialNetwork socialNetwork) {
+	public HtmlPage getPermissionPage(AuthEntity autorizeEntity, SocialNetwork socialNetwork) {
 		HtmlPage autorizePage = getAuthorizePage(autorizeEntity);
 		
 		HtmlForm form = enterAuthorizationData(autorizeEntity, socialNetwork, autorizePage);
@@ -32,7 +32,7 @@ public class AuthorizationService {
 		return emulateAutorizeButtonClick(form);
 	}
 	
-	private HtmlPage getAuthorizePage(AuthorizeEntity autorizeEntity) {
+	private HtmlPage getAuthorizePage(AuthEntity autorizeEntity) {
 		try {
 			log.debug("Getting authorization page");
 			WebClient webClient = new WebClient(BrowserVersion.FIREFOX_3);
@@ -44,7 +44,7 @@ public class AuthorizationService {
 		}
 	}
 
-	private HtmlForm enterAuthorizationData(AuthorizeEntity autorizeEntity, SocialNetwork socialNetwork,
+	private HtmlForm enterAuthorizationData(AuthEntity autorizeEntity, SocialNetwork socialNetwork,
 			HtmlPage autorizePage) {
 		try {
 			log.debug("Emulate a login and pass on the form");
@@ -65,7 +65,7 @@ public class AuthorizationService {
 		try {
 			log.debug("Emulate a click in button log in");
 			NodeList inputElements = form
-					.getElementsByTagName(AutorizeDictionary.NAME_INPUT_FIELD);
+					.getElementsByTagName(AuthDic.NAME_INPUT_FIELD);
 			HtmlSubmitInput htmlSubmitInput = getSubmitButton(inputElements);
 			return htmlSubmitInput.click();
 		} catch (IOException e) {

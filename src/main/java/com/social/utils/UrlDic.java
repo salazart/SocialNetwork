@@ -1,6 +1,6 @@
 package com.social.utils;
 
-public class UrlsDictionary {
+public class UrlDic {
     public static final String VK_POST_WALL = "https://api.vk.com/method/wall.post";
     
     public static final String VK_REDIRECT_URL = "https://oauth.vk.com/blank.html";

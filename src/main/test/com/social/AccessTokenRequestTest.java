@@ -5,10 +5,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.social.utils.ParametersDictionary;
-import com.social.utils.PermissionDictionary;
+import com.social.utils.ParamDic;
+import com.social.utils.RuleDic;
 import com.social.utils.PropertyService;
-import com.social.utils.UrlsDictionary;
+import com.social.utils.UrlDic;
 
 public class AccessTokenRequestTest{
 	private static final String APP_ID = "okAppId";
@@ -17,11 +17,11 @@ public class AccessTokenRequestTest{
 	public void test() {
 		String appId = PropertyService.getValueProperties(APP_ID);
 		
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.OK_OAUTH_DIALOG)
-				.queryParam(ParametersDictionary.CLIENT_ID, appId)
-				.queryParam(ParametersDictionary.RESPONSE_TYPE, ParametersDictionary.TOKEN)
-				.queryParam(ParametersDictionary.SCOPE, PermissionDictionary.OK_GROUP_CONTENT)
-				.queryParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.OK_REDIRECT_URL);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlDic.OK_OAUTH_DIALOG)
+				.queryParam(ParamDic.CLIENT_ID, appId)
+				.queryParam(ParamDic.RESPONSE_TYPE, ParamDic.TOKEN)
+				.queryParam(ParamDic.SCOPE, RuleDic.OK_GROUP_CONTENT)
+				.queryParam(ParamDic.REDIRECT_URI, UrlDic.OK_REDIRECT_URL);
 		
 		String urlRequest = builder.build().encode().toUri().toString();
 		

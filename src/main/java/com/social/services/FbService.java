@@ -12,10 +12,10 @@ import com.social.interfaces.ISocialNetworkService;
 import com.social.models.Post;
 import com.social.models.SocialNetwork;
 import com.social.models.responses.FbResponse;
-import com.social.utils.ParametersDictionary;
-import com.social.utils.PermissionDictionary;
+import com.social.utils.ParamDic;
+import com.social.utils.RuleDic;
 import com.social.utils.PropertyService;
-import com.social.utils.UrlsDictionary;
+import com.social.utils.UrlDic;
 
 public class FbService implements ISocialNetworkService{
 	private static final String APP_ID = "fbAppId";
@@ -24,7 +24,7 @@ public class FbService implements ISocialNetworkService{
 	
 	public String postToWall(SocialNetwork socialNetwork, Post post) {
 		log.debug("=Start process posting to FB...=");
-		String accessToken = generateAccessToken(socialNetwork, PermissionDictionary.FB_PUBLISH_ACTION);
+		String accessToken = generateAccessToken(socialNetwork, RuleDic.FB_PUBLISH_ACTION);
 		log.debug("Access token: " + accessToken);
 		
 		MultiValueMap<String, String> headers = getHeaders(post, accessToken);
@@ -55,27 +55,27 @@ public class FbService implements ISocialNetworkService{
 	private FbResponse sendRequest(Post post, MultiValueMap<String, String> map) {
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForObject(
-				UrlsDictionary.FB_GRAPH + post.getId() + UrlsDictionary.FB_POST_WALL, 
+				UrlDic.FB_GRAPH + post.getId() + UrlDic.FB_POST_WALL, 
 				map, 
 				FbResponse.class);
 	}
 
 	private MultiValueMap<String, String> getHeaders(Post post, String accessToken) {
 		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-		map.add(ParametersDictionary.ACCESS_TOKEN, accessToken);
-		map.add(ParametersDictionary.MESSAGE, post.getText());
+		map.add(ParamDic.ACCESS_TOKEN, accessToken);
+		map.add(ParamDic.MESSAGE, post.getText());
 		return map;
 	}
 
 	public String generateAccessToken(SocialNetwork socialNetwork, String typePermission) {
 		String appId = PropertyService.getValueProperties(APP_ID);
 		
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlsDictionary.FB_OAUTH_DIALOG)
-				.queryParam(ParametersDictionary.CLIENT_ID, appId)
-				.queryParam(ParametersDictionary.RESPONSE_TYPE,	ParametersDictionary.TOKEN)
-				.queryParam(ParametersDictionary.SCOPE, typePermission)
-				.queryParam(ParametersDictionary.REDIRECT_URI, UrlsDictionary.FB_REDIRECT_URL)
-				.queryParam(ParametersDictionary.DISPLAY, ParametersDictionary.POPUP);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(UrlDic.FB_OAUTH_DIALOG)
+				.queryParam(ParamDic.CLIENT_ID, appId)
+				.queryParam(ParamDic.RESPONSE_TYPE,	ParamDic.TOKEN)
+				.queryParam(ParamDic.SCOPE, typePermission)
+				.queryParam(ParamDic.REDIRECT_URI, UrlDic.FB_REDIRECT_URL)
+				.queryParam(ParamDic.DISPLAY, ParamDic.POPUP);
 		
 		String urlRequest = builder.build().encode().toUri().toString();
 		log.debug("Access token request: " +  urlRequest);

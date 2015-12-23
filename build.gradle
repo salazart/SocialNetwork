@@ -30,12 +30,12 @@ dependencies {
 	compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
 	compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
 	compile 'com.google.apis:google-api-services-plusDomains:v1-rev29-1.18.0-rc'
-	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.4.1'
-	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.4.1'
+	compile 'org.apache.logging.log4j:log4j-api:2.4.1'
+	compile 'org.apache.logging.log4j:log4j-core:2.4.1'
 	
-	compile("org.springframework.boot:spring-boot-starter")
-    compile("org.springframework:spring-web")
-    compile("com.fasterxml.jackson.core:jackson-databind")
+	compile 'org.springframework.boot:spring-boot-starter'
+    compile 'org.springframework:spring-web'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
     
     compile 'junit:junit:4.12'
     

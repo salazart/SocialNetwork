@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.social.models.SocialNetwork;
 import com.social.models.SocialNetworkType;
 import com.social.services.FbService;
-import com.social.utils.PermissionDictionary;
+import com.social.utils.RuleDic;
 import com.social.utils.PropertyService;
 
 public class FbAccessTokenTest {
@@ -20,7 +20,7 @@ public class FbAccessTokenTest {
 		SocialNetwork fbSocialNetwork = new SocialNetwork(SocialNetworkType.FB, fbLogin, fbPass);
 		
 		FbService fbService = new FbService();
-		String fbAccessToken = fbService.generateAccessToken(fbSocialNetwork, PermissionDictionary.FB_PUBLISH_ACTION);
+		String fbAccessToken = fbService.generateAccessToken(fbSocialNetwork, RuleDic.FB_PUBLISH_ACTION);
 		
 		assertTrue(fbAccessToken != null && !fbAccessToken.isEmpty()) ;
 	}

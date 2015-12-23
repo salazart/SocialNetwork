@@ -8,7 +8,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlButton;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.social.utils.AutorizeDictionary;
+import com.social.utils.AuthDic;
 
 /**
  * Service help you automatically login on the website and get rule
@@ -25,38 +25,27 @@ public class PermissionService {
 		this.buttonElement = buttonElement;
 	}
 	
-	public HtmlPage handlePermissionPage(HtmlPage autorizePage) {
-		HtmlForm form = getPermissionForm(autorizePage);
-		
-		return emulatePermissionButtonClick(form);
-	}
-	
-	public HtmlForm getPermissionForm(HtmlPage autorizePage) {
-		if(autorizePage != null){
-			log.debug("Gettign permission form");
-			return autorizePage.getFirstByXPath(formElement);
-		} else {
-			log.debug("Authorize page is null");
-			return null;
-		}
-	}
-	
-	private HtmlPage emulatePermissionButtonClick(HtmlForm form) {
+	public HtmlPage getAccessTokenPage(HtmlPage autorizePage) {
 		try {
-			log.debug("Emulating button click for getting rule");
+			log.debug("Get permission form");
+			HtmlForm form = autorizePage.getFirstByXPath(formElement);
+			
+			log.debug("Get permission button");
 			HtmlButton button = form.getButtonByName(buttonElement);
+			
+			log.debug("Click permission button");
 			return button.click();
 		} catch (Exception e) {
 			log.debug(e);
 			return null;
 		}
 	}
-	
+		
 	public HtmlPage emulatePermissionButtonClickVk(HtmlForm form) {
 		try {
 			log.debug("Emulating button click for getting rule");
 			NodeList inputElements = form
-					.getElementsByTagName(AutorizeDictionary.NAME_INPUT_FIELD);
+					.getElementsByTagName(AuthDic.NAME_INPUT_FIELD);
 			HtmlSubmitInput htmlSubmitInput = getSubmitButton(inputElements);
 			return htmlSubmitInput.click();
 		} catch (Exception e) {

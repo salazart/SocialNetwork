@@ -4,9 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.social.accesstoken.models.AuthorizeEntity;
+import com.social.accesstoken.models.AuthEntity;
 import com.social.models.SocialNetwork;
-import com.social.utils.AutorizeDictionary;
+import com.social.utils.AuthDic;
 
 /**
  * Service login on the OK.RU website
@@ -14,27 +14,27 @@ import com.social.utils.AutorizeDictionary;
  */
 public class OkAccessToken extends ResponseParser{
 	private static final Logger log = LogManager.getRootLogger();
-	private AuthorizeEntity autorizeEntity;
+	private AuthEntity autorizeEntity;
 	
 	public OkAccessToken(String url) {
-		autorizeEntity = new AuthorizeEntity(
+		autorizeEntity = new AuthEntity(
 				url, 
-				AutorizeDictionary.FORM_AUTORIZE_OK, 
-				AutorizeDictionary.OK_EMAIL_FIELD, 
-				AutorizeDictionary.OK_PASS_FIELD);
+				AuthDic.FORM_AUTORIZE_OK, 
+				AuthDic.OK_EMAIL_FIELD, 
+				AuthDic.OK_PASS_FIELD);
 	}
 	
 	public String getAccessToken(SocialNetwork socialNetwork){
 		if(isAuthCorrect(socialNetwork)){
 			log.debug("Login and pass is correct");
 			
-			AuthorizationService authorizationService = new AuthorizationService();
-			HtmlPage permissionPage = authorizationService.handleAutorizePage(autorizeEntity, socialNetwork);
+			AuthService authorizationService = new AuthService();
+			HtmlPage permissionPage = authorizationService.getPermissionPage(autorizeEntity, socialNetwork);
 			
 			PermissionService permissionService = new PermissionService(
-					AutorizeDictionary.OK_FORM_ELEMENT_PERMISSION, 
-					AutorizeDictionary.OK_BUTTON_NAME);
-			HtmlPage accessTokenPage = permissionService.handlePermissionPage(permissionPage);
+					AuthDic.OK_FORM_ELEMENT_PERMISSION, 
+					AuthDic.OK_BUTTON_NAME);
+			HtmlPage accessTokenPage = permissionService.getAccessTokenPage(permissionPage);
 			
 			return getRequestUrl(permissionPage, accessTokenPage);
 		} else {
