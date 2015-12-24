@@ -1,6 +1,6 @@
 package com.social.utils;
 
-public class PermissionDictionary {
+public class RuleDic {
     public static final String FB_USER_FRIENDS = "user_friends";
     public static final String FB_EMAIL = "email";
     public static final String FB_POST_USER = "user_posts";

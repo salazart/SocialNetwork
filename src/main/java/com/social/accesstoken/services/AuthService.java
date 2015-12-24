@@ -12,15 +12,19 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.social.accesstoken.models.AuthorizeEntity;
+import com.social.accesstoken.models.AuthEntity;
 import com.social.models.SocialNetwork;
-import com.social.utils.AutorizeDictionary;
-import com.social.utils.ParametersDictionary;
+import com.social.utils.AuthDic;
 
-public class AutorizeService extends RequestParser{
+/**
+ * Service login on websites of social networks
+ * @author salazart
+ *
+ */
+public class AuthService {
 	private static final Logger log = LogManager.getRootLogger();
 	
-	protected HtmlPage handleAutorizePage(AuthorizeEntity autorizeEntity, SocialNetwork socialNetwork) {
+	public HtmlPage getPermissionPage(AuthEntity autorizeEntity, SocialNetwork socialNetwork) {
 		HtmlPage autorizePage = getAuthorizePage(autorizeEntity);
 		
 		HtmlForm form = enterAuthorizationData(autorizeEntity, socialNetwork, autorizePage);
@@ -28,7 +32,7 @@ public class AutorizeService extends RequestParser{
 		return emulateAutorizeButtonClick(form);
 	}
 	
-	private HtmlPage getAuthorizePage(AuthorizeEntity autorizeEntity) {
+	private HtmlPage getAuthorizePage(AuthEntity autorizeEntity) {
 		try {
 			log.debug("Getting authorization page");
 			WebClient webClient = new WebClient(BrowserVersion.FIREFOX_3);
@@ -40,7 +44,7 @@ public class AutorizeService extends RequestParser{
 		}
 	}
 
-	private HtmlForm enterAuthorizationData(AuthorizeEntity autorizeEntity, SocialNetwork socialNetwork,
+	private HtmlForm enterAuthorizationData(AuthEntity autorizeEntity, SocialNetwork socialNetwork,
 			HtmlPage autorizePage) {
 		try {
 			log.debug("Emulate a login and pass on the form");
@@ -61,7 +65,7 @@ public class AutorizeService extends RequestParser{
 		try {
 			log.debug("Emulate a click in button log in");
 			NodeList inputElements = form
-					.getElementsByTagName(AutorizeDictionary.NAME_INPUT_FIELD);
+					.getElementsByTagName(AuthDic.NAME_INPUT_FIELD);
 			HtmlSubmitInput htmlSubmitInput = getSubmitButton(inputElements);
 			return htmlSubmitInput.click();
 		} catch (IOException e) {
@@ -78,28 +82,5 @@ public class AutorizeService extends RequestParser{
 			}
 		}
 		return htmlSubmitInput;
-	}
-	
-	protected boolean isAuthCorrect(SocialNetwork socialNetwork) {
-		return socialNetwork.getLogin() != null
-				&& !socialNetwork.getLogin().isEmpty()
-				&& socialNetwork.getPass() != null
-				&& !socialNetwork.getPass().isEmpty();
-	}
-	
-	protected String getRequestUrl(HtmlPage permissionPage, HtmlPage accessTokenPage) {
-		String requestUrl = "";
-		if (accessTokenPage != null) {
-			log.debug("Permission page return access token page");
-			requestUrl = String.valueOf(accessTokenPage.getWebResponse().getRequestUrl());
-		} else if (permissionPage != null){
-			log.debug("Authorize page return access token page");
-			requestUrl =  String.valueOf(permissionPage.getWebResponse().getRequestUrl());
-		} else {
-			log.debug("Authorize page and permission page return null");
-		}
-		
-		log.debug("Access token response: " + requestUrl);
-		return parseRequest(requestUrl, ParametersDictionary.ACCESS_TOKEN);
 	}
 }

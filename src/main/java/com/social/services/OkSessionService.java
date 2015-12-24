@@ -14,7 +14,7 @@ public class OkSessionService {
 	private static final String GROUP_ID = "okGroupId";
 	private static final String POST_TYPE = "okPostType";
 	
-	public String generateSesionSignature(String accessToken, String attachmentsText) {
+	protected String generateSesionSignature(String accessToken, String attachmentsText) {
 		String appSecretKey = PropertyService.getValueProperties(APP_SECRET_KEY);
 		String hash = generateMD5(accessToken + appSecretKey);
 		

@@ -2,32 +2,41 @@ package com.social.accesstoken.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.w3c.dom.NodeList;
 
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.social.accesstoken.models.AuthorizeEntity;
+import com.social.accesstoken.models.AuthEntity;
 import com.social.models.SocialNetwork;
-import com.social.utils.AutorizeDictionary;
+import com.social.utils.AuthDic;
 
-public class VkAccessToken extends AutorizeService{
+/**
+ * Service login of vk.com website
+ * @author salazart
+ */
+public class VkAccessToken extends ResponseParser{
 	private static final Logger log = LogManager.getRootLogger();
-	private AuthorizeEntity autorizeEntity;
+	private AuthEntity authEntity;
 	
 	public VkAccessToken(String url) {
-		autorizeEntity = new AuthorizeEntity(
+		authEntity = new AuthEntity(
 				url, 
-				AutorizeDictionary.FORM_AUTORIZE_VK, 
-				AutorizeDictionary.NAME_EMAIL_FIELD, 
-				AutorizeDictionary.NAME_PASS_FIELD);
+				AuthDic.VK_FORM, 
+				AuthDic.VK_LOGIN, 
+				AuthDic.VK_PASS);
 	}
 
 	public String getAccessToken(SocialNetwork socialNetwork){
 		if(isAuthCorrect(socialNetwork)){
 			log.debug("Login and pass is correct");
-			HtmlPage permissionPage = handleAutorizePage(autorizeEntity, socialNetwork);
-			HtmlPage accessTokenPage = handlePermissionPage(permissionPage);
+			
+			AuthService authService = new AuthService();
+			HtmlPage permissionPage = authService.getPermissionPage(authEntity, socialNetwork);
+			System.out.println(authEntity.getUrl());
+			PermissionService permissionService = new PermissionService(
+					AuthDic.FORM_ELEMENT_PERMISSION, 
+					AuthDic.NAME_INPUT_FIELD);
+			HtmlForm permissionForm = null;//permissionService.getPermissionForm(permissionPage);
+			HtmlPage accessTokenPage = permissionService.emulatePermissionButtonClickVk(permissionForm);
 			
 			return getRequestUrl(permissionPage, accessTokenPage);
 		} else {
@@ -36,32 +45,5 @@ public class VkAccessToken extends AutorizeService{
 		}
 	}
 
-	private HtmlPage handlePermissionPage(HtmlPage autorizePage) {
-		HtmlForm form = getPermissionForm(autorizePage);
-		
-		return emulatePermissionButtonClick(form);
-	}
-	
-	private HtmlForm getPermissionForm(HtmlPage autorizePage) {
-		if(autorizePage != null){
-			log.debug("Gettign permission form");
-			return autorizePage.getFirstByXPath(AutorizeDictionary.FORM_ELEMENT_PERMISSION);
-		} else {
-			log.debug("Authorize page is null");
-			return null;
-		}
-	}
 
-	private HtmlPage emulatePermissionButtonClick(HtmlForm form) {
-		try {
-			log.debug("Emulating button click for getting rule");
-			NodeList inputElements = form
-					.getElementsByTagName(AutorizeDictionary.NAME_INPUT_FIELD);
-			HtmlSubmitInput htmlSubmitInput = getSubmitButton(inputElements);
-			return htmlSubmitInput.click();
-		} catch (Exception e) {
-			log.debug(e);
-			return null;
-		}
-	}
 }
