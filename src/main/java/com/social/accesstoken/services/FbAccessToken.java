@@ -20,8 +20,8 @@ public class FbAccessToken extends ResponseParser{
 		autorizeEntity = new AuthEntity(
 				url, 
 				AuthDic.FB_FORM_AUTORIZE, 
-				AuthDic.NAME_EMAIL_FIELD, 
-				AuthDic.NAME_PASS_FIELD);
+				AuthDic.VK_LOGIN, 
+				AuthDic.VK_PASS);
 	}
 
 	public String getAccessToken(SocialNetwork socialNetwork){

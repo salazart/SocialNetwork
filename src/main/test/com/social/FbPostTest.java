@@ -11,23 +11,29 @@ import com.social.models.SocialNetworkType;
 import com.social.services.SocialNetworkFactory;
 import com.social.utils.PropertyService;
 
+/**
+ * The class testing to posting message to wall of social network and response shouldn't be null and empty.
+ * @author salazart
+ *
+ */
 public class FbPostTest {
-	private String fbLogin = PropertyService.getValueProperties("fbLogin");
-	private String fbPass = PropertyService.getValueProperties("fbPass");
+	private static final String fbLogin = PropertyService.getValueProperties("fbLogin");
+	private static final String fbPass = PropertyService.getValueProperties("fbPass");
+	private static final String fbGroupId = PropertyService.getValueProperties("fbGroupId");
 	
 	@Test
 	public void test(){
 		Post post = new Post();
-		post.setText("Hello world number one!");
+		post.setText("Test message!");
+		post.setId(fbGroupId);
 		
 		SocialNetwork fbSocialNetwork = new SocialNetwork(SocialNetworkType.FB, fbLogin, fbPass);
-		
-		String fbGroupId = PropertyService.getValueProperties("fbGroupId");
-		post.setId(fbGroupId);
 		
 		ISocialNetworkService socialNetworkService = new SocialNetworkFactory().getSocialNetworkService(fbSocialNetwork);
 		String postId = socialNetworkService.postToWall(fbSocialNetwork, post);
 		
-		assertTrue(postId != null && !postId.isEmpty());
+		assertNotNull(postId);
+		
+		assertFalse(postId.isEmpty());
 	}
 }

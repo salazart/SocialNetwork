@@ -10,10 +10,15 @@ import com.social.services.OkService;
 import com.social.utils.RuleDic;
 import com.social.utils.PropertyService;
 
+/**
+ * The class testing to obtain access token of social network and is shouldn't be null and empty.
+ * @author salazart
+ *
+ */
 public class OkAccessTokenTest{
 	
-	private String okLogin = PropertyService.getValueProperties("okLogin");
-	private String okPass = PropertyService.getValueProperties("okPass");
+	private static final String okLogin = PropertyService.getValueProperties("okLogin");
+	private static final String okPass = PropertyService.getValueProperties("okPass");
 	
 	@Test
 	public void test() {

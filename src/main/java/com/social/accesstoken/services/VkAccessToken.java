@@ -10,19 +10,19 @@ import com.social.models.SocialNetwork;
 import com.social.utils.AuthDic;
 
 /**
- * Service login on the vk.com website
+ * Service login of vk.com website
  * @author salazart
  */
 public class VkAccessToken extends ResponseParser{
 	private static final Logger log = LogManager.getRootLogger();
-	private AuthEntity autorizeEntity;
+	private AuthEntity authEntity;
 	
 	public VkAccessToken(String url) {
-		autorizeEntity = new AuthEntity(
+		authEntity = new AuthEntity(
 				url, 
-				AuthDic.FORM_AUTORIZE_VK, 
-				AuthDic.NAME_EMAIL_FIELD, 
-				AuthDic.NAME_PASS_FIELD);
+				AuthDic.VK_FORM, 
+				AuthDic.VK_LOGIN, 
+				AuthDic.VK_PASS);
 	}
 
 	public String getAccessToken(SocialNetwork socialNetwork){
@@ -30,8 +30,8 @@ public class VkAccessToken extends ResponseParser{
 			log.debug("Login and pass is correct");
 			
 			AuthService authService = new AuthService();
-			HtmlPage permissionPage = authService.getPermissionPage(autorizeEntity, socialNetwork);
-			System.out.println(permissionPage.asXml());
+			HtmlPage permissionPage = authService.getPermissionPage(authEntity, socialNetwork);
+			System.out.println(authEntity.getUrl());
 			PermissionService permissionService = new PermissionService(
 					AuthDic.FORM_ELEMENT_PERMISSION, 
 					AuthDic.NAME_INPUT_FIELD);

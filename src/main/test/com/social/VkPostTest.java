@@ -1,6 +1,6 @@
 package com.social;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -11,23 +11,32 @@ import com.social.models.SocialNetworkType;
 import com.social.services.SocialNetworkFactory;
 import com.social.utils.PropertyService;
 
+/**
+ * postId shouldn't be null and empty
+ * @author salazart
+ *
+ */
 public class VkPostTest {
-	private String vkLogin = PropertyService.getValueProperties("vkLogin");
-	private String vkPass = PropertyService.getValueProperties("vkPass");
+	private static final String vkLogin = PropertyService.getValueProperties("vkLogin");
+	private static final String vkPass = PropertyService.getValueProperties("vkPass");
+	private static final String vkGroupId = PropertyService.getValueProperties("vkGroupId");
+	private static final String message = "Hello world number one!";
 	
 	@Test
 	public void test(){
 		Post post = new Post();
-		post.setText("Hello world number one!");
+		post.setText(message);
 		
 		SocialNetwork vkSocialNetwork = new SocialNetwork(SocialNetworkType.VK, vkLogin, vkPass);
 		
-		String vkGroupId = PropertyService.getValueProperties("vkGroupId");
-		post.setId(vkGroupId);
+		String groupId = PropertyService.getValueProperties(vkGroupId);
+		post.setId(groupId);
 		
 		ISocialNetworkService socialNetworkService = new SocialNetworkFactory().getSocialNetworkService(vkSocialNetwork);
 		String postId = socialNetworkService.postToWall(vkSocialNetwork, post);
 		
-		assertTrue(postId != null && !postId.isEmpty());
+		assertNotNull(postId);
+		
+		assertFalse(postId.isEmpty());
 	}
 }
