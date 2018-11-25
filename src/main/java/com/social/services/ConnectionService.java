@@ -1,5 +1,7 @@
 package com.social.services;
 
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,10 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
-
-import org.apache.commons.lang.StringUtils;
 
 public class ConnectionService {
 	private static final String UTF_8_ENCODING = "UTF-8";
@@ -73,7 +71,7 @@ public class ConnectionService {
 	}
 
 	private URL modifyUrl(String link) throws MalformedURLException {
-		if (!StringUtils.startsWith(link, "http")) {
+		if (link.startsWith("http")){
 			link = HTTPS + link;
 		}
 

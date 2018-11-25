@@ -1,11 +1,10 @@
 package com.salazart;
 
-import java.io.IOException;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.social.models.Attachment;
 import com.social.models.Media;
+
+import java.io.IOException;
 
 public class GenerateAttachment {
 

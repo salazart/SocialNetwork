@@ -1,12 +1,6 @@
 package com.social.services;
 
-import java.io.IOException;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.web.util.UriComponentsBuilder;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.social.accesstoken.services.OkAccessToken;
 import com.social.models.Attachment;
 import com.social.models.Media;
@@ -16,6 +10,11 @@ import com.social.utils.ParametersDictionary;
 import com.social.utils.PermissionDictionary;
 import com.social.utils.PropertyService;
 import com.social.utils.UrlsDictionary;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
 
 public class OkService extends OkSessionService{
 	private static final String APP_ID = "okAppId";

@@ -1,5 +1,9 @@
 package com.salazart;
 
+import com.social.utils.ParametersDictionary;
+import com.social.utils.PermissionDictionary;
+import com.social.utils.PropertyService;
+import com.social.utils.UrlsDictionary;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.CommandLineRunner;
@@ -10,9 +14,9 @@ import com.social.utils.ParametersDictionary;
 import com.social.utils.PermissionDictionary;
 import com.social.utils.PropertyService;
 import com.social.utils.UrlsDictionary;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
-public class AccessTokenRequest implements CommandLineRunner {
+public class AccessTokenRequest {
 	private static final String APP_ID = "okAppId";
 	private static final Logger log = LogManager.getRootLogger();
 	public static void main(String[] args) {
@@ -29,7 +33,6 @@ public class AccessTokenRequest implements CommandLineRunner {
 		log.info(urlRequest);
 	}
 
-	@Override
 	public void run(String... args) throws Exception {
 		String appId = PropertyService.getValueProperties(APP_ID);
 		

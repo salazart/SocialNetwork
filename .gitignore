@@ -4,9 +4,10 @@
 .settings
 .classpath
 
-/bin/*
-/build/*
+/bin/**
+/build/**
+/.idea/**
 
-/bin/
 config.properties
 log.txt
+*.iml
